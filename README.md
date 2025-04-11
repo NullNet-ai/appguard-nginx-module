@@ -8,9 +8,16 @@ sudo apt update
 sudo apt install build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev
 ```
 
-Protobuf
+Protobuf (probably nor)
 ```bash
-sudo apt-get install protobuf-compiler protobuf-c-compiler libprotobuf-c-dev
+sudo apt-get install protobuf-compiler
+```
+
+Python
+
+```
+sudo apt install python3 pip
+pip install protobuf grpcio-tools
 ```
 
 To be written:
