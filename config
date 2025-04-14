@@ -8,23 +8,16 @@ NGX_APPGUARD_DEPS="                                 \
     "
 
 APPGUARD_PROTO_SRCS="                               \
-    $ngx_addon_dir/proto/appguard.pb.c              \
+    $ngx_addon_dir/proto/appguard.h                 \
+    $ngx_addon_dir/proto/appguard.pb.cc             \
+    $ngx_addon_dir/proto/appguard.inner.utils.cpp   \
+    $ngx_addon_dir/proto/appguard.grpc.pb.c         \
     "
 APPGUARD_PROTO_DEPS="                               \
+    $ngx_addon_dir/proto/appguard.cpp               \
     $ngx_addon_dir/proto/appguard.pb.h              \
-    "
-
-NANOPB_SRCS="                                       \
-    $ngx_addon_dir/vendor/nanopb/pb_decode.c        \
-    $ngx_addon_dir/vendor/nanopb/pb_encode.c        \
-    $ngx_addon_dir/vendor/nanopb/pb_common.c        \
-    "
-
-NANOPB_DEPS="                                       \
-    $ngx_addon_dir/vendor/nanopb/pb_decode.h        \
-    $ngx_addon_dir/vendor/nanopb/pb_encode.h        \
-    $ngx_addon_dir/vendor/nanopb/pb_common.h        \
-    $ngx_addon_dir/vendor/nanopb/pb.h               \
+    $ngx_addon_dir/proto/appguard.inner.utils.h     \
+    $ngx_addon_dir/proto/appguard.grpc.pb.h         \
     "
 
 if test -n "$ngx_module_link"; then
@@ -32,16 +25,13 @@ if test -n "$ngx_module_link"; then
     ngx_module_name=$ngx_addon_name
     ngx_module_incs="                               \
         $ngx_module_incs                            \
-        $ngx_addon_dir/vendor/nanopb                \
         $ngx_addon_dir/proto                        \
     "
     ngx_module_deps="                               \
-        $NANOPB_DEPS                                \
         $APPGUARD_PROTO_DEPS                        \
         $NGX_APPGUARD_DEPS                          \
     "
     ngx_module_srcs="                               \
-        $NANOPB_SRCS                                \
         $APPGUARD_PROTO_SRCS                        \
         $NGX_APPGUARD_SRCS                          \
     "
@@ -50,12 +40,10 @@ if test -n "$ngx_module_link"; then
 else
     HTTP_MODULES="$HTTP_MODULES $ngx_addon_name"
     NGX_ADDON_SRCS="                               \
-        $NANOPB_SRCS                               \
         $APPGUARD_PROTO_SRCS                       \
         $NGX_APPGUARD_SRCS                         \
     "
     NGX_ADDON_DEPS="                               \
-        $NANOPB_DEPS                               \
         $APPGUARD_PROTO_DEPS                       \
         $NGX_APPGUARD_DEPS                         \
     "

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.cpp": "cpp",
+        "*.inc": "cpp",
+        "limits": "cpp"
+    }
+}
