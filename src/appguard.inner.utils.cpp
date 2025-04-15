@@ -1,4 +1,4 @@
-#include "appguard.inner.utils.h"
+#include "appguard.inner.utils.hpp"
 
 #include <array>
 #include <arpa/inet.h>
@@ -7,7 +7,7 @@
 
 namespace appguard::inner_utils
 {
-    bool parse_sockaddr(const sockaddr *addr, std::string &ip, uint16_t &port)
+    static bool parse_sockaddr(const sockaddr *addr, std::string &ip, uint16_t &port)
     {
         if (!addr)
             return false;
@@ -38,7 +38,7 @@ namespace appguard::inner_utils
         return false;
     }
 
-    std::unordered_map<std::string, std::string> parse_ngx_request_headers(ngx_http_request_t *request)
+    static std::unordered_map<std::string, std::string> parse_ngx_request_headers(ngx_http_request_t *request)
     {
         std::unordered_map<std::string, std::string> retval = {};
 
@@ -60,19 +60,19 @@ namespace appguard::inner_utils
             std::string header_key(reinterpret_cast<char *>(h[i].key.data), h[i].key.len);
             std::string header_value(reinterpret_cast<char *>(h[i].value.data), h[i].value.len);
 
-            retval.insert(header_key, header_value);
+            retval.try_emplace(header_key, header_value);
         }
 
         return retval;
     }
 
-    std::unordered_map<std::string, std::string> parse_query_parameters(const std::string &uri)
+    static std::unordered_map<std::string, std::string> parse_query_parameters(const std::string &uri)
     {
         std::unordered_map<std::string, std::string> retval;
 
         auto pos = uri.find('?');
         if (pos == std::string::npos || pos + 1 >= uri.length())
-            return retval; // No query string
+            return retval;
 
         std::string query = uri.substr(pos + 1);
         std::stringstream ss(query);
@@ -94,5 +94,57 @@ namespace appguard::inner_utils
         }
 
         return retval;
+    }
+
+    appguard::AppGuardTcpConnection ExtractTcpConnectionInfo(ngx_http_request_t *request)
+    {
+        appguard::AppGuardTcpConnection tcp_connection;
+
+        std::string ip_address{};
+        uint16_t port{};
+
+        if (appguard::inner_utils::parse_sockaddr(request->connection->sockaddr, ip_address, port))
+        {
+            tcp_connection.set_source_ip(ip_address);
+            tcp_connection.set_source_port(port);
+        }
+
+        if (appguard::inner_utils::parse_sockaddr(request->connection->local_sockaddr, ip_address, port))
+        {
+            tcp_connection.set_destination_ip(ip_address);
+            tcp_connection.set_destination_port(port);
+        }
+
+        std::string protocol(reinterpret_cast<char *>(request->http_protocol.data), request->http_protocol.len);
+        if (!protocol.empty())
+            tcp_connection.set_protocol(protocol);
+
+        return tcp_connection;
+    }
+
+    appguard::AppGuardHttpRequest ExtractHttpRequestInfo(ngx_http_request_t *request)
+    {
+        appguard::AppGuardHttpRequest http_request;
+
+        std::string uri(reinterpret_cast<char *>(request->uri.data), request->uri.len);
+
+        auto query_params = appguard::inner_utils::parse_query_parameters(uri);
+        for (const auto &[key, value] : query_params)
+        {
+            http_request.mutable_query()->try_emplace(key, value);
+        }
+
+        http_request.set_original_url(uri);
+
+        auto headers = appguard::inner_utils::parse_ngx_request_headers(request);
+        for (const auto &[key, value] : headers)
+        {
+            http_request.mutable_headers()->try_emplace(key, value);
+        }
+
+        std::string method(reinterpret_cast<char *>(request->method_name.data), request->method_name.len);
+        http_request.set_method(method);
+
+        return http_request;
     }
 }

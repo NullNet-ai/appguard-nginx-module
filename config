@@ -1,50 +1,37 @@
 ngx_addon_name=appguard_nginx_module
 
-NGX_APPGUARD_SRCS="                                 \
-    $ngx_addon_dir/src/appguard_nginx_module.c      \
+NGX_APPGUARD_SRCS="                                    \
+    $ngx_addon_dir/src/appguard.pb.cc                  \
+    $ngx_addon_dir/src/appguard.grpc.pb.cc             \
+    $ngx_addon_dir/src/appguard.inner.utils.cpp        \
+    $ngx_addon_dir/src/appguard.wrapper.cpp            \
+    $ngx_addon_dir/src/appguard.nginx.module.cpp       \
     "
-NGX_APPGUARD_DEPS="                                 \
-    $ngx_addon_dir/src/appguard_nginx_module.h      \
+NGX_APPGUARD_DEPS="                                    \
+    $ngx_addon_dir/src/appguard.nginx.module.hpp       \
+    $ngx_addon_dir/src/appguard.wrapper.hpp            \
+    $ngx_addon_dir/src/appguard.inner.utils.hpp        \
+    $ngx_addon_dir/src/appguard.client.exception.hpp   \
+    $ngx_addon_dir/src/appguard.grpc.pb.h              \
+    $ngx_addon_dir/src/appguard.pb.h                   \
     "
 
-APPGUARD_PROTO_SRCS="                               \
-    $ngx_addon_dir/proto/appguard.h                 \
-    $ngx_addon_dir/proto/appguard.pb.cc             \
-    $ngx_addon_dir/proto/appguard.inner.utils.cpp   \
-    $ngx_addon_dir/proto/appguard.grpc.pb.c         \
-    "
-APPGUARD_PROTO_DEPS="                               \
-    $ngx_addon_dir/proto/appguard.cpp               \
-    $ngx_addon_dir/proto/appguard.pb.h              \
-    $ngx_addon_dir/proto/appguard.inner.utils.h     \
-    $ngx_addon_dir/proto/appguard.grpc.pb.h         \
-    "
+CORE_LINK="$CORE_LINK -lgrpc++ -lgrpc -lprotobuf       \
+    -lgrpc++_reflection -lupb -lre2 -labsl_statusor"
+
+CXXFLAGS="$CXXFLAGS -std=c++17"
+
 
 if test -n "$ngx_module_link"; then
     ngx_module_type=HTTP
     ngx_module_name=$ngx_addon_name
-    ngx_module_incs="                               \
-        $ngx_module_incs                            \
-        $ngx_addon_dir/proto                        \
-    "
-    ngx_module_deps="                               \
-        $APPGUARD_PROTO_DEPS                        \
-        $NGX_APPGUARD_DEPS                          \
-    "
-    ngx_module_srcs="                               \
-        $APPGUARD_PROTO_SRCS                        \
-        $NGX_APPGUARD_SRCS                          \
-    "
+    ngx_module_incs="$ngx_module_incs"
+    ngx_module_deps="$NGX_APPGUARD_DEPS"
+    ngx_module_srcs="$NGX_APPGUARD_SRCS"
 
     . auto/module
 else
     HTTP_MODULES="$HTTP_MODULES $ngx_addon_name"
-    NGX_ADDON_SRCS="                               \
-        $APPGUARD_PROTO_SRCS                       \
-        $NGX_APPGUARD_SRCS                         \
-    "
-    NGX_ADDON_DEPS="                               \
-        $APPGUARD_PROTO_DEPS                       \
-        $NGX_APPGUARD_DEPS                         \
-    "
+    NGX_ADDON_SRCS="$NGX_APPGUARD_SRCS"
+    NGX_ADDON_DEPS="$NGX_APPGUARD_DEPS"
 fi
