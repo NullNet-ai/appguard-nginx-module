@@ -35,6 +35,16 @@ class AppGuard final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
+    // Authentication
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::appguard::HeartbeatResponse>> Heartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::appguard::HeartbeatResponse>>(HeartbeatRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::appguard::HeartbeatResponse>> AsyncHeartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::appguard::HeartbeatResponse>>(AsyncHeartbeatRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::appguard::HeartbeatResponse>> PrepareAsyncHeartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::appguard::HeartbeatResponse>>(PrepareAsyncHeartbeatRaw(context, request, cq));
+    }
     // TCP
     virtual ::grpc::Status HandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::appguard::AppGuardTcpResponse* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::appguard::AppGuardTcpResponse>> AsyncHandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::grpc::CompletionQueue* cq) {
@@ -76,6 +86,8 @@ class AppGuard final {
     class async_interface {
      public:
       virtual ~async_interface() {}
+      // Authentication
+      virtual void Heartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest* request, ::grpc::ClientReadReactor< ::appguard::HeartbeatResponse>* reactor) = 0;
       // TCP
       virtual void HandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection* request, ::appguard::AppGuardTcpResponse* response, std::function<void(::grpc::Status)>) = 0;
       virtual void HandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection* request, ::appguard::AppGuardTcpResponse* response, ::grpc::ClientUnaryReactor* reactor) = 0;
@@ -94,6 +106,9 @@ class AppGuard final {
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
+    virtual ::grpc::ClientReaderInterface< ::appguard::HeartbeatResponse>* HeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::appguard::HeartbeatResponse>* AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::appguard::HeartbeatResponse>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::appguard::AppGuardTcpResponse>* AsyncHandleTcpConnectionRaw(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::appguard::AppGuardTcpResponse>* PrepareAsyncHandleTcpConnectionRaw(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::appguard::AppGuardResponse>* AsyncHandleHttpRequestRaw(::grpc::ClientContext* context, const ::appguard::AppGuardHttpRequest& request, ::grpc::CompletionQueue* cq) = 0;
@@ -108,6 +123,15 @@ class AppGuard final {
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
+    std::unique_ptr< ::grpc::ClientReader< ::appguard::HeartbeatResponse>> Heartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::appguard::HeartbeatResponse>>(HeartbeatRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>> AsyncHeartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>>(AsyncHeartbeatRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>> PrepareAsyncHeartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>>(PrepareAsyncHeartbeatRaw(context, request, cq));
+    }
     ::grpc::Status HandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::appguard::AppGuardTcpResponse* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardTcpResponse>> AsyncHandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardTcpResponse>>(AsyncHandleTcpConnectionRaw(context, request, cq));
@@ -146,6 +170,7 @@ class AppGuard final {
     class async final :
       public StubInterface::async_interface {
      public:
+      void Heartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest* request, ::grpc::ClientReadReactor< ::appguard::HeartbeatResponse>* reactor) override;
       void HandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection* request, ::appguard::AppGuardTcpResponse* response, std::function<void(::grpc::Status)>) override;
       void HandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection* request, ::appguard::AppGuardTcpResponse* response, ::grpc::ClientUnaryReactor* reactor) override;
       void HandleHttpRequest(::grpc::ClientContext* context, const ::appguard::AppGuardHttpRequest* request, ::appguard::AppGuardResponse* response, std::function<void(::grpc::Status)>) override;
@@ -167,6 +192,9 @@ class AppGuard final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
+    ::grpc::ClientReader< ::appguard::HeartbeatResponse>* HeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request) override;
+    ::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>* AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>* PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardTcpResponse>* AsyncHandleTcpConnectionRaw(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardTcpResponse>* PrepareAsyncHandleTcpConnectionRaw(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardResponse>* AsyncHandleHttpRequestRaw(::grpc::ClientContext* context, const ::appguard::AppGuardHttpRequest& request, ::grpc::CompletionQueue* cq) override;
@@ -177,6 +205,7 @@ class AppGuard final {
     ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardResponse>* PrepareAsyncHandleSmtpRequestRaw(::grpc::ClientContext* context, const ::appguard::AppGuardSmtpRequest& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardResponse>* AsyncHandleSmtpResponseRaw(::grpc::ClientContext* context, const ::appguard::AppGuardSmtpResponse& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::appguard::AppGuardResponse>* PrepareAsyncHandleSmtpResponseRaw(::grpc::ClientContext* context, const ::appguard::AppGuardSmtpResponse& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_Heartbeat_;
     const ::grpc::internal::RpcMethod rpcmethod_HandleTcpConnection_;
     const ::grpc::internal::RpcMethod rpcmethod_HandleHttpRequest_;
     const ::grpc::internal::RpcMethod rpcmethod_HandleHttpResponse_;
@@ -189,6 +218,8 @@ class AppGuard final {
    public:
     Service();
     virtual ~Service();
+    // Authentication
+    virtual ::grpc::Status Heartbeat(::grpc::ServerContext* context, const ::appguard::HeartbeatRequest* request, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* writer);
     // TCP
     virtual ::grpc::Status HandleTcpConnection(::grpc::ServerContext* context, const ::appguard::AppGuardTcpConnection* request, ::appguard::AppGuardTcpResponse* response);
     // HTTP
@@ -199,12 +230,32 @@ class AppGuard final {
     virtual ::grpc::Status HandleSmtpResponse(::grpc::ServerContext* context, const ::appguard::AppGuardSmtpResponse* request, ::appguard::AppGuardResponse* response);
   };
   template <class BaseClass>
+  class WithAsyncMethod_Heartbeat : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithAsyncMethod_Heartbeat() {
+      ::grpc::Service::MarkMethodAsync(0);
+    }
+    ~WithAsyncMethod_Heartbeat() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Heartbeat(::grpc::ServerContext* /*context*/, const ::appguard::HeartbeatRequest* /*request*/, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestHeartbeat(::grpc::ServerContext* context, ::appguard::HeartbeatRequest* request, ::grpc::ServerAsyncWriter< ::appguard::HeartbeatResponse>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithAsyncMethod_HandleTcpConnection : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_HandleTcpConnection() {
-      ::grpc::Service::MarkMethodAsync(0);
+      ::grpc::Service::MarkMethodAsync(1);
     }
     ~WithAsyncMethod_HandleTcpConnection() override {
       BaseClassMustBeDerivedFromService(this);
@@ -215,7 +266,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleTcpConnection(::grpc::ServerContext* context, ::appguard::AppGuardTcpConnection* request, ::grpc::ServerAsyncResponseWriter< ::appguard::AppGuardTcpResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -224,7 +275,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_HandleHttpRequest() {
-      ::grpc::Service::MarkMethodAsync(1);
+      ::grpc::Service::MarkMethodAsync(2);
     }
     ~WithAsyncMethod_HandleHttpRequest() override {
       BaseClassMustBeDerivedFromService(this);
@@ -235,7 +286,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleHttpRequest(::grpc::ServerContext* context, ::appguard::AppGuardHttpRequest* request, ::grpc::ServerAsyncResponseWriter< ::appguard::AppGuardResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -244,7 +295,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_HandleHttpResponse() {
-      ::grpc::Service::MarkMethodAsync(2);
+      ::grpc::Service::MarkMethodAsync(3);
     }
     ~WithAsyncMethod_HandleHttpResponse() override {
       BaseClassMustBeDerivedFromService(this);
@@ -255,7 +306,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleHttpResponse(::grpc::ServerContext* context, ::appguard::AppGuardHttpResponse* request, ::grpc::ServerAsyncResponseWriter< ::appguard::AppGuardResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -264,7 +315,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_HandleSmtpRequest() {
-      ::grpc::Service::MarkMethodAsync(3);
+      ::grpc::Service::MarkMethodAsync(4);
     }
     ~WithAsyncMethod_HandleSmtpRequest() override {
       BaseClassMustBeDerivedFromService(this);
@@ -275,7 +326,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleSmtpRequest(::grpc::ServerContext* context, ::appguard::AppGuardSmtpRequest* request, ::grpc::ServerAsyncResponseWriter< ::appguard::AppGuardResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -284,7 +335,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_HandleSmtpResponse() {
-      ::grpc::Service::MarkMethodAsync(4);
+      ::grpc::Service::MarkMethodAsync(5);
     }
     ~WithAsyncMethod_HandleSmtpResponse() override {
       BaseClassMustBeDerivedFromService(this);
@@ -295,23 +346,45 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleSmtpResponse(::grpc::ServerContext* context, ::appguard::AppGuardSmtpResponse* request, ::grpc::ServerAsyncResponseWriter< ::appguard::AppGuardResponse>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_HandleTcpConnection<WithAsyncMethod_HandleHttpRequest<WithAsyncMethod_HandleHttpResponse<WithAsyncMethod_HandleSmtpRequest<WithAsyncMethod_HandleSmtpResponse<Service > > > > > AsyncService;
+  typedef WithAsyncMethod_Heartbeat<WithAsyncMethod_HandleTcpConnection<WithAsyncMethod_HandleHttpRequest<WithAsyncMethod_HandleHttpResponse<WithAsyncMethod_HandleSmtpRequest<WithAsyncMethod_HandleSmtpResponse<Service > > > > > > AsyncService;
+  template <class BaseClass>
+  class WithCallbackMethod_Heartbeat : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_Heartbeat() {
+      ::grpc::Service::MarkMethodCallback(0,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::appguard::HeartbeatRequest, ::appguard::HeartbeatResponse>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::appguard::HeartbeatRequest* request) { return this->Heartbeat(context, request); }));
+    }
+    ~WithCallbackMethod_Heartbeat() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Heartbeat(::grpc::ServerContext* /*context*/, const ::appguard::HeartbeatRequest* /*request*/, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::appguard::HeartbeatResponse>* Heartbeat(
+      ::grpc::CallbackServerContext* /*context*/, const ::appguard::HeartbeatRequest* /*request*/)  { return nullptr; }
+  };
   template <class BaseClass>
   class WithCallbackMethod_HandleTcpConnection : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_HandleTcpConnection() {
-      ::grpc::Service::MarkMethodCallback(0,
+      ::grpc::Service::MarkMethodCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardTcpConnection, ::appguard::AppGuardTcpResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::appguard::AppGuardTcpConnection* request, ::appguard::AppGuardTcpResponse* response) { return this->HandleTcpConnection(context, request, response); }));}
     void SetMessageAllocatorFor_HandleTcpConnection(
         ::grpc::MessageAllocator< ::appguard::AppGuardTcpConnection, ::appguard::AppGuardTcpResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardTcpConnection, ::appguard::AppGuardTcpResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -332,13 +405,13 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_HandleHttpRequest() {
-      ::grpc::Service::MarkMethodCallback(1,
+      ::grpc::Service::MarkMethodCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardHttpRequest, ::appguard::AppGuardResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::appguard::AppGuardHttpRequest* request, ::appguard::AppGuardResponse* response) { return this->HandleHttpRequest(context, request, response); }));}
     void SetMessageAllocatorFor_HandleHttpRequest(
         ::grpc::MessageAllocator< ::appguard::AppGuardHttpRequest, ::appguard::AppGuardResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(1);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardHttpRequest, ::appguard::AppGuardResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -359,13 +432,13 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_HandleHttpResponse() {
-      ::grpc::Service::MarkMethodCallback(2,
+      ::grpc::Service::MarkMethodCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardHttpResponse, ::appguard::AppGuardResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::appguard::AppGuardHttpResponse* request, ::appguard::AppGuardResponse* response) { return this->HandleHttpResponse(context, request, response); }));}
     void SetMessageAllocatorFor_HandleHttpResponse(
         ::grpc::MessageAllocator< ::appguard::AppGuardHttpResponse, ::appguard::AppGuardResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(2);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardHttpResponse, ::appguard::AppGuardResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -386,13 +459,13 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_HandleSmtpRequest() {
-      ::grpc::Service::MarkMethodCallback(3,
+      ::grpc::Service::MarkMethodCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardSmtpRequest, ::appguard::AppGuardResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::appguard::AppGuardSmtpRequest* request, ::appguard::AppGuardResponse* response) { return this->HandleSmtpRequest(context, request, response); }));}
     void SetMessageAllocatorFor_HandleSmtpRequest(
         ::grpc::MessageAllocator< ::appguard::AppGuardSmtpRequest, ::appguard::AppGuardResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(3);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardSmtpRequest, ::appguard::AppGuardResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -413,13 +486,13 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithCallbackMethod_HandleSmtpResponse() {
-      ::grpc::Service::MarkMethodCallback(4,
+      ::grpc::Service::MarkMethodCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardSmtpResponse, ::appguard::AppGuardResponse>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::appguard::AppGuardSmtpResponse* request, ::appguard::AppGuardResponse* response) { return this->HandleSmtpResponse(context, request, response); }));}
     void SetMessageAllocatorFor_HandleSmtpResponse(
         ::grpc::MessageAllocator< ::appguard::AppGuardSmtpResponse, ::appguard::AppGuardResponse>* allocator) {
-      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(4);
+      ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(5);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::appguard::AppGuardSmtpResponse, ::appguard::AppGuardResponse>*>(handler)
               ->SetMessageAllocator(allocator);
     }
@@ -434,15 +507,32 @@ class AppGuard final {
     virtual ::grpc::ServerUnaryReactor* HandleSmtpResponse(
       ::grpc::CallbackServerContext* /*context*/, const ::appguard::AppGuardSmtpResponse* /*request*/, ::appguard::AppGuardResponse* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_HandleTcpConnection<WithCallbackMethod_HandleHttpRequest<WithCallbackMethod_HandleHttpResponse<WithCallbackMethod_HandleSmtpRequest<WithCallbackMethod_HandleSmtpResponse<Service > > > > > CallbackService;
+  typedef WithCallbackMethod_Heartbeat<WithCallbackMethod_HandleTcpConnection<WithCallbackMethod_HandleHttpRequest<WithCallbackMethod_HandleHttpResponse<WithCallbackMethod_HandleSmtpRequest<WithCallbackMethod_HandleSmtpResponse<Service > > > > > > CallbackService;
   typedef CallbackService ExperimentalCallbackService;
+  template <class BaseClass>
+  class WithGenericMethod_Heartbeat : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_Heartbeat() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_Heartbeat() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Heartbeat(::grpc::ServerContext* /*context*/, const ::appguard::HeartbeatRequest* /*request*/, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
   template <class BaseClass>
   class WithGenericMethod_HandleTcpConnection : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_HandleTcpConnection() {
-      ::grpc::Service::MarkMethodGeneric(0);
+      ::grpc::Service::MarkMethodGeneric(1);
     }
     ~WithGenericMethod_HandleTcpConnection() override {
       BaseClassMustBeDerivedFromService(this);
@@ -459,7 +549,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_HandleHttpRequest() {
-      ::grpc::Service::MarkMethodGeneric(1);
+      ::grpc::Service::MarkMethodGeneric(2);
     }
     ~WithGenericMethod_HandleHttpRequest() override {
       BaseClassMustBeDerivedFromService(this);
@@ -476,7 +566,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_HandleHttpResponse() {
-      ::grpc::Service::MarkMethodGeneric(2);
+      ::grpc::Service::MarkMethodGeneric(3);
     }
     ~WithGenericMethod_HandleHttpResponse() override {
       BaseClassMustBeDerivedFromService(this);
@@ -493,7 +583,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_HandleSmtpRequest() {
-      ::grpc::Service::MarkMethodGeneric(3);
+      ::grpc::Service::MarkMethodGeneric(4);
     }
     ~WithGenericMethod_HandleSmtpRequest() override {
       BaseClassMustBeDerivedFromService(this);
@@ -510,7 +600,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_HandleSmtpResponse() {
-      ::grpc::Service::MarkMethodGeneric(4);
+      ::grpc::Service::MarkMethodGeneric(5);
     }
     ~WithGenericMethod_HandleSmtpResponse() override {
       BaseClassMustBeDerivedFromService(this);
@@ -522,12 +612,32 @@ class AppGuard final {
     }
   };
   template <class BaseClass>
+  class WithRawMethod_Heartbeat : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_Heartbeat() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_Heartbeat() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Heartbeat(::grpc::ServerContext* /*context*/, const ::appguard::HeartbeatRequest* /*request*/, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestHeartbeat(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
   class WithRawMethod_HandleTcpConnection : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_HandleTcpConnection() {
-      ::grpc::Service::MarkMethodRaw(0);
+      ::grpc::Service::MarkMethodRaw(1);
     }
     ~WithRawMethod_HandleTcpConnection() override {
       BaseClassMustBeDerivedFromService(this);
@@ -538,7 +648,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleTcpConnection(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -547,7 +657,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_HandleHttpRequest() {
-      ::grpc::Service::MarkMethodRaw(1);
+      ::grpc::Service::MarkMethodRaw(2);
     }
     ~WithRawMethod_HandleHttpRequest() override {
       BaseClassMustBeDerivedFromService(this);
@@ -558,7 +668,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleHttpRequest(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(1, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -567,7 +677,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_HandleHttpResponse() {
-      ::grpc::Service::MarkMethodRaw(2);
+      ::grpc::Service::MarkMethodRaw(3);
     }
     ~WithRawMethod_HandleHttpResponse() override {
       BaseClassMustBeDerivedFromService(this);
@@ -578,7 +688,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleHttpResponse(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -587,7 +697,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_HandleSmtpRequest() {
-      ::grpc::Service::MarkMethodRaw(3);
+      ::grpc::Service::MarkMethodRaw(4);
     }
     ~WithRawMethod_HandleSmtpRequest() override {
       BaseClassMustBeDerivedFromService(this);
@@ -598,7 +708,7 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleSmtpRequest(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -607,7 +717,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_HandleSmtpResponse() {
-      ::grpc::Service::MarkMethodRaw(4);
+      ::grpc::Service::MarkMethodRaw(5);
     }
     ~WithRawMethod_HandleSmtpResponse() override {
       BaseClassMustBeDerivedFromService(this);
@@ -618,8 +728,30 @@ class AppGuard final {
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     void RequestHandleSmtpResponse(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+      ::grpc::Service::RequestAsyncUnary(5, context, request, response, new_call_cq, notification_cq, tag);
     }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_Heartbeat : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_Heartbeat() {
+      ::grpc::Service::MarkMethodRawCallback(0,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->Heartbeat(context, request); }));
+    }
+    ~WithRawCallbackMethod_Heartbeat() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status Heartbeat(::grpc::ServerContext* /*context*/, const ::appguard::HeartbeatRequest* /*request*/, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* Heartbeat(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
   };
   template <class BaseClass>
   class WithRawCallbackMethod_HandleTcpConnection : public BaseClass {
@@ -627,7 +759,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_HandleTcpConnection() {
-      ::grpc::Service::MarkMethodRawCallback(0,
+      ::grpc::Service::MarkMethodRawCallback(1,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->HandleTcpConnection(context, request, response); }));
@@ -649,7 +781,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_HandleHttpRequest() {
-      ::grpc::Service::MarkMethodRawCallback(1,
+      ::grpc::Service::MarkMethodRawCallback(2,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->HandleHttpRequest(context, request, response); }));
@@ -671,7 +803,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_HandleHttpResponse() {
-      ::grpc::Service::MarkMethodRawCallback(2,
+      ::grpc::Service::MarkMethodRawCallback(3,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->HandleHttpResponse(context, request, response); }));
@@ -693,7 +825,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_HandleSmtpRequest() {
-      ::grpc::Service::MarkMethodRawCallback(3,
+      ::grpc::Service::MarkMethodRawCallback(4,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->HandleSmtpRequest(context, request, response); }));
@@ -715,7 +847,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawCallbackMethod_HandleSmtpResponse() {
-      ::grpc::Service::MarkMethodRawCallback(4,
+      ::grpc::Service::MarkMethodRawCallback(5,
           new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
             [this](
                    ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->HandleSmtpResponse(context, request, response); }));
@@ -737,7 +869,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_HandleTcpConnection() {
-      ::grpc::Service::MarkMethodStreamed(0,
+      ::grpc::Service::MarkMethodStreamed(1,
         new ::grpc::internal::StreamedUnaryHandler<
           ::appguard::AppGuardTcpConnection, ::appguard::AppGuardTcpResponse>(
             [this](::grpc::ServerContext* context,
@@ -764,7 +896,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_HandleHttpRequest() {
-      ::grpc::Service::MarkMethodStreamed(1,
+      ::grpc::Service::MarkMethodStreamed(2,
         new ::grpc::internal::StreamedUnaryHandler<
           ::appguard::AppGuardHttpRequest, ::appguard::AppGuardResponse>(
             [this](::grpc::ServerContext* context,
@@ -791,7 +923,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_HandleHttpResponse() {
-      ::grpc::Service::MarkMethodStreamed(2,
+      ::grpc::Service::MarkMethodStreamed(3,
         new ::grpc::internal::StreamedUnaryHandler<
           ::appguard::AppGuardHttpResponse, ::appguard::AppGuardResponse>(
             [this](::grpc::ServerContext* context,
@@ -818,7 +950,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_HandleSmtpRequest() {
-      ::grpc::Service::MarkMethodStreamed(3,
+      ::grpc::Service::MarkMethodStreamed(4,
         new ::grpc::internal::StreamedUnaryHandler<
           ::appguard::AppGuardSmtpRequest, ::appguard::AppGuardResponse>(
             [this](::grpc::ServerContext* context,
@@ -845,7 +977,7 @@ class AppGuard final {
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_HandleSmtpResponse() {
-      ::grpc::Service::MarkMethodStreamed(4,
+      ::grpc::Service::MarkMethodStreamed(5,
         new ::grpc::internal::StreamedUnaryHandler<
           ::appguard::AppGuardSmtpResponse, ::appguard::AppGuardResponse>(
             [this](::grpc::ServerContext* context,
@@ -867,8 +999,35 @@ class AppGuard final {
     virtual ::grpc::Status StreamedHandleSmtpResponse(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::appguard::AppGuardSmtpResponse,::appguard::AppGuardResponse>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_HandleTcpConnection<WithStreamedUnaryMethod_HandleHttpRequest<WithStreamedUnaryMethod_HandleHttpResponse<WithStreamedUnaryMethod_HandleSmtpRequest<WithStreamedUnaryMethod_HandleSmtpResponse<Service > > > > > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_HandleTcpConnection<WithStreamedUnaryMethod_HandleHttpRequest<WithStreamedUnaryMethod_HandleHttpResponse<WithStreamedUnaryMethod_HandleSmtpRequest<WithStreamedUnaryMethod_HandleSmtpResponse<Service > > > > > StreamedService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_Heartbeat : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_Heartbeat() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::appguard::HeartbeatRequest, ::appguard::HeartbeatResponse>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::appguard::HeartbeatRequest, ::appguard::HeartbeatResponse>* streamer) {
+                       return this->StreamedHeartbeat(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_Heartbeat() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status Heartbeat(::grpc::ServerContext* /*context*/, const ::appguard::HeartbeatRequest* /*request*/, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedHeartbeat(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::appguard::HeartbeatRequest,::appguard::HeartbeatResponse>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_Heartbeat<Service > SplitStreamedService;
+  typedef WithSplitStreamingMethod_Heartbeat<WithStreamedUnaryMethod_HandleTcpConnection<WithStreamedUnaryMethod_HandleHttpRequest<WithStreamedUnaryMethod_HandleHttpResponse<WithStreamedUnaryMethod_HandleSmtpRequest<WithStreamedUnaryMethod_HandleSmtpResponse<Service > > > > > > StreamedService;
 };
 
 }  // namespace appguard

@@ -21,10 +21,39 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 namespace appguard {
+PROTOBUF_CONSTEXPR HeartbeatRequest::HeartbeatRequest(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.app_id_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.app_secret_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct HeartbeatRequestDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR HeartbeatRequestDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~HeartbeatRequestDefaultTypeInternal() {}
+  union {
+    HeartbeatRequest _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HeartbeatRequestDefaultTypeInternal _HeartbeatRequest_default_instance_;
+PROTOBUF_CONSTEXPR HeartbeatResponse::HeartbeatResponse(
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.token_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.status_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
+struct HeartbeatResponseDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR HeartbeatResponseDefaultTypeInternal()
+      : _instance(::_pbi::ConstantInitialized{}) {}
+  ~HeartbeatResponseDefaultTypeInternal() {}
+  union {
+    HeartbeatResponse _instance;
+  };
+};
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 HeartbeatResponseDefaultTypeInternal _HeartbeatResponse_default_instance_;
 PROTOBUF_CONSTEXPR AppGuardTcpConnection::AppGuardTcpConnection(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.token_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.source_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.destination_ip_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.protocol_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -52,7 +81,7 @@ PROTOBUF_CONSTEXPR AppGuardIpInfo::AppGuardIpInfo(
   , /*decltype(_impl_.region_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.postal_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.timezone_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.blacklist_)*/0u} {}
+  , /*decltype(_impl_.blacklist_)*/false} {}
 struct AppGuardIpInfoDefaultTypeInternal {
   PROTOBUF_CONSTEXPR AppGuardIpInfoDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -105,6 +134,7 @@ PROTOBUF_CONSTEXPR AppGuardHttpRequest::AppGuardHttpRequest(
   , /*decltype(_impl_._cached_size_)*/{}
   , /*decltype(_impl_.headers_)*/{::_pbi::ConstantInitialized()}
   , /*decltype(_impl_.query_)*/{::_pbi::ConstantInitialized()}
+  , /*decltype(_impl_.token_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.original_url_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.method_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.body_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
@@ -132,6 +162,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORIT
 PROTOBUF_CONSTEXPR AppGuardHttpResponse::AppGuardHttpResponse(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_.headers_)*/{::_pbi::ConstantInitialized()}
+  , /*decltype(_impl_.token_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.tcp_info_)*/nullptr
   , /*decltype(_impl_.code_)*/0u
   , /*decltype(_impl_._cached_size_)*/{}} {}
@@ -160,6 +191,7 @@ PROTOBUF_CONSTEXPR AppGuardSmtpRequest::AppGuardSmtpRequest(
     /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
   , /*decltype(_impl_.headers_)*/{::_pbi::ConstantInitialized()}
+  , /*decltype(_impl_.token_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.body_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.tcp_info_)*/nullptr} {}
 struct AppGuardSmtpRequestDefaultTypeInternal {
@@ -175,6 +207,7 @@ PROTOBUF_CONSTEXPR AppGuardSmtpResponse::AppGuardSmtpResponse(
     ::_pbi::ConstantInitialized): _impl_{
     /*decltype(_impl_._has_bits_)*/{}
   , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_.token_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.tcp_info_)*/nullptr
   , /*decltype(_impl_.code_)*/0u} {}
 struct AppGuardSmtpResponseDefaultTypeInternal {
@@ -213,22 +246,40 @@ struct AppGuardTcpResponseDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AppGuardTcpResponseDefaultTypeInternal _AppGuardTcpResponse_default_instance_;
 }  // namespace appguard
-static ::_pb::Metadata file_level_metadata_appguard_2eproto[13];
-static const ::_pb::EnumDescriptor* file_level_enum_descriptors_appguard_2eproto[1];
+static ::_pb::Metadata file_level_metadata_appguard_2eproto[15];
+static const ::_pb::EnumDescriptor* file_level_enum_descriptors_appguard_2eproto[2];
 static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_appguard_2eproto = nullptr;
 
 const uint32_t TableStruct_appguard_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::appguard::HeartbeatRequest, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::appguard::HeartbeatRequest, _impl_.app_id_),
+  PROTOBUF_FIELD_OFFSET(::appguard::HeartbeatRequest, _impl_.app_secret_),
+  ~0u,  // no _has_bits_
+  PROTOBUF_FIELD_OFFSET(::appguard::HeartbeatResponse, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::appguard::HeartbeatResponse, _impl_.token_),
+  PROTOBUF_FIELD_OFFSET(::appguard::HeartbeatResponse, _impl_.status_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _impl_._has_bits_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _impl_.token_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _impl_.source_ip_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _impl_.source_port_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _impl_.destination_ip_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _impl_.destination_port_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpConnection, _impl_.protocol_),
+  ~0u,
   0,
   2,
   1,
@@ -295,12 +346,14 @@ const uint32_t TableStruct_appguard_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpRequest, _impl_.token_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpRequest, _impl_.original_url_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpRequest, _impl_.headers_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpRequest, _impl_.method_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpRequest, _impl_.body_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpRequest, _impl_.query_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpRequest, _impl_.tcp_info_),
+  ~0u,
   ~0u,
   ~0u,
   ~0u,
@@ -323,6 +376,7 @@ const uint32_t TableStruct_appguard_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpResponse, _impl_.token_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpResponse, _impl_.code_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpResponse, _impl_.headers_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardHttpResponse, _impl_.tcp_info_),
@@ -342,9 +396,11 @@ const uint32_t TableStruct_appguard_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::appguard::AppGuardSmtpRequest, _impl_.token_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardSmtpRequest, _impl_.headers_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardSmtpRequest, _impl_.body_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardSmtpRequest, _impl_.tcp_info_),
+  ~0u,
   ~0u,
   0,
   ~0u,
@@ -354,8 +410,10 @@ const uint32_t TableStruct_appguard_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
+  PROTOBUF_FIELD_OFFSET(::appguard::AppGuardSmtpResponse, _impl_.token_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardSmtpResponse, _impl_.code_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardSmtpResponse, _impl_.tcp_info_),
+  ~0u,
   0,
   ~0u,
   ~0u,  // no _has_bits_
@@ -374,22 +432,26 @@ const uint32_t TableStruct_appguard_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpResponse, _impl_.tcp_info_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 11, -1, sizeof(::appguard::AppGuardTcpConnection)},
-  { 16, 32, -1, sizeof(::appguard::AppGuardIpInfo)},
-  { 42, -1, -1, sizeof(::appguard::AppGuardTcpInfo)},
-  { 51, 59, -1, sizeof(::appguard::AppGuardHttpRequest_HeadersEntry_DoNotUse)},
-  { 61, 69, -1, sizeof(::appguard::AppGuardHttpRequest_QueryEntry_DoNotUse)},
-  { 71, 83, -1, sizeof(::appguard::AppGuardHttpRequest)},
-  { 89, 97, -1, sizeof(::appguard::AppGuardHttpResponse_HeadersEntry_DoNotUse)},
-  { 99, -1, -1, sizeof(::appguard::AppGuardHttpResponse)},
-  { 108, 116, -1, sizeof(::appguard::AppGuardSmtpRequest_HeadersEntry_DoNotUse)},
-  { 118, 127, -1, sizeof(::appguard::AppGuardSmtpRequest)},
-  { 130, 138, -1, sizeof(::appguard::AppGuardSmtpResponse)},
-  { 140, -1, -1, sizeof(::appguard::AppGuardResponse)},
-  { 147, -1, -1, sizeof(::appguard::AppGuardTcpResponse)},
+  { 0, -1, -1, sizeof(::appguard::HeartbeatRequest)},
+  { 8, -1, -1, sizeof(::appguard::HeartbeatResponse)},
+  { 16, 28, -1, sizeof(::appguard::AppGuardTcpConnection)},
+  { 34, 50, -1, sizeof(::appguard::AppGuardIpInfo)},
+  { 60, -1, -1, sizeof(::appguard::AppGuardTcpInfo)},
+  { 69, 77, -1, sizeof(::appguard::AppGuardHttpRequest_HeadersEntry_DoNotUse)},
+  { 79, 87, -1, sizeof(::appguard::AppGuardHttpRequest_QueryEntry_DoNotUse)},
+  { 89, 102, -1, sizeof(::appguard::AppGuardHttpRequest)},
+  { 109, 117, -1, sizeof(::appguard::AppGuardHttpResponse_HeadersEntry_DoNotUse)},
+  { 119, -1, -1, sizeof(::appguard::AppGuardHttpResponse)},
+  { 129, 137, -1, sizeof(::appguard::AppGuardSmtpRequest_HeadersEntry_DoNotUse)},
+  { 139, 149, -1, sizeof(::appguard::AppGuardSmtpRequest)},
+  { 153, 162, -1, sizeof(::appguard::AppGuardSmtpResponse)},
+  { 165, -1, -1, sizeof(::appguard::AppGuardResponse)},
+  { 172, -1, -1, sizeof(::appguard::AppGuardTcpResponse)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
+  &::appguard::_HeartbeatRequest_default_instance_._instance,
+  &::appguard::_HeartbeatResponse_default_instance_._instance,
   &::appguard::_AppGuardTcpConnection_default_instance_._instance,
   &::appguard::_AppGuardIpInfo_default_instance_._instance,
   &::appguard::_AppGuardTcpInfo_default_instance_._instance,
@@ -406,66 +468,75 @@ static const ::_pb::Message* const file_default_instances[] = {
 };
 
 const char descriptor_table_protodef_appguard_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\016appguard.proto\022\010appguard\"\335\001\n\025AppGuardT"
-  "cpConnection\022\026\n\tsource_ip\030\001 \001(\tH\000\210\001\001\022\030\n\013"
-  "source_port\030\002 \001(\rH\001\210\001\001\022\033\n\016destination_ip"
-  "\030\003 \001(\tH\002\210\001\001\022\035\n\020destination_port\030\004 \001(\rH\003\210"
-  "\001\001\022\020\n\010protocol\030\005 \001(\tB\014\n\n_source_ipB\016\n\014_s"
-  "ource_portB\021\n\017_destination_ipB\023\n\021_destin"
-  "ation_port\"\265\002\n\016AppGuardIpInfo\022\n\n\002ip\030\001 \001("
-  "\t\022\024\n\007country\030\002 \001(\tH\000\210\001\001\022\020\n\003asn\030\003 \001(\tH\001\210\001"
-  "\001\022\020\n\003org\030\004 \001(\tH\002\210\001\001\022\033\n\016continent_code\030\005 "
-  "\001(\tH\003\210\001\001\022\021\n\004city\030\006 \001(\tH\004\210\001\001\022\023\n\006region\030\007 "
-  "\001(\tH\005\210\001\001\022\023\n\006postal\030\010 \001(\tH\006\210\001\001\022\025\n\010timezon"
-  "e\030\t \001(\tH\007\210\001\001\022\021\n\tblacklist\030d \001(\rB\n\n\010_coun"
-  "tryB\006\n\004_asnB\006\n\004_orgB\021\n\017_continent_codeB\007"
-  "\n\005_cityB\t\n\007_regionB\t\n\007_postalB\013\n\t_timezo"
-  "ne\"\201\001\n\017AppGuardTcpInfo\0223\n\nconnection\030\001 \001"
-  "(\0132\037.appguard.AppGuardTcpConnection\022)\n\007i"
-  "p_info\030\002 \001(\0132\030.appguard.AppGuardIpInfo\022\016"
-  "\n\006tcp_id\030\003 \001(\004\"\330\002\n\023AppGuardHttpRequest\022\024"
-  "\n\014original_url\030\001 \001(\t\022;\n\007headers\030\002 \003(\0132*."
-  "appguard.AppGuardHttpRequest.HeadersEntr"
-  "y\022\016\n\006method\030\003 \001(\t\022\021\n\004body\030\004 \001(\tH\000\210\001\001\0227\n\005"
-  "query\030\005 \003(\0132(.appguard.AppGuardHttpReque"
-  "st.QueryEntry\022+\n\010tcp_info\030d \001(\0132\031.appgua"
-  "rd.AppGuardTcpInfo\032.\n\014HeadersEntry\022\013\n\003ke"
-  "y\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\032,\n\nQueryEntry"
-  "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\007\n\005_bod"
-  "y\"\277\001\n\024AppGuardHttpResponse\022\014\n\004code\030\001 \001(\r"
-  "\022<\n\007headers\030\002 \003(\0132+.appguard.AppGuardHtt"
-  "pResponse.HeadersEntry\022+\n\010tcp_info\030d \001(\013"
-  "2\031.appguard.AppGuardTcpInfo\032.\n\014HeadersEn"
-  "try\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\313\001\n\023"
-  "AppGuardSmtpRequest\022;\n\007headers\030\001 \003(\0132*.a"
-  "ppguard.AppGuardSmtpRequest.HeadersEntry"
-  "\022\021\n\004body\030\002 \001(\tH\000\210\001\001\022+\n\010tcp_info\030d \001(\0132\031."
-  "appguard.AppGuardTcpInfo\032.\n\014HeadersEntry"
-  "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\007\n\005_bod"
-  "y\"_\n\024AppGuardSmtpResponse\022\021\n\004code\030\001 \001(\rH"
-  "\000\210\001\001\022+\n\010tcp_info\030d \001(\0132\031.appguard.AppGua"
-  "rdTcpInfoB\007\n\005_code\"<\n\020AppGuardResponse\022("
-  "\n\006policy\030\002 \001(\0162\030.appguard.FirewallPolicy"
-  "\"B\n\023AppGuardTcpResponse\022+\n\010tcp_info\030\001 \001("
-  "\0132\031.appguard.AppGuardTcpInfo*2\n\016Firewall"
-  "Policy\022\013\n\007UNKNOWN\020\000\022\t\n\005ALLOW\020\001\022\010\n\004DENY\020\002"
-  "2\245\003\n\010AppGuard\022U\n\023HandleTcpConnection\022\037.a"
-  "ppguard.AppGuardTcpConnection\032\035.appguard"
-  ".AppGuardTcpResponse\022N\n\021HandleHttpReques"
-  "t\022\035.appguard.AppGuardHttpRequest\032\032.appgu"
-  "ard.AppGuardResponse\022P\n\022HandleHttpRespon"
-  "se\022\036.appguard.AppGuardHttpResponse\032\032.app"
-  "guard.AppGuardResponse\022N\n\021HandleSmtpRequ"
-  "est\022\035.appguard.AppGuardSmtpRequest\032\032.app"
-  "guard.AppGuardResponse\022P\n\022HandleSmtpResp"
-  "onse\022\036.appguard.AppGuardSmtpResponse\032\032.a"
-  "ppguard.AppGuardResponseb\006proto3"
+  "\n\016appguard.proto\022\010appguard\"6\n\020HeartbeatR"
+  "equest\022\016\n\006app_id\030\001 \001(\t\022\022\n\napp_secret\030\002 \001"
+  "(\t\"J\n\021HeartbeatResponse\022\r\n\005token\030\001 \001(\t\022&"
+  "\n\006status\030\002 \001(\0162\026.appguard.DeviceStatus\"\354"
+  "\001\n\025AppGuardTcpConnection\022\r\n\005token\030\001 \001(\t\022"
+  "\026\n\tsource_ip\030\002 \001(\tH\000\210\001\001\022\030\n\013source_port\030\003"
+  " \001(\rH\001\210\001\001\022\033\n\016destination_ip\030\004 \001(\tH\002\210\001\001\022\035"
+  "\n\020destination_port\030\005 \001(\rH\003\210\001\001\022\020\n\010protoco"
+  "l\030\006 \001(\tB\014\n\n_source_ipB\016\n\014_source_portB\021\n"
+  "\017_destination_ipB\023\n\021_destination_port\"\265\002"
+  "\n\016AppGuardIpInfo\022\n\n\002ip\030\001 \001(\t\022\024\n\007country\030"
+  "\002 \001(\tH\000\210\001\001\022\020\n\003asn\030\003 \001(\tH\001\210\001\001\022\020\n\003org\030\004 \001("
+  "\tH\002\210\001\001\022\033\n\016continent_code\030\005 \001(\tH\003\210\001\001\022\021\n\004c"
+  "ity\030\006 \001(\tH\004\210\001\001\022\023\n\006region\030\007 \001(\tH\005\210\001\001\022\023\n\006p"
+  "ostal\030\010 \001(\tH\006\210\001\001\022\025\n\010timezone\030\t \001(\tH\007\210\001\001\022"
+  "\021\n\tblacklist\030d \001(\010B\n\n\010_countryB\006\n\004_asnB\006"
+  "\n\004_orgB\021\n\017_continent_codeB\007\n\005_cityB\t\n\007_r"
+  "egionB\t\n\007_postalB\013\n\t_timezone\"\201\001\n\017AppGua"
+  "rdTcpInfo\0223\n\nconnection\030\001 \001(\0132\037.appguard"
+  ".AppGuardTcpConnection\022)\n\007ip_info\030\002 \001(\0132"
+  "\030.appguard.AppGuardIpInfo\022\016\n\006tcp_id\030\003 \001("
+  "\004\"\347\002\n\023AppGuardHttpRequest\022\r\n\005token\030\001 \001(\t"
+  "\022\024\n\014original_url\030\002 \001(\t\022;\n\007headers\030\003 \003(\0132"
+  "*.appguard.AppGuardHttpRequest.HeadersEn"
+  "try\022\016\n\006method\030\004 \001(\t\022\021\n\004body\030\005 \001(\tH\000\210\001\001\0227"
+  "\n\005query\030\006 \003(\0132(.appguard.AppGuardHttpReq"
+  "uest.QueryEntry\022+\n\010tcp_info\030d \001(\0132\031.appg"
+  "uard.AppGuardTcpInfo\032.\n\014HeadersEntry\022\013\n\003"
+  "key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\032,\n\nQueryEnt"
+  "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\007\n\005_b"
+  "ody\"\316\001\n\024AppGuardHttpResponse\022\r\n\005token\030\001 "
+  "\001(\t\022\014\n\004code\030\002 \001(\r\022<\n\007headers\030\003 \003(\0132+.app"
+  "guard.AppGuardHttpResponse.HeadersEntry\022"
+  "+\n\010tcp_info\030d \001(\0132\031.appguard.AppGuardTcp"
+  "Info\032.\n\014HeadersEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005val"
+  "ue\030\002 \001(\t:\0028\001\"\332\001\n\023AppGuardSmtpRequest\022\r\n\005"
+  "token\030\001 \001(\t\022;\n\007headers\030\002 \003(\0132*.appguard."
+  "AppGuardSmtpRequest.HeadersEntry\022\021\n\004body"
+  "\030\003 \001(\tH\000\210\001\001\022+\n\010tcp_info\030d \001(\0132\031.appguard"
+  ".AppGuardTcpInfo\032.\n\014HeadersEntry\022\013\n\003key\030"
+  "\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\007\n\005_body\"n\n\024App"
+  "GuardSmtpResponse\022\r\n\005token\030\001 \001(\t\022\021\n\004code"
+  "\030\002 \001(\rH\000\210\001\001\022+\n\010tcp_info\030d \001(\0132\031.appguard"
+  ".AppGuardTcpInfoB\007\n\005_code\"<\n\020AppGuardRes"
+  "ponse\022(\n\006policy\030\002 \001(\0162\030.appguard.Firewal"
+  "lPolicy\"B\n\023AppGuardTcpResponse\022+\n\010tcp_in"
+  "fo\030\001 \001(\0132\031.appguard.AppGuardTcpInfo*P\n\014D"
+  "eviceStatus\022\t\n\005DRAFT\020\000\022\n\n\006ACTIVE\020\001\022\014\n\010AR"
+  "CHIVED\020\002\022\013\n\007DELETED\020\003\022\016\n\nDS_UNKNOWN\020\004*2\n"
+  "\016FirewallPolicy\022\013\n\007UNKNOWN\020\000\022\t\n\005ALLOW\020\001\022"
+  "\010\n\004DENY\020\0022\355\003\n\010AppGuard\022F\n\tHeartbeat\022\032.ap"
+  "pguard.HeartbeatRequest\032\033.appguard.Heart"
+  "beatResponse0\001\022U\n\023HandleTcpConnection\022\037."
+  "appguard.AppGuardTcpConnection\032\035.appguar"
+  "d.AppGuardTcpResponse\022N\n\021HandleHttpReque"
+  "st\022\035.appguard.AppGuardHttpRequest\032\032.appg"
+  "uard.AppGuardResponse\022P\n\022HandleHttpRespo"
+  "nse\022\036.appguard.AppGuardHttpResponse\032\032.ap"
+  "pguard.AppGuardResponse\022N\n\021HandleSmtpReq"
+  "uest\022\035.appguard.AppGuardSmtpRequest\032\032.ap"
+  "pguard.AppGuardResponse\022P\n\022HandleSmtpRes"
+  "ponse\022\036.appguard.AppGuardSmtpResponse\032\032."
+  "appguard.AppGuardResponseb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_appguard_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_appguard_2eproto = {
-    false, false, 2152, descriptor_table_protodef_appguard_2eproto,
+    false, false, 2513, descriptor_table_protodef_appguard_2eproto,
     "appguard.proto",
-    &descriptor_table_appguard_2eproto_once, nullptr, 0, 13,
+    &descriptor_table_appguard_2eproto_once, nullptr, 0, 15,
     schemas, file_default_instances, TableStruct_appguard_2eproto::offsets,
     file_level_metadata_appguard_2eproto, file_level_enum_descriptors_appguard_2eproto,
     file_level_service_descriptors_appguard_2eproto,
@@ -477,9 +548,26 @@ PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_appguard
 // Force running AddDescriptors() at dynamic initialization time.
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_appguard_2eproto(&descriptor_table_appguard_2eproto);
 namespace appguard {
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FirewallPolicy_descriptor() {
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* DeviceStatus_descriptor() {
   ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_appguard_2eproto);
   return file_level_enum_descriptors_appguard_2eproto[0];
+}
+bool DeviceStatus_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* FirewallPolicy_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_appguard_2eproto);
+  return file_level_enum_descriptors_appguard_2eproto[1];
 }
 bool FirewallPolicy_IsValid(int value) {
   switch (value) {
@@ -492,6 +580,492 @@ bool FirewallPolicy_IsValid(int value) {
   }
 }
 
+
+// ===================================================================
+
+class HeartbeatRequest::_Internal {
+ public:
+};
+
+HeartbeatRequest::HeartbeatRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:appguard.HeartbeatRequest)
+}
+HeartbeatRequest::HeartbeatRequest(const HeartbeatRequest& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  HeartbeatRequest* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.app_id_){}
+    , decltype(_impl_.app_secret_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.app_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.app_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_app_id().empty()) {
+    _this->_impl_.app_id_.Set(from._internal_app_id(), 
+      _this->GetArenaForAllocation());
+  }
+  _impl_.app_secret_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.app_secret_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_app_secret().empty()) {
+    _this->_impl_.app_secret_.Set(from._internal_app_secret(), 
+      _this->GetArenaForAllocation());
+  }
+  // @@protoc_insertion_point(copy_constructor:appguard.HeartbeatRequest)
+}
+
+inline void HeartbeatRequest::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.app_id_){}
+    , decltype(_impl_.app_secret_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.app_id_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.app_id_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.app_secret_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.app_secret_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+HeartbeatRequest::~HeartbeatRequest() {
+  // @@protoc_insertion_point(destructor:appguard.HeartbeatRequest)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void HeartbeatRequest::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.app_id_.Destroy();
+  _impl_.app_secret_.Destroy();
+}
+
+void HeartbeatRequest::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void HeartbeatRequest::Clear() {
+// @@protoc_insertion_point(message_clear_start:appguard.HeartbeatRequest)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.app_id_.ClearToEmpty();
+  _impl_.app_secret_.ClearToEmpty();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* HeartbeatRequest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string app_id = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_app_id();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.HeartbeatRequest.app_id"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string app_secret = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+          auto str = _internal_mutable_app_secret();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.HeartbeatRequest.app_secret"));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* HeartbeatRequest::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:appguard.HeartbeatRequest)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string app_id = 1;
+  if (!this->_internal_app_id().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_app_id().data(), static_cast<int>(this->_internal_app_id().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.HeartbeatRequest.app_id");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_app_id(), target);
+  }
+
+  // string app_secret = 2;
+  if (!this->_internal_app_secret().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_app_secret().data(), static_cast<int>(this->_internal_app_secret().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.HeartbeatRequest.app_secret");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_app_secret(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:appguard.HeartbeatRequest)
+  return target;
+}
+
+size_t HeartbeatRequest::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:appguard.HeartbeatRequest)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string app_id = 1;
+  if (!this->_internal_app_id().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_app_id());
+  }
+
+  // string app_secret = 2;
+  if (!this->_internal_app_secret().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_app_secret());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData HeartbeatRequest::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    HeartbeatRequest::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*HeartbeatRequest::GetClassData() const { return &_class_data_; }
+
+
+void HeartbeatRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<HeartbeatRequest*>(&to_msg);
+  auto& from = static_cast<const HeartbeatRequest&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:appguard.HeartbeatRequest)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_app_id().empty()) {
+    _this->_internal_set_app_id(from._internal_app_id());
+  }
+  if (!from._internal_app_secret().empty()) {
+    _this->_internal_set_app_secret(from._internal_app_secret());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void HeartbeatRequest::CopyFrom(const HeartbeatRequest& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:appguard.HeartbeatRequest)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HeartbeatRequest::IsInitialized() const {
+  return true;
+}
+
+void HeartbeatRequest::InternalSwap(HeartbeatRequest* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.app_id_, lhs_arena,
+      &other->_impl_.app_id_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.app_secret_, lhs_arena,
+      &other->_impl_.app_secret_, rhs_arena
+  );
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata HeartbeatRequest::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
+      file_level_metadata_appguard_2eproto[0]);
+}
+
+// ===================================================================
+
+class HeartbeatResponse::_Internal {
+ public:
+};
+
+HeartbeatResponse::HeartbeatResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                         bool is_message_owned)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
+  // @@protoc_insertion_point(arena_constructor:appguard.HeartbeatResponse)
+}
+HeartbeatResponse::HeartbeatResponse(const HeartbeatResponse& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  HeartbeatResponse* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.token_){}
+    , decltype(_impl_.status_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_token().empty()) {
+    _this->_impl_.token_.Set(from._internal_token(), 
+      _this->GetArenaForAllocation());
+  }
+  _this->_impl_.status_ = from._impl_.status_;
+  // @@protoc_insertion_point(copy_constructor:appguard.HeartbeatResponse)
+}
+
+inline void HeartbeatResponse::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.token_){}
+    , decltype(_impl_.status_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+}
+
+HeartbeatResponse::~HeartbeatResponse() {
+  // @@protoc_insertion_point(destructor:appguard.HeartbeatResponse)
+  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
+  (void)arena;
+    return;
+  }
+  SharedDtor();
+}
+
+inline void HeartbeatResponse::SharedDtor() {
+  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.token_.Destroy();
+}
+
+void HeartbeatResponse::SetCachedSize(int size) const {
+  _impl_._cached_size_.Set(size);
+}
+
+void HeartbeatResponse::Clear() {
+// @@protoc_insertion_point(message_clear_start:appguard.HeartbeatResponse)
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.token_.ClearToEmpty();
+  _impl_.status_ = 0;
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* HeartbeatResponse::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  while (!ctx->Done(&ptr)) {
+    uint32_t tag;
+    ptr = ::_pbi::ReadTag(ptr, &tag);
+    switch (tag >> 3) {
+      // string token = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.HeartbeatResponse.token"));
+        } else
+          goto handle_unusual;
+        continue;
+      // .appguard.DeviceStatus status = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_status(static_cast<::appguard::DeviceStatus>(val));
+        } else
+          goto handle_unusual;
+        continue;
+      default:
+        goto handle_unusual;
+    }  // switch
+  handle_unusual:
+    if ((tag == 0) || ((tag & 7) == 4)) {
+      CHK_(ptr);
+      ctx->SetLastTag(tag);
+      goto message_done;
+    }
+    ptr = UnknownFieldParse(
+        tag,
+        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+        ptr, ctx);
+    CHK_(ptr != nullptr);
+  }  // while
+message_done:
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto message_done;
+#undef CHK_
+}
+
+uint8_t* HeartbeatResponse::_InternalSerialize(
+    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:appguard.HeartbeatResponse)
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.HeartbeatResponse.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // .appguard.DeviceStatus status = 2;
+  if (this->_internal_status() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_status(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:appguard.HeartbeatResponse)
+  return target;
+}
+
+size_t HeartbeatResponse::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:appguard.HeartbeatResponse)
+  size_t total_size = 0;
+
+  uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
+  // .appguard.DeviceStatus status = 2;
+  if (this->_internal_status() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_status());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData HeartbeatResponse::_class_data_ = {
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+    HeartbeatResponse::MergeImpl
+};
+const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*HeartbeatResponse::GetClassData() const { return &_class_data_; }
+
+
+void HeartbeatResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<HeartbeatResponse*>(&to_msg);
+  auto& from = static_cast<const HeartbeatResponse&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:appguard.HeartbeatResponse)
+  GOOGLE_DCHECK_NE(&from, _this);
+  uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_token().empty()) {
+    _this->_internal_set_token(from._internal_token());
+  }
+  if (from._internal_status() != 0) {
+    _this->_internal_set_status(from._internal_status());
+  }
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void HeartbeatResponse::CopyFrom(const HeartbeatResponse& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:appguard.HeartbeatResponse)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool HeartbeatResponse::IsInitialized() const {
+  return true;
+}
+
+void HeartbeatResponse::InternalSwap(HeartbeatResponse* other) {
+  using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.token_, lhs_arena,
+      &other->_impl_.token_, rhs_arena
+  );
+  swap(_impl_.status_, other->_impl_.status_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata HeartbeatResponse::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
+      file_level_metadata_appguard_2eproto[1]);
+}
 
 // ===================================================================
 
@@ -524,6 +1098,7 @@ AppGuardTcpConnection::AppGuardTcpConnection(const AppGuardTcpConnection& from)
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.source_ip_){}
     , decltype(_impl_.destination_ip_){}
     , decltype(_impl_.protocol_){}
@@ -531,6 +1106,14 @@ AppGuardTcpConnection::AppGuardTcpConnection(const AppGuardTcpConnection& from)
     , decltype(_impl_.destination_port_){}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_token().empty()) {
+    _this->_impl_.token_.Set(from._internal_token(), 
+      _this->GetArenaForAllocation());
+  }
   _impl_.source_ip_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.source_ip_.Set("", GetArenaForAllocation());
@@ -568,12 +1151,17 @@ inline void AppGuardTcpConnection::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.source_ip_){}
     , decltype(_impl_.destination_ip_){}
     , decltype(_impl_.protocol_){}
     , decltype(_impl_.source_port_){0u}
     , decltype(_impl_.destination_port_){0u}
   };
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.source_ip_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.source_ip_.Set("", GetArenaForAllocation());
@@ -599,6 +1187,7 @@ AppGuardTcpConnection::~AppGuardTcpConnection() {
 
 inline void AppGuardTcpConnection::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.token_.Destroy();
   _impl_.source_ip_.Destroy();
   _impl_.destination_ip_.Destroy();
   _impl_.protocol_.Destroy();
@@ -614,6 +1203,7 @@ void AppGuardTcpConnection::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.token_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
@@ -640,9 +1230,19 @@ const char* AppGuardTcpConnection::_InternalParse(const char* ptr, ::_pbi::Parse
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // optional string source_ip = 1;
+      // string token = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.AppGuardTcpConnection.token"));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional string source_ip = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_source_ip();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -650,18 +1250,18 @@ const char* AppGuardTcpConnection::_InternalParse(const char* ptr, ::_pbi::Parse
         } else
           goto handle_unusual;
         continue;
-      // optional uint32 source_port = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
+      // optional uint32 source_port = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
           _Internal::set_has_source_port(&has_bits);
           _impl_.source_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // optional string destination_ip = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+      // optional string destination_ip = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           auto str = _internal_mutable_destination_ip();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -669,18 +1269,18 @@ const char* AppGuardTcpConnection::_InternalParse(const char* ptr, ::_pbi::Parse
         } else
           goto handle_unusual;
         continue;
-      // optional uint32 destination_port = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+      // optional uint32 destination_port = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
           _Internal::set_has_destination_port(&has_bits);
           _impl_.destination_port_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // string protocol = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+      // string protocol = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
           auto str = _internal_mutable_protocol();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -718,46 +1318,56 @@ uint8_t* AppGuardTcpConnection::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // optional string source_ip = 1;
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.AppGuardTcpConnection.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // optional string source_ip = 2;
   if (_internal_has_source_ip()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_source_ip().data(), static_cast<int>(this->_internal_source_ip().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "appguard.AppGuardTcpConnection.source_ip");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_source_ip(), target);
+        2, this->_internal_source_ip(), target);
   }
 
-  // optional uint32 source_port = 2;
+  // optional uint32 source_port = 3;
   if (_internal_has_source_port()) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(2, this->_internal_source_port(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(3, this->_internal_source_port(), target);
   }
 
-  // optional string destination_ip = 3;
+  // optional string destination_ip = 4;
   if (_internal_has_destination_ip()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_destination_ip().data(), static_cast<int>(this->_internal_destination_ip().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "appguard.AppGuardTcpConnection.destination_ip");
     target = stream->WriteStringMaybeAliased(
-        3, this->_internal_destination_ip(), target);
+        4, this->_internal_destination_ip(), target);
   }
 
-  // optional uint32 destination_port = 4;
+  // optional uint32 destination_port = 5;
   if (_internal_has_destination_port()) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(4, this->_internal_destination_port(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(5, this->_internal_destination_port(), target);
   }
 
-  // string protocol = 5;
+  // string protocol = 6;
   if (!this->_internal_protocol().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_protocol().data(), static_cast<int>(this->_internal_protocol().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "appguard.AppGuardTcpConnection.protocol");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_protocol(), target);
+        6, this->_internal_protocol(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -776,16 +1386,23 @@ size_t AppGuardTcpConnection::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
-    // optional string source_ip = 1;
+    // optional string source_ip = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
           this->_internal_source_ip());
     }
 
-    // optional string destination_ip = 3;
+    // optional string destination_ip = 4;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
@@ -793,7 +1410,7 @@ size_t AppGuardTcpConnection::ByteSizeLong() const {
     }
 
   }
-  // string protocol = 5;
+  // string protocol = 6;
   if (!this->_internal_protocol().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
@@ -801,12 +1418,12 @@ size_t AppGuardTcpConnection::ByteSizeLong() const {
   }
 
   if (cached_has_bits & 0x0000000cu) {
-    // optional uint32 source_port = 2;
+    // optional uint32 source_port = 3;
     if (cached_has_bits & 0x00000004u) {
       total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_source_port());
     }
 
-    // optional uint32 destination_port = 4;
+    // optional uint32 destination_port = 5;
     if (cached_has_bits & 0x00000008u) {
       total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_destination_port());
     }
@@ -830,6 +1447,9 @@ void AppGuardTcpConnection::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, 
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from._internal_token().empty()) {
+    _this->_internal_set_token(from._internal_token());
+  }
   cached_has_bits = from._impl_._has_bits_[0];
   if (cached_has_bits & 0x00000003u) {
     if (cached_has_bits & 0x00000001u) {
@@ -872,6 +1492,10 @@ void AppGuardTcpConnection::InternalSwap(AppGuardTcpConnection* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.token_, lhs_arena,
+      &other->_impl_.token_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.source_ip_, lhs_arena,
       &other->_impl_.source_ip_, rhs_arena
   );
@@ -894,7 +1518,7 @@ void AppGuardTcpConnection::InternalSwap(AppGuardTcpConnection* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardTcpConnection::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[0]);
+      file_level_metadata_appguard_2eproto[2]);
 }
 
 // ===================================================================
@@ -1044,7 +1668,7 @@ inline void AppGuardIpInfo::SharedCtor(
     , decltype(_impl_.region_){}
     , decltype(_impl_.postal_){}
     , decltype(_impl_.timezone_){}
-    , decltype(_impl_.blacklist_){0u}
+    , decltype(_impl_.blacklist_){false}
   };
   _impl_.ip_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
@@ -1144,7 +1768,7 @@ void AppGuardIpInfo::Clear() {
       _impl_.timezone_.ClearNonDefaultToEmpty();
     }
   }
-  _impl_.blacklist_ = 0u;
+  _impl_.blacklist_ = false;
   _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -1246,10 +1870,10 @@ const char* AppGuardIpInfo::_InternalParse(const char* ptr, ::_pbi::ParseContext
         } else
           goto handle_unusual;
         continue;
-      // uint32 blacklist = 100;
+      // bool blacklist = 100;
       case 100:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          _impl_.blacklist_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.blacklist_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1374,10 +1998,10 @@ uint8_t* AppGuardIpInfo::_InternalSerialize(
         9, this->_internal_timezone(), target);
   }
 
-  // uint32 blacklist = 100;
+  // bool blacklist = 100;
   if (this->_internal_blacklist() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(100, this->_internal_blacklist(), target);
+    target = ::_pbi::WireFormatLite::WriteBoolToArray(100, this->_internal_blacklist(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1462,11 +2086,9 @@ size_t AppGuardIpInfo::ByteSizeLong() const {
     }
 
   }
-  // uint32 blacklist = 100;
+  // bool blacklist = 100;
   if (this->_internal_blacklist() != 0) {
-    total_size += 2 +
-      ::_pbi::WireFormatLite::UInt32Size(
-        this->_internal_blacklist());
+    total_size += 2 + 1;
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
@@ -1582,7 +2204,7 @@ void AppGuardIpInfo::InternalSwap(AppGuardIpInfo* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardIpInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[1]);
+      file_level_metadata_appguard_2eproto[3]);
 }
 
 // ===================================================================
@@ -1847,7 +2469,7 @@ void AppGuardTcpInfo::InternalSwap(AppGuardTcpInfo* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardTcpInfo::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[2]);
+      file_level_metadata_appguard_2eproto[4]);
 }
 
 // ===================================================================
@@ -1861,7 +2483,7 @@ void AppGuardHttpRequest_HeadersEntry_DoNotUse::MergeFrom(const AppGuardHttpRequ
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardHttpRequest_HeadersEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[3]);
+      file_level_metadata_appguard_2eproto[5]);
 }
 
 // ===================================================================
@@ -1875,7 +2497,7 @@ void AppGuardHttpRequest_QueryEntry_DoNotUse::MergeFrom(const AppGuardHttpReques
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardHttpRequest_QueryEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[4]);
+      file_level_metadata_appguard_2eproto[6]);
 }
 
 // ===================================================================
@@ -1910,6 +2532,7 @@ AppGuardHttpRequest::AppGuardHttpRequest(const AppGuardHttpRequest& from)
     , /*decltype(_impl_._cached_size_)*/{}
     , /*decltype(_impl_.headers_)*/{}
     , /*decltype(_impl_.query_)*/{}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.original_url_){}
     , decltype(_impl_.method_){}
     , decltype(_impl_.body_){}
@@ -1918,6 +2541,14 @@ AppGuardHttpRequest::AppGuardHttpRequest(const AppGuardHttpRequest& from)
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _this->_impl_.headers_.MergeFrom(from._impl_.headers_);
   _this->_impl_.query_.MergeFrom(from._impl_.query_);
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_token().empty()) {
+    _this->_impl_.token_.Set(from._internal_token(), 
+      _this->GetArenaForAllocation());
+  }
   _impl_.original_url_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.original_url_.Set("", GetArenaForAllocation());
@@ -1957,11 +2588,16 @@ inline void AppGuardHttpRequest::SharedCtor(
     , /*decltype(_impl_._cached_size_)*/{}
     , /*decltype(_impl_.headers_)*/{::_pbi::ArenaInitialized(), arena}
     , /*decltype(_impl_.query_)*/{::_pbi::ArenaInitialized(), arena}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.original_url_){}
     , decltype(_impl_.method_){}
     , decltype(_impl_.body_){}
     , decltype(_impl_.tcp_info_){nullptr}
   };
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.original_url_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.original_url_.Set("", GetArenaForAllocation());
@@ -1992,6 +2628,7 @@ inline void AppGuardHttpRequest::SharedDtor() {
   _impl_.headers_.~MapField();
   _impl_.query_.Destruct();
   _impl_.query_.~MapField();
+  _impl_.token_.Destroy();
   _impl_.original_url_.Destroy();
   _impl_.method_.Destroy();
   _impl_.body_.Destroy();
@@ -2015,6 +2652,7 @@ void AppGuardHttpRequest::Clear() {
 
   _impl_.headers_.Clear();
   _impl_.query_.Clear();
+  _impl_.token_.ClearToEmpty();
   _impl_.original_url_.ClearToEmpty();
   _impl_.method_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
@@ -2036,9 +2674,19 @@ const char* AppGuardHttpRequest::_InternalParse(const char* ptr, ::_pbi::ParseCo
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // string original_url = 1;
+      // string token = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.AppGuardHttpRequest.token"));
+        } else
+          goto handle_unusual;
+        continue;
+      // string original_url = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           auto str = _internal_mutable_original_url();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -2046,22 +2694,22 @@ const char* AppGuardHttpRequest::_InternalParse(const char* ptr, ::_pbi::ParseCo
         } else
           goto handle_unusual;
         continue;
-      // map<string, string> headers = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+      // map<string, string> headers = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(&_impl_.headers_, ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
         } else
           goto handle_unusual;
         continue;
-      // string method = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
+      // string method = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
           auto str = _internal_mutable_method();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -2069,9 +2717,9 @@ const char* AppGuardHttpRequest::_InternalParse(const char* ptr, ::_pbi::ParseCo
         } else
           goto handle_unusual;
         continue;
-      // optional string body = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
+      // optional string body = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
           auto str = _internal_mutable_body();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -2079,16 +2727,16 @@ const char* AppGuardHttpRequest::_InternalParse(const char* ptr, ::_pbi::ParseCo
         } else
           goto handle_unusual;
         continue;
-      // map<string, string> query = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 42)) {
+      // map<string, string> query = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 50)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(&_impl_.query_, ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<42>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<50>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -2130,17 +2778,27 @@ uint8_t* AppGuardHttpRequest::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string original_url = 1;
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.AppGuardHttpRequest.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // string original_url = 2;
   if (!this->_internal_original_url().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_original_url().data(), static_cast<int>(this->_internal_original_url().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "appguard.AppGuardHttpRequest.original_url");
     target = stream->WriteStringMaybeAliased(
-        1, this->_internal_original_url(), target);
+        2, this->_internal_original_url(), target);
   }
 
-  // map<string, string> headers = 2;
+  // map<string, string> headers = 3;
   if (!this->_internal_headers().empty()) {
     using MapType = ::_pb::Map<std::string, std::string>;
     using WireHelper = AppGuardHttpRequest_HeadersEntry_DoNotUse::Funcs;
@@ -2159,38 +2817,38 @@ uint8_t* AppGuardHttpRequest::_InternalSerialize(
 
     if (stream->IsSerializationDeterministic() && map_field.size() > 1) {
       for (const auto& entry : ::_pbi::MapSorterPtr<MapType>(map_field)) {
-        target = WireHelper::InternalSerialize(2, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(3, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     } else {
       for (const auto& entry : map_field) {
-        target = WireHelper::InternalSerialize(2, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(3, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     }
   }
 
-  // string method = 3;
+  // string method = 4;
   if (!this->_internal_method().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_method().data(), static_cast<int>(this->_internal_method().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "appguard.AppGuardHttpRequest.method");
     target = stream->WriteStringMaybeAliased(
-        3, this->_internal_method(), target);
+        4, this->_internal_method(), target);
   }
 
-  // optional string body = 4;
+  // optional string body = 5;
   if (_internal_has_body()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_body().data(), static_cast<int>(this->_internal_body().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "appguard.AppGuardHttpRequest.body");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_body(), target);
+        5, this->_internal_body(), target);
   }
 
-  // map<string, string> query = 5;
+  // map<string, string> query = 6;
   if (!this->_internal_query().empty()) {
     using MapType = ::_pb::Map<std::string, std::string>;
     using WireHelper = AppGuardHttpRequest_QueryEntry_DoNotUse::Funcs;
@@ -2209,12 +2867,12 @@ uint8_t* AppGuardHttpRequest::_InternalSerialize(
 
     if (stream->IsSerializationDeterministic() && map_field.size() > 1) {
       for (const auto& entry : ::_pbi::MapSorterPtr<MapType>(map_field)) {
-        target = WireHelper::InternalSerialize(5, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(6, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     } else {
       for (const auto& entry : map_field) {
-        target = WireHelper::InternalSerialize(5, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(6, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     }
@@ -2243,7 +2901,7 @@ size_t AppGuardHttpRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<string, string> headers = 2;
+  // map<string, string> headers = 3;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_headers_size());
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
@@ -2252,7 +2910,7 @@ size_t AppGuardHttpRequest::ByteSizeLong() const {
     total_size += AppGuardHttpRequest_HeadersEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
-  // map<string, string> query = 5;
+  // map<string, string> query = 6;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_query_size());
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
@@ -2261,21 +2919,28 @@ size_t AppGuardHttpRequest::ByteSizeLong() const {
     total_size += AppGuardHttpRequest_QueryEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
-  // string original_url = 1;
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
+  // string original_url = 2;
   if (!this->_internal_original_url().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_original_url());
   }
 
-  // string method = 3;
+  // string method = 4;
   if (!this->_internal_method().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_method());
   }
 
-  // optional string body = 4;
+  // optional string body = 5;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
@@ -2310,6 +2975,9 @@ void AppGuardHttpRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
 
   _this->_impl_.headers_.MergeFrom(from._impl_.headers_);
   _this->_impl_.query_.MergeFrom(from._impl_.query_);
+  if (!from._internal_token().empty()) {
+    _this->_internal_set_token(from._internal_token());
+  }
   if (!from._internal_original_url().empty()) {
     _this->_internal_set_original_url(from._internal_original_url());
   }
@@ -2346,6 +3014,10 @@ void AppGuardHttpRequest::InternalSwap(AppGuardHttpRequest* other) {
   _impl_.headers_.InternalSwap(&other->_impl_.headers_);
   _impl_.query_.InternalSwap(&other->_impl_.query_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.token_, lhs_arena,
+      &other->_impl_.token_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.original_url_, lhs_arena,
       &other->_impl_.original_url_, rhs_arena
   );
@@ -2363,7 +3035,7 @@ void AppGuardHttpRequest::InternalSwap(AppGuardHttpRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardHttpRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[5]);
+      file_level_metadata_appguard_2eproto[7]);
 }
 
 // ===================================================================
@@ -2377,7 +3049,7 @@ void AppGuardHttpResponse_HeadersEntry_DoNotUse::MergeFrom(const AppGuardHttpRes
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardHttpResponse_HeadersEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[6]);
+      file_level_metadata_appguard_2eproto[8]);
 }
 
 // ===================================================================
@@ -2405,12 +3077,21 @@ AppGuardHttpResponse::AppGuardHttpResponse(const AppGuardHttpResponse& from)
   AppGuardHttpResponse* const _this = this; (void)_this;
   new (&_impl_) Impl_{
       /*decltype(_impl_.headers_)*/{}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.tcp_info_){nullptr}
     , decltype(_impl_.code_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _this->_impl_.headers_.MergeFrom(from._impl_.headers_);
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_token().empty()) {
+    _this->_impl_.token_.Set(from._internal_token(), 
+      _this->GetArenaForAllocation());
+  }
   if (from._internal_has_tcp_info()) {
     _this->_impl_.tcp_info_ = new ::appguard::AppGuardTcpInfo(*from._impl_.tcp_info_);
   }
@@ -2424,10 +3105,15 @@ inline void AppGuardHttpResponse::SharedCtor(
   (void)is_message_owned;
   new (&_impl_) Impl_{
       /*decltype(_impl_.headers_)*/{::_pbi::ArenaInitialized(), arena}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.tcp_info_){nullptr}
     , decltype(_impl_.code_){0u}
     , /*decltype(_impl_._cached_size_)*/{}
   };
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 AppGuardHttpResponse::~AppGuardHttpResponse() {
@@ -2444,6 +3130,7 @@ inline void AppGuardHttpResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.headers_.Destruct();
   _impl_.headers_.~MapField();
+  _impl_.token_.Destroy();
   if (this != internal_default_instance()) delete _impl_.tcp_info_;
 }
 
@@ -2462,6 +3149,7 @@ void AppGuardHttpResponse::Clear() {
   (void) cached_has_bits;
 
   _impl_.headers_.Clear();
+  _impl_.token_.ClearToEmpty();
   if (GetArenaForAllocation() == nullptr && _impl_.tcp_info_ != nullptr) {
     delete _impl_.tcp_info_;
   }
@@ -2476,24 +3164,34 @@ const char* AppGuardHttpResponse::_InternalParse(const char* ptr, ::_pbi::ParseC
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // uint32 code = 1;
+      // string token = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.AppGuardHttpResponse.token"));
+        } else
+          goto handle_unusual;
+        continue;
+      // uint32 code = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _impl_.code_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
-      // map<string, string> headers = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+      // map<string, string> headers = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(&_impl_.headers_, ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
         } else
           goto handle_unusual;
         continue;
@@ -2534,13 +3232,23 @@ uint8_t* AppGuardHttpResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // uint32 code = 1;
-  if (this->_internal_code() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_code(), target);
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.AppGuardHttpResponse.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
   }
 
-  // map<string, string> headers = 2;
+  // uint32 code = 2;
+  if (this->_internal_code() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(2, this->_internal_code(), target);
+  }
+
+  // map<string, string> headers = 3;
   if (!this->_internal_headers().empty()) {
     using MapType = ::_pb::Map<std::string, std::string>;
     using WireHelper = AppGuardHttpResponse_HeadersEntry_DoNotUse::Funcs;
@@ -2559,12 +3267,12 @@ uint8_t* AppGuardHttpResponse::_InternalSerialize(
 
     if (stream->IsSerializationDeterministic() && map_field.size() > 1) {
       for (const auto& entry : ::_pbi::MapSorterPtr<MapType>(map_field)) {
-        target = WireHelper::InternalSerialize(2, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(3, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     } else {
       for (const auto& entry : map_field) {
-        target = WireHelper::InternalSerialize(2, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(3, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     }
@@ -2593,13 +3301,20 @@ size_t AppGuardHttpResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<string, string> headers = 2;
+  // map<string, string> headers = 3;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_headers_size());
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
       it = this->_internal_headers().begin();
       it != this->_internal_headers().end(); ++it) {
     total_size += AppGuardHttpResponse_HeadersEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
+  }
+
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
   }
 
   // .appguard.AppGuardTcpInfo tcp_info = 100;
@@ -2609,7 +3324,7 @@ size_t AppGuardHttpResponse::ByteSizeLong() const {
         *_impl_.tcp_info_);
   }
 
-  // uint32 code = 1;
+  // uint32 code = 2;
   if (this->_internal_code() != 0) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_code());
   }
@@ -2633,6 +3348,9 @@ void AppGuardHttpResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
   (void) cached_has_bits;
 
   _this->_impl_.headers_.MergeFrom(from._impl_.headers_);
+  if (!from._internal_token().empty()) {
+    _this->_internal_set_token(from._internal_token());
+  }
   if (from._internal_has_tcp_info()) {
     _this->_internal_mutable_tcp_info()->::appguard::AppGuardTcpInfo::MergeFrom(
         from._internal_tcp_info());
@@ -2656,8 +3374,14 @@ bool AppGuardHttpResponse::IsInitialized() const {
 
 void AppGuardHttpResponse::InternalSwap(AppGuardHttpResponse* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   _impl_.headers_.InternalSwap(&other->_impl_.headers_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.token_, lhs_arena,
+      &other->_impl_.token_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(AppGuardHttpResponse, _impl_.code_)
       + sizeof(AppGuardHttpResponse::_impl_.code_)
@@ -2669,7 +3393,7 @@ void AppGuardHttpResponse::InternalSwap(AppGuardHttpResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardHttpResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[7]);
+      file_level_metadata_appguard_2eproto[9]);
 }
 
 // ===================================================================
@@ -2683,7 +3407,7 @@ void AppGuardSmtpRequest_HeadersEntry_DoNotUse::MergeFrom(const AppGuardSmtpRequ
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardSmtpRequest_HeadersEntry_DoNotUse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[8]);
+      file_level_metadata_appguard_2eproto[10]);
 }
 
 // ===================================================================
@@ -2717,11 +3441,20 @@ AppGuardSmtpRequest::AppGuardSmtpRequest(const AppGuardSmtpRequest& from)
       decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
     , /*decltype(_impl_.headers_)*/{}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.body_){}
     , decltype(_impl_.tcp_info_){nullptr}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   _this->_impl_.headers_.MergeFrom(from._impl_.headers_);
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_token().empty()) {
+    _this->_impl_.token_.Set(from._internal_token(), 
+      _this->GetArenaForAllocation());
+  }
   _impl_.body_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.body_.Set("", GetArenaForAllocation());
@@ -2744,9 +3477,14 @@ inline void AppGuardSmtpRequest::SharedCtor(
       decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
     , /*decltype(_impl_.headers_)*/{::_pbi::ArenaInitialized(), arena}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.body_){}
     , decltype(_impl_.tcp_info_){nullptr}
   };
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.body_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
     _impl_.body_.Set("", GetArenaForAllocation());
@@ -2767,6 +3505,7 @@ inline void AppGuardSmtpRequest::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.headers_.Destruct();
   _impl_.headers_.~MapField();
+  _impl_.token_.Destroy();
   _impl_.body_.Destroy();
   if (this != internal_default_instance()) delete _impl_.tcp_info_;
 }
@@ -2786,6 +3525,7 @@ void AppGuardSmtpRequest::Clear() {
   (void) cached_has_bits;
 
   _impl_.headers_.Clear();
+  _impl_.token_.ClearToEmpty();
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     _impl_.body_.ClearNonDefaultToEmpty();
@@ -2805,22 +3545,32 @@ const char* AppGuardSmtpRequest::_InternalParse(const char* ptr, ::_pbi::ParseCo
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // map<string, string> headers = 1;
+      // string token = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.AppGuardSmtpRequest.token"));
+        } else
+          goto handle_unusual;
+        continue;
+      // map<string, string> headers = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(&_impl_.headers_, ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
         } else
           goto handle_unusual;
         continue;
-      // optional string body = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
+      // optional string body = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
           auto str = _internal_mutable_body();
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
@@ -2866,7 +3616,17 @@ uint8_t* AppGuardSmtpRequest::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // map<string, string> headers = 1;
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.AppGuardSmtpRequest.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // map<string, string> headers = 2;
   if (!this->_internal_headers().empty()) {
     using MapType = ::_pb::Map<std::string, std::string>;
     using WireHelper = AppGuardSmtpRequest_HeadersEntry_DoNotUse::Funcs;
@@ -2885,25 +3645,25 @@ uint8_t* AppGuardSmtpRequest::_InternalSerialize(
 
     if (stream->IsSerializationDeterministic() && map_field.size() > 1) {
       for (const auto& entry : ::_pbi::MapSorterPtr<MapType>(map_field)) {
-        target = WireHelper::InternalSerialize(1, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(2, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     } else {
       for (const auto& entry : map_field) {
-        target = WireHelper::InternalSerialize(1, entry.first, entry.second, target, stream);
+        target = WireHelper::InternalSerialize(2, entry.first, entry.second, target, stream);
         check_utf8(entry);
       }
     }
   }
 
-  // optional string body = 2;
+  // optional string body = 3;
   if (_internal_has_body()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
       this->_internal_body().data(), static_cast<int>(this->_internal_body().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "appguard.AppGuardSmtpRequest.body");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_body(), target);
+        3, this->_internal_body(), target);
   }
 
   // .appguard.AppGuardTcpInfo tcp_info = 100;
@@ -2929,7 +3689,7 @@ size_t AppGuardSmtpRequest::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // map<string, string> headers = 1;
+  // map<string, string> headers = 2;
   total_size += 1 *
       ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(this->_internal_headers_size());
   for (::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >::const_iterator
@@ -2938,7 +3698,14 @@ size_t AppGuardSmtpRequest::ByteSizeLong() const {
     total_size += AppGuardSmtpRequest_HeadersEntry_DoNotUse::Funcs::ByteSizeLong(it->first, it->second);
   }
 
-  // optional string body = 2;
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
+  // optional string body = 3;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
@@ -2972,6 +3739,9 @@ void AppGuardSmtpRequest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, co
   (void) cached_has_bits;
 
   _this->_impl_.headers_.MergeFrom(from._impl_.headers_);
+  if (!from._internal_token().empty()) {
+    _this->_internal_set_token(from._internal_token());
+  }
   if (from._internal_has_body()) {
     _this->_internal_set_body(from._internal_body());
   }
@@ -3001,6 +3771,10 @@ void AppGuardSmtpRequest::InternalSwap(AppGuardSmtpRequest* other) {
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.headers_.InternalSwap(&other->_impl_.headers_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.token_, lhs_arena,
+      &other->_impl_.token_, rhs_arena
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &_impl_.body_, lhs_arena,
       &other->_impl_.body_, rhs_arena
   );
@@ -3010,7 +3784,7 @@ void AppGuardSmtpRequest::InternalSwap(AppGuardSmtpRequest* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardSmtpRequest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[9]);
+      file_level_metadata_appguard_2eproto[11]);
 }
 
 // ===================================================================
@@ -3040,10 +3814,19 @@ AppGuardSmtpResponse::AppGuardSmtpResponse(const AppGuardSmtpResponse& from)
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){from._impl_._has_bits_}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.tcp_info_){nullptr}
     , decltype(_impl_.code_){}};
 
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_token().empty()) {
+    _this->_impl_.token_.Set(from._internal_token(), 
+      _this->GetArenaForAllocation());
+  }
   if (from._internal_has_tcp_info()) {
     _this->_impl_.tcp_info_ = new ::appguard::AppGuardTcpInfo(*from._impl_.tcp_info_);
   }
@@ -3058,9 +3841,14 @@ inline void AppGuardSmtpResponse::SharedCtor(
   new (&_impl_) Impl_{
       decltype(_impl_._has_bits_){}
     , /*decltype(_impl_._cached_size_)*/{}
+    , decltype(_impl_.token_){}
     , decltype(_impl_.tcp_info_){nullptr}
     , decltype(_impl_.code_){0u}
   };
+  _impl_.token_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.token_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 AppGuardSmtpResponse::~AppGuardSmtpResponse() {
@@ -3074,6 +3862,7 @@ AppGuardSmtpResponse::~AppGuardSmtpResponse() {
 
 inline void AppGuardSmtpResponse::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.token_.Destroy();
   if (this != internal_default_instance()) delete _impl_.tcp_info_;
 }
 
@@ -3087,6 +3876,7 @@ void AppGuardSmtpResponse::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  _impl_.token_.ClearToEmpty();
   if (GetArenaForAllocation() == nullptr && _impl_.tcp_info_ != nullptr) {
     delete _impl_.tcp_info_;
   }
@@ -3103,9 +3893,19 @@ const char* AppGuardSmtpResponse::_InternalParse(const char* ptr, ::_pbi::ParseC
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // optional uint32 code = 1;
+      // string token = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_token();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "appguard.AppGuardSmtpResponse.token"));
+        } else
+          goto handle_unusual;
+        continue;
+      // optional uint32 code = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           _Internal::set_has_code(&has_bits);
           _impl_.code_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
@@ -3150,10 +3950,20 @@ uint8_t* AppGuardSmtpResponse::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // optional uint32 code = 1;
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_token().data(), static_cast<int>(this->_internal_token().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "appguard.AppGuardSmtpResponse.token");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_token(), target);
+  }
+
+  // optional uint32 code = 2;
   if (_internal_has_code()) {
     target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(1, this->_internal_code(), target);
+    target = ::_pbi::WireFormatLite::WriteUInt32ToArray(2, this->_internal_code(), target);
   }
 
   // .appguard.AppGuardTcpInfo tcp_info = 100;
@@ -3179,6 +3989,13 @@ size_t AppGuardSmtpResponse::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  // string token = 1;
+  if (!this->_internal_token().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_token());
+  }
+
   // .appguard.AppGuardTcpInfo tcp_info = 100;
   if (this->_internal_has_tcp_info()) {
     total_size += 2 +
@@ -3186,7 +4003,7 @@ size_t AppGuardSmtpResponse::ByteSizeLong() const {
         *_impl_.tcp_info_);
   }
 
-  // optional uint32 code = 1;
+  // optional uint32 code = 2;
   cached_has_bits = _impl_._has_bits_[0];
   if (cached_has_bits & 0x00000001u) {
     total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(this->_internal_code());
@@ -3210,6 +4027,9 @@ void AppGuardSmtpResponse::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, c
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from._internal_token().empty()) {
+    _this->_internal_set_token(from._internal_token());
+  }
   if (from._internal_has_tcp_info()) {
     _this->_internal_mutable_tcp_info()->::appguard::AppGuardTcpInfo::MergeFrom(
         from._internal_tcp_info());
@@ -3233,8 +4053,14 @@ bool AppGuardSmtpResponse::IsInitialized() const {
 
 void AppGuardSmtpResponse::InternalSwap(AppGuardSmtpResponse* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &_impl_.token_, lhs_arena,
+      &other->_impl_.token_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(AppGuardSmtpResponse, _impl_.code_)
       + sizeof(AppGuardSmtpResponse::_impl_.code_)
@@ -3246,7 +4072,7 @@ void AppGuardSmtpResponse::InternalSwap(AppGuardSmtpResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardSmtpResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[10]);
+      file_level_metadata_appguard_2eproto[12]);
 }
 
 // ===================================================================
@@ -3427,7 +4253,7 @@ void AppGuardResponse::InternalSwap(AppGuardResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[11]);
+      file_level_metadata_appguard_2eproto[13]);
 }
 
 // ===================================================================
@@ -3620,12 +4446,20 @@ void AppGuardTcpResponse::InternalSwap(AppGuardTcpResponse* other) {
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardTcpResponse::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_appguard_2eproto_getter, &descriptor_table_appguard_2eproto_once,
-      file_level_metadata_appguard_2eproto[12]);
+      file_level_metadata_appguard_2eproto[14]);
 }
 
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace appguard
 PROTOBUF_NAMESPACE_OPEN
+template<> PROTOBUF_NOINLINE ::appguard::HeartbeatRequest*
+Arena::CreateMaybeMessage< ::appguard::HeartbeatRequest >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::appguard::HeartbeatRequest >(arena);
+}
+template<> PROTOBUF_NOINLINE ::appguard::HeartbeatResponse*
+Arena::CreateMaybeMessage< ::appguard::HeartbeatResponse >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::appguard::HeartbeatResponse >(arena);
+}
 template<> PROTOBUF_NOINLINE ::appguard::AppGuardTcpConnection*
 Arena::CreateMaybeMessage< ::appguard::AppGuardTcpConnection >(Arena* arena) {
   return Arena::CreateMessageInternal< ::appguard::AppGuardTcpConnection >(arena);

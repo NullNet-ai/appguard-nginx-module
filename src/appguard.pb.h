@@ -88,6 +88,12 @@ extern AppGuardTcpInfoDefaultTypeInternal _AppGuardTcpInfo_default_instance_;
 class AppGuardTcpResponse;
 struct AppGuardTcpResponseDefaultTypeInternal;
 extern AppGuardTcpResponseDefaultTypeInternal _AppGuardTcpResponse_default_instance_;
+class HeartbeatRequest;
+struct HeartbeatRequestDefaultTypeInternal;
+extern HeartbeatRequestDefaultTypeInternal _HeartbeatRequest_default_instance_;
+class HeartbeatResponse;
+struct HeartbeatResponseDefaultTypeInternal;
+extern HeartbeatResponseDefaultTypeInternal _HeartbeatResponse_default_instance_;
 }  // namespace appguard
 PROTOBUF_NAMESPACE_OPEN
 template<> ::appguard::AppGuardHttpRequest* Arena::CreateMaybeMessage<::appguard::AppGuardHttpRequest>(Arena*);
@@ -103,9 +109,39 @@ template<> ::appguard::AppGuardSmtpResponse* Arena::CreateMaybeMessage<::appguar
 template<> ::appguard::AppGuardTcpConnection* Arena::CreateMaybeMessage<::appguard::AppGuardTcpConnection>(Arena*);
 template<> ::appguard::AppGuardTcpInfo* Arena::CreateMaybeMessage<::appguard::AppGuardTcpInfo>(Arena*);
 template<> ::appguard::AppGuardTcpResponse* Arena::CreateMaybeMessage<::appguard::AppGuardTcpResponse>(Arena*);
+template<> ::appguard::HeartbeatRequest* Arena::CreateMaybeMessage<::appguard::HeartbeatRequest>(Arena*);
+template<> ::appguard::HeartbeatResponse* Arena::CreateMaybeMessage<::appguard::HeartbeatResponse>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace appguard {
 
+enum DeviceStatus : int {
+  DRAFT = 0,
+  ACTIVE = 1,
+  ARCHIVED = 2,
+  DELETED = 3,
+  DS_UNKNOWN = 4,
+  DeviceStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::min(),
+  DeviceStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<int32_t>::max()
+};
+bool DeviceStatus_IsValid(int value);
+constexpr DeviceStatus DeviceStatus_MIN = DRAFT;
+constexpr DeviceStatus DeviceStatus_MAX = DS_UNKNOWN;
+constexpr int DeviceStatus_ARRAYSIZE = DeviceStatus_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* DeviceStatus_descriptor();
+template<typename T>
+inline const std::string& DeviceStatus_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, DeviceStatus>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function DeviceStatus_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    DeviceStatus_descriptor(), enum_t_value);
+}
+inline bool DeviceStatus_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, DeviceStatus* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<DeviceStatus>(
+    DeviceStatus_descriptor(), name, value);
+}
 enum FirewallPolicy : int {
   UNKNOWN = 0,
   ALLOW = 1,
@@ -133,6 +169,339 @@ inline bool FirewallPolicy_Parse(
     FirewallPolicy_descriptor(), name, value);
 }
 // ===================================================================
+
+class HeartbeatRequest final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:appguard.HeartbeatRequest) */ {
+ public:
+  inline HeartbeatRequest() : HeartbeatRequest(nullptr) {}
+  ~HeartbeatRequest() override;
+  explicit PROTOBUF_CONSTEXPR HeartbeatRequest(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  HeartbeatRequest(const HeartbeatRequest& from);
+  HeartbeatRequest(HeartbeatRequest&& from) noexcept
+    : HeartbeatRequest() {
+    *this = ::std::move(from);
+  }
+
+  inline HeartbeatRequest& operator=(const HeartbeatRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline HeartbeatRequest& operator=(HeartbeatRequest&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const HeartbeatRequest& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const HeartbeatRequest* internal_default_instance() {
+    return reinterpret_cast<const HeartbeatRequest*>(
+               &_HeartbeatRequest_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    0;
+
+  friend void swap(HeartbeatRequest& a, HeartbeatRequest& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(HeartbeatRequest* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(HeartbeatRequest* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  HeartbeatRequest* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<HeartbeatRequest>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const HeartbeatRequest& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const HeartbeatRequest& from) {
+    HeartbeatRequest::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(HeartbeatRequest* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "appguard.HeartbeatRequest";
+  }
+  protected:
+  explicit HeartbeatRequest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kAppIdFieldNumber = 1,
+    kAppSecretFieldNumber = 2,
+  };
+  // string app_id = 1;
+  void clear_app_id();
+  const std::string& app_id() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_app_id(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_app_id();
+  PROTOBUF_NODISCARD std::string* release_app_id();
+  void set_allocated_app_id(std::string* app_id);
+  private:
+  const std::string& _internal_app_id() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_app_id(const std::string& value);
+  std::string* _internal_mutable_app_id();
+  public:
+
+  // string app_secret = 2;
+  void clear_app_secret();
+  const std::string& app_secret() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_app_secret(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_app_secret();
+  PROTOBUF_NODISCARD std::string* release_app_secret();
+  void set_allocated_app_secret(std::string* app_secret);
+  private:
+  const std::string& _internal_app_secret() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_app_secret(const std::string& value);
+  std::string* _internal_mutable_app_secret();
+  public:
+
+  // @@protoc_insertion_point(class_scope:appguard.HeartbeatRequest)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr app_id_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr app_secret_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_appguard_2eproto;
+};
+// -------------------------------------------------------------------
+
+class HeartbeatResponse final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:appguard.HeartbeatResponse) */ {
+ public:
+  inline HeartbeatResponse() : HeartbeatResponse(nullptr) {}
+  ~HeartbeatResponse() override;
+  explicit PROTOBUF_CONSTEXPR HeartbeatResponse(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  HeartbeatResponse(const HeartbeatResponse& from);
+  HeartbeatResponse(HeartbeatResponse&& from) noexcept
+    : HeartbeatResponse() {
+    *this = ::std::move(from);
+  }
+
+  inline HeartbeatResponse& operator=(const HeartbeatResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline HeartbeatResponse& operator=(HeartbeatResponse&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()
+  #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetOwningArena() != nullptr
+  #endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const HeartbeatResponse& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const HeartbeatResponse* internal_default_instance() {
+    return reinterpret_cast<const HeartbeatResponse*>(
+               &_HeartbeatResponse_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(HeartbeatResponse& a, HeartbeatResponse& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(HeartbeatResponse* other) {
+    if (other == this) return;
+  #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() != nullptr &&
+        GetOwningArena() == other->GetOwningArena()) {
+   #else  // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetOwningArena() == other->GetOwningArena()) {
+  #endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(HeartbeatResponse* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  HeartbeatResponse* New(::PROTOBUF_NAMESPACE_ID::Arena* arena = nullptr) const final {
+    return CreateMaybeMessage<HeartbeatResponse>(arena);
+  }
+  using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
+  void CopyFrom(const HeartbeatResponse& from);
+  using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
+  void MergeFrom( const HeartbeatResponse& from) {
+    HeartbeatResponse::MergeImpl(*this, from);
+  }
+  private:
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
+  public:
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  uint8_t* _InternalSerialize(
+      uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(HeartbeatResponse* other);
+
+  private:
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "appguard.HeartbeatResponse";
+  }
+  protected:
+  explicit HeartbeatResponse(::PROTOBUF_NAMESPACE_ID::Arena* arena,
+                       bool is_message_owned = false);
+  public:
+
+  static const ClassData _class_data_;
+  const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*GetClassData() const final;
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kTokenFieldNumber = 1,
+    kStatusFieldNumber = 2,
+  };
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_token(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_token();
+  PROTOBUF_NODISCARD std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // .appguard.DeviceStatus status = 2;
+  void clear_status();
+  ::appguard::DeviceStatus status() const;
+  void set_status(::appguard::DeviceStatus value);
+  private:
+  ::appguard::DeviceStatus _internal_status() const;
+  void _internal_set_status(::appguard::DeviceStatus value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:appguard.HeartbeatResponse)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
+    int status_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_appguard_2eproto;
+};
+// -------------------------------------------------------------------
 
 class AppGuardTcpConnection final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:appguard.AppGuardTcpConnection) */ {
@@ -182,7 +551,7 @@ class AppGuardTcpConnection final :
                &_AppGuardTcpConnection_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    0;
+    2;
 
   friend void swap(AppGuardTcpConnection& a, AppGuardTcpConnection& b) {
     a.Swap(&b);
@@ -255,13 +624,28 @@ class AppGuardTcpConnection final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSourceIpFieldNumber = 1,
-    kDestinationIpFieldNumber = 3,
-    kProtocolFieldNumber = 5,
-    kSourcePortFieldNumber = 2,
-    kDestinationPortFieldNumber = 4,
+    kTokenFieldNumber = 1,
+    kSourceIpFieldNumber = 2,
+    kDestinationIpFieldNumber = 4,
+    kProtocolFieldNumber = 6,
+    kSourcePortFieldNumber = 3,
+    kDestinationPortFieldNumber = 5,
   };
-  // optional string source_ip = 1;
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_token(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_token();
+  PROTOBUF_NODISCARD std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // optional string source_ip = 2;
   bool has_source_ip() const;
   private:
   bool _internal_has_source_ip() const;
@@ -279,7 +663,7 @@ class AppGuardTcpConnection final :
   std::string* _internal_mutable_source_ip();
   public:
 
-  // optional string destination_ip = 3;
+  // optional string destination_ip = 4;
   bool has_destination_ip() const;
   private:
   bool _internal_has_destination_ip() const;
@@ -297,7 +681,7 @@ class AppGuardTcpConnection final :
   std::string* _internal_mutable_destination_ip();
   public:
 
-  // string protocol = 5;
+  // string protocol = 6;
   void clear_protocol();
   const std::string& protocol() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -311,7 +695,7 @@ class AppGuardTcpConnection final :
   std::string* _internal_mutable_protocol();
   public:
 
-  // optional uint32 source_port = 2;
+  // optional uint32 source_port = 3;
   bool has_source_port() const;
   private:
   bool _internal_has_source_port() const;
@@ -324,7 +708,7 @@ class AppGuardTcpConnection final :
   void _internal_set_source_port(uint32_t value);
   public:
 
-  // optional uint32 destination_port = 4;
+  // optional uint32 destination_port = 5;
   bool has_destination_port() const;
   private:
   bool _internal_has_destination_port() const;
@@ -347,6 +731,7 @@ class AppGuardTcpConnection final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr source_ip_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr destination_ip_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr protocol_;
@@ -406,7 +791,7 @@ class AppGuardIpInfo final :
                &_AppGuardIpInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    3;
 
   friend void swap(AppGuardIpInfo& a, AppGuardIpInfo& b) {
     a.Swap(&b);
@@ -648,13 +1033,13 @@ class AppGuardIpInfo final :
   std::string* _internal_mutable_timezone();
   public:
 
-  // uint32 blacklist = 100;
+  // bool blacklist = 100;
   void clear_blacklist();
-  uint32_t blacklist() const;
-  void set_blacklist(uint32_t value);
+  bool blacklist() const;
+  void set_blacklist(bool value);
   private:
-  uint32_t _internal_blacklist() const;
-  void _internal_set_blacklist(uint32_t value);
+  bool _internal_blacklist() const;
+  void _internal_set_blacklist(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:appguard.AppGuardIpInfo)
@@ -676,7 +1061,7 @@ class AppGuardIpInfo final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr region_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr postal_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr timezone_;
-    uint32_t blacklist_;
+    bool blacklist_;
   };
   union { Impl_ _impl_; };
   friend struct ::TableStruct_appguard_2eproto;
@@ -731,7 +1116,7 @@ class AppGuardTcpInfo final :
                &_AppGuardTcpInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    4;
 
   friend void swap(AppGuardTcpInfo& a, AppGuardTcpInfo& b) {
     a.Swap(&b);
@@ -975,7 +1360,7 @@ class AppGuardHttpRequest final :
                &_AppGuardHttpRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    7;
 
   friend void swap(AppGuardHttpRequest& a, AppGuardHttpRequest& b) {
     a.Swap(&b);
@@ -1051,14 +1436,15 @@ class AppGuardHttpRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kHeadersFieldNumber = 2,
-    kQueryFieldNumber = 5,
-    kOriginalUrlFieldNumber = 1,
-    kMethodFieldNumber = 3,
-    kBodyFieldNumber = 4,
+    kHeadersFieldNumber = 3,
+    kQueryFieldNumber = 6,
+    kTokenFieldNumber = 1,
+    kOriginalUrlFieldNumber = 2,
+    kMethodFieldNumber = 4,
+    kBodyFieldNumber = 5,
     kTcpInfoFieldNumber = 100,
   };
-  // map<string, string> headers = 2;
+  // map<string, string> headers = 3;
   int headers_size() const;
   private:
   int _internal_headers_size() const;
@@ -1075,7 +1461,7 @@ class AppGuardHttpRequest final :
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
       mutable_headers();
 
-  // map<string, string> query = 5;
+  // map<string, string> query = 6;
   int query_size() const;
   private:
   int _internal_query_size() const;
@@ -1092,7 +1478,21 @@ class AppGuardHttpRequest final :
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
       mutable_query();
 
-  // string original_url = 1;
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_token(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_token();
+  PROTOBUF_NODISCARD std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // string original_url = 2;
   void clear_original_url();
   const std::string& original_url() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1106,7 +1506,7 @@ class AppGuardHttpRequest final :
   std::string* _internal_mutable_original_url();
   public:
 
-  // string method = 3;
+  // string method = 4;
   void clear_method();
   const std::string& method() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1120,7 +1520,7 @@ class AppGuardHttpRequest final :
   std::string* _internal_mutable_method();
   public:
 
-  // optional string body = 4;
+  // optional string body = 5;
   bool has_body() const;
   private:
   bool _internal_has_body() const;
@@ -1176,6 +1576,7 @@ class AppGuardHttpRequest final :
         std::string, std::string,
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING> query_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr original_url_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr method_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr body_;
@@ -1262,7 +1663,7 @@ class AppGuardHttpResponse final :
                &_AppGuardHttpResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    9;
 
   friend void swap(AppGuardHttpResponse& a, AppGuardHttpResponse& b) {
     a.Swap(&b);
@@ -1338,11 +1739,12 @@ class AppGuardHttpResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kHeadersFieldNumber = 2,
+    kHeadersFieldNumber = 3,
+    kTokenFieldNumber = 1,
     kTcpInfoFieldNumber = 100,
-    kCodeFieldNumber = 1,
+    kCodeFieldNumber = 2,
   };
-  // map<string, string> headers = 2;
+  // map<string, string> headers = 3;
   int headers_size() const;
   private:
   int _internal_headers_size() const;
@@ -1358,6 +1760,20 @@ class AppGuardHttpResponse final :
       headers() const;
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
       mutable_headers();
+
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_token(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_token();
+  PROTOBUF_NODISCARD std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
 
   // .appguard.AppGuardTcpInfo tcp_info = 100;
   bool has_tcp_info() const;
@@ -1377,7 +1793,7 @@ class AppGuardHttpResponse final :
       ::appguard::AppGuardTcpInfo* tcp_info);
   ::appguard::AppGuardTcpInfo* unsafe_arena_release_tcp_info();
 
-  // uint32 code = 1;
+  // uint32 code = 2;
   void clear_code();
   uint32_t code() const;
   void set_code(uint32_t value);
@@ -1399,6 +1815,7 @@ class AppGuardHttpResponse final :
         std::string, std::string,
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING> headers_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
     ::appguard::AppGuardTcpInfo* tcp_info_;
     uint32_t code_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -1484,7 +1901,7 @@ class AppGuardSmtpRequest final :
                &_AppGuardSmtpRequest_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    11;
 
   friend void swap(AppGuardSmtpRequest& a, AppGuardSmtpRequest& b) {
     a.Swap(&b);
@@ -1560,11 +1977,12 @@ class AppGuardSmtpRequest final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kHeadersFieldNumber = 1,
-    kBodyFieldNumber = 2,
+    kHeadersFieldNumber = 2,
+    kTokenFieldNumber = 1,
+    kBodyFieldNumber = 3,
     kTcpInfoFieldNumber = 100,
   };
-  // map<string, string> headers = 1;
+  // map<string, string> headers = 2;
   int headers_size() const;
   private:
   int _internal_headers_size() const;
@@ -1581,7 +1999,21 @@ class AppGuardSmtpRequest final :
   ::PROTOBUF_NAMESPACE_ID::Map< std::string, std::string >*
       mutable_headers();
 
-  // optional string body = 2;
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_token(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_token();
+  PROTOBUF_NODISCARD std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
+  // optional string body = 3;
   bool has_body() const;
   private:
   bool _internal_has_body() const;
@@ -1632,6 +2064,7 @@ class AppGuardSmtpRequest final :
         std::string, std::string,
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING,
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::TYPE_STRING> headers_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr body_;
     ::appguard::AppGuardTcpInfo* tcp_info_;
   };
@@ -1688,7 +2121,7 @@ class AppGuardSmtpResponse final :
                &_AppGuardSmtpResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    12;
 
   friend void swap(AppGuardSmtpResponse& a, AppGuardSmtpResponse& b) {
     a.Swap(&b);
@@ -1761,9 +2194,24 @@ class AppGuardSmtpResponse final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kTokenFieldNumber = 1,
     kTcpInfoFieldNumber = 100,
-    kCodeFieldNumber = 1,
+    kCodeFieldNumber = 2,
   };
+  // string token = 1;
+  void clear_token();
+  const std::string& token() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_token(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_token();
+  PROTOBUF_NODISCARD std::string* release_token();
+  void set_allocated_token(std::string* token);
+  private:
+  const std::string& _internal_token() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_token(const std::string& value);
+  std::string* _internal_mutable_token();
+  public:
+
   // .appguard.AppGuardTcpInfo tcp_info = 100;
   bool has_tcp_info() const;
   private:
@@ -1782,7 +2230,7 @@ class AppGuardSmtpResponse final :
       ::appguard::AppGuardTcpInfo* tcp_info);
   ::appguard::AppGuardTcpInfo* unsafe_arena_release_tcp_info();
 
-  // optional uint32 code = 1;
+  // optional uint32 code = 2;
   bool has_code() const;
   private:
   bool _internal_has_code() const;
@@ -1805,6 +2253,7 @@ class AppGuardSmtpResponse final :
   struct Impl_ {
     ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr token_;
     ::appguard::AppGuardTcpInfo* tcp_info_;
     uint32_t code_;
   };
@@ -1861,7 +2310,7 @@ class AppGuardResponse final :
                &_AppGuardResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    13;
 
   friend void swap(AppGuardResponse& a, AppGuardResponse& b) {
     a.Swap(&b);
@@ -2009,7 +2458,7 @@ class AppGuardTcpResponse final :
                &_AppGuardTcpResponse_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    14;
 
   friend void swap(AppGuardTcpResponse& a, AppGuardTcpResponse& b) {
     a.Swap(&b);
@@ -2125,9 +2574,237 @@ class AppGuardTcpResponse final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
+// HeartbeatRequest
+
+// string app_id = 1;
+inline void HeartbeatRequest::clear_app_id() {
+  _impl_.app_id_.ClearToEmpty();
+}
+inline const std::string& HeartbeatRequest::app_id() const {
+  // @@protoc_insertion_point(field_get:appguard.HeartbeatRequest.app_id)
+  return _internal_app_id();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void HeartbeatRequest::set_app_id(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.app_id_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.HeartbeatRequest.app_id)
+}
+inline std::string* HeartbeatRequest::mutable_app_id() {
+  std::string* _s = _internal_mutable_app_id();
+  // @@protoc_insertion_point(field_mutable:appguard.HeartbeatRequest.app_id)
+  return _s;
+}
+inline const std::string& HeartbeatRequest::_internal_app_id() const {
+  return _impl_.app_id_.Get();
+}
+inline void HeartbeatRequest::_internal_set_app_id(const std::string& value) {
+  
+  _impl_.app_id_.Set(value, GetArenaForAllocation());
+}
+inline std::string* HeartbeatRequest::_internal_mutable_app_id() {
+  
+  return _impl_.app_id_.Mutable(GetArenaForAllocation());
+}
+inline std::string* HeartbeatRequest::release_app_id() {
+  // @@protoc_insertion_point(field_release:appguard.HeartbeatRequest.app_id)
+  return _impl_.app_id_.Release();
+}
+inline void HeartbeatRequest::set_allocated_app_id(std::string* app_id) {
+  if (app_id != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.app_id_.SetAllocated(app_id, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.app_id_.IsDefault()) {
+    _impl_.app_id_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.HeartbeatRequest.app_id)
+}
+
+// string app_secret = 2;
+inline void HeartbeatRequest::clear_app_secret() {
+  _impl_.app_secret_.ClearToEmpty();
+}
+inline const std::string& HeartbeatRequest::app_secret() const {
+  // @@protoc_insertion_point(field_get:appguard.HeartbeatRequest.app_secret)
+  return _internal_app_secret();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void HeartbeatRequest::set_app_secret(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.app_secret_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.HeartbeatRequest.app_secret)
+}
+inline std::string* HeartbeatRequest::mutable_app_secret() {
+  std::string* _s = _internal_mutable_app_secret();
+  // @@protoc_insertion_point(field_mutable:appguard.HeartbeatRequest.app_secret)
+  return _s;
+}
+inline const std::string& HeartbeatRequest::_internal_app_secret() const {
+  return _impl_.app_secret_.Get();
+}
+inline void HeartbeatRequest::_internal_set_app_secret(const std::string& value) {
+  
+  _impl_.app_secret_.Set(value, GetArenaForAllocation());
+}
+inline std::string* HeartbeatRequest::_internal_mutable_app_secret() {
+  
+  return _impl_.app_secret_.Mutable(GetArenaForAllocation());
+}
+inline std::string* HeartbeatRequest::release_app_secret() {
+  // @@protoc_insertion_point(field_release:appguard.HeartbeatRequest.app_secret)
+  return _impl_.app_secret_.Release();
+}
+inline void HeartbeatRequest::set_allocated_app_secret(std::string* app_secret) {
+  if (app_secret != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.app_secret_.SetAllocated(app_secret, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.app_secret_.IsDefault()) {
+    _impl_.app_secret_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.HeartbeatRequest.app_secret)
+}
+
+// -------------------------------------------------------------------
+
+// HeartbeatResponse
+
+// string token = 1;
+inline void HeartbeatResponse::clear_token() {
+  _impl_.token_.ClearToEmpty();
+}
+inline const std::string& HeartbeatResponse::token() const {
+  // @@protoc_insertion_point(field_get:appguard.HeartbeatResponse.token)
+  return _internal_token();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void HeartbeatResponse::set_token(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.token_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.HeartbeatResponse.token)
+}
+inline std::string* HeartbeatResponse::mutable_token() {
+  std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:appguard.HeartbeatResponse.token)
+  return _s;
+}
+inline const std::string& HeartbeatResponse::_internal_token() const {
+  return _impl_.token_.Get();
+}
+inline void HeartbeatResponse::_internal_set_token(const std::string& value) {
+  
+  _impl_.token_.Set(value, GetArenaForAllocation());
+}
+inline std::string* HeartbeatResponse::_internal_mutable_token() {
+  
+  return _impl_.token_.Mutable(GetArenaForAllocation());
+}
+inline std::string* HeartbeatResponse::release_token() {
+  // @@protoc_insertion_point(field_release:appguard.HeartbeatResponse.token)
+  return _impl_.token_.Release();
+}
+inline void HeartbeatResponse::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.token_.SetAllocated(token, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.HeartbeatResponse.token)
+}
+
+// .appguard.DeviceStatus status = 2;
+inline void HeartbeatResponse::clear_status() {
+  _impl_.status_ = 0;
+}
+inline ::appguard::DeviceStatus HeartbeatResponse::_internal_status() const {
+  return static_cast< ::appguard::DeviceStatus >(_impl_.status_);
+}
+inline ::appguard::DeviceStatus HeartbeatResponse::status() const {
+  // @@protoc_insertion_point(field_get:appguard.HeartbeatResponse.status)
+  return _internal_status();
+}
+inline void HeartbeatResponse::_internal_set_status(::appguard::DeviceStatus value) {
+  
+  _impl_.status_ = value;
+}
+inline void HeartbeatResponse::set_status(::appguard::DeviceStatus value) {
+  _internal_set_status(value);
+  // @@protoc_insertion_point(field_set:appguard.HeartbeatResponse.status)
+}
+
+// -------------------------------------------------------------------
+
 // AppGuardTcpConnection
 
-// optional string source_ip = 1;
+// string token = 1;
+inline void AppGuardTcpConnection::clear_token() {
+  _impl_.token_.ClearToEmpty();
+}
+inline const std::string& AppGuardTcpConnection::token() const {
+  // @@protoc_insertion_point(field_get:appguard.AppGuardTcpConnection.token)
+  return _internal_token();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AppGuardTcpConnection::set_token(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.token_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.AppGuardTcpConnection.token)
+}
+inline std::string* AppGuardTcpConnection::mutable_token() {
+  std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:appguard.AppGuardTcpConnection.token)
+  return _s;
+}
+inline const std::string& AppGuardTcpConnection::_internal_token() const {
+  return _impl_.token_.Get();
+}
+inline void AppGuardTcpConnection::_internal_set_token(const std::string& value) {
+  
+  _impl_.token_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AppGuardTcpConnection::_internal_mutable_token() {
+  
+  return _impl_.token_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AppGuardTcpConnection::release_token() {
+  // @@protoc_insertion_point(field_release:appguard.AppGuardTcpConnection.token)
+  return _impl_.token_.Release();
+}
+inline void AppGuardTcpConnection::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.token_.SetAllocated(token, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardTcpConnection.token)
+}
+
+// optional string source_ip = 2;
 inline bool AppGuardTcpConnection::_internal_has_source_ip() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -2195,7 +2872,7 @@ inline void AppGuardTcpConnection::set_allocated_source_ip(std::string* source_i
   // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardTcpConnection.source_ip)
 }
 
-// optional uint32 source_port = 2;
+// optional uint32 source_port = 3;
 inline bool AppGuardTcpConnection::_internal_has_source_port() const {
   bool value = (_impl_._has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -2223,7 +2900,7 @@ inline void AppGuardTcpConnection::set_source_port(uint32_t value) {
   // @@protoc_insertion_point(field_set:appguard.AppGuardTcpConnection.source_port)
 }
 
-// optional string destination_ip = 3;
+// optional string destination_ip = 4;
 inline bool AppGuardTcpConnection::_internal_has_destination_ip() const {
   bool value = (_impl_._has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -2291,7 +2968,7 @@ inline void AppGuardTcpConnection::set_allocated_destination_ip(std::string* des
   // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardTcpConnection.destination_ip)
 }
 
-// optional uint32 destination_port = 4;
+// optional uint32 destination_port = 5;
 inline bool AppGuardTcpConnection::_internal_has_destination_port() const {
   bool value = (_impl_._has_bits_[0] & 0x00000008u) != 0;
   return value;
@@ -2319,7 +2996,7 @@ inline void AppGuardTcpConnection::set_destination_port(uint32_t value) {
   // @@protoc_insertion_point(field_set:appguard.AppGuardTcpConnection.destination_port)
 }
 
-// string protocol = 5;
+// string protocol = 6;
 inline void AppGuardTcpConnection::clear_protocol() {
   _impl_.protocol_.ClearToEmpty();
 }
@@ -2967,22 +3644,22 @@ inline void AppGuardIpInfo::set_allocated_timezone(std::string* timezone) {
   // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardIpInfo.timezone)
 }
 
-// uint32 blacklist = 100;
+// bool blacklist = 100;
 inline void AppGuardIpInfo::clear_blacklist() {
-  _impl_.blacklist_ = 0u;
+  _impl_.blacklist_ = false;
 }
-inline uint32_t AppGuardIpInfo::_internal_blacklist() const {
+inline bool AppGuardIpInfo::_internal_blacklist() const {
   return _impl_.blacklist_;
 }
-inline uint32_t AppGuardIpInfo::blacklist() const {
+inline bool AppGuardIpInfo::blacklist() const {
   // @@protoc_insertion_point(field_get:appguard.AppGuardIpInfo.blacklist)
   return _internal_blacklist();
 }
-inline void AppGuardIpInfo::_internal_set_blacklist(uint32_t value) {
+inline void AppGuardIpInfo::_internal_set_blacklist(bool value) {
   
   _impl_.blacklist_ = value;
 }
-inline void AppGuardIpInfo::set_blacklist(uint32_t value) {
+inline void AppGuardIpInfo::set_blacklist(bool value) {
   _internal_set_blacklist(value);
   // @@protoc_insertion_point(field_set:appguard.AppGuardIpInfo.blacklist)
 }
@@ -3199,7 +3876,57 @@ inline void AppGuardTcpInfo::set_tcp_id(uint64_t value) {
 
 // AppGuardHttpRequest
 
-// string original_url = 1;
+// string token = 1;
+inline void AppGuardHttpRequest::clear_token() {
+  _impl_.token_.ClearToEmpty();
+}
+inline const std::string& AppGuardHttpRequest::token() const {
+  // @@protoc_insertion_point(field_get:appguard.AppGuardHttpRequest.token)
+  return _internal_token();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AppGuardHttpRequest::set_token(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.token_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.AppGuardHttpRequest.token)
+}
+inline std::string* AppGuardHttpRequest::mutable_token() {
+  std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:appguard.AppGuardHttpRequest.token)
+  return _s;
+}
+inline const std::string& AppGuardHttpRequest::_internal_token() const {
+  return _impl_.token_.Get();
+}
+inline void AppGuardHttpRequest::_internal_set_token(const std::string& value) {
+  
+  _impl_.token_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AppGuardHttpRequest::_internal_mutable_token() {
+  
+  return _impl_.token_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AppGuardHttpRequest::release_token() {
+  // @@protoc_insertion_point(field_release:appguard.AppGuardHttpRequest.token)
+  return _impl_.token_.Release();
+}
+inline void AppGuardHttpRequest::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.token_.SetAllocated(token, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardHttpRequest.token)
+}
+
+// string original_url = 2;
 inline void AppGuardHttpRequest::clear_original_url() {
   _impl_.original_url_.ClearToEmpty();
 }
@@ -3249,7 +3976,7 @@ inline void AppGuardHttpRequest::set_allocated_original_url(std::string* origina
   // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardHttpRequest.original_url)
 }
 
-// map<string, string> headers = 2;
+// map<string, string> headers = 3;
 inline int AppGuardHttpRequest::_internal_headers_size() const {
   return _impl_.headers_.size();
 }
@@ -3278,7 +4005,7 @@ AppGuardHttpRequest::mutable_headers() {
   return _internal_mutable_headers();
 }
 
-// string method = 3;
+// string method = 4;
 inline void AppGuardHttpRequest::clear_method() {
   _impl_.method_.ClearToEmpty();
 }
@@ -3328,7 +4055,7 @@ inline void AppGuardHttpRequest::set_allocated_method(std::string* method) {
   // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardHttpRequest.method)
 }
 
-// optional string body = 4;
+// optional string body = 5;
 inline bool AppGuardHttpRequest::_internal_has_body() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -3396,7 +4123,7 @@ inline void AppGuardHttpRequest::set_allocated_body(std::string* body) {
   // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardHttpRequest.body)
 }
 
-// map<string, string> query = 5;
+// map<string, string> query = 6;
 inline int AppGuardHttpRequest::_internal_query_size() const {
   return _impl_.query_.size();
 }
@@ -3521,7 +4248,57 @@ inline void AppGuardHttpRequest::set_allocated_tcp_info(::appguard::AppGuardTcpI
 
 // AppGuardHttpResponse
 
-// uint32 code = 1;
+// string token = 1;
+inline void AppGuardHttpResponse::clear_token() {
+  _impl_.token_.ClearToEmpty();
+}
+inline const std::string& AppGuardHttpResponse::token() const {
+  // @@protoc_insertion_point(field_get:appguard.AppGuardHttpResponse.token)
+  return _internal_token();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AppGuardHttpResponse::set_token(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.token_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.AppGuardHttpResponse.token)
+}
+inline std::string* AppGuardHttpResponse::mutable_token() {
+  std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:appguard.AppGuardHttpResponse.token)
+  return _s;
+}
+inline const std::string& AppGuardHttpResponse::_internal_token() const {
+  return _impl_.token_.Get();
+}
+inline void AppGuardHttpResponse::_internal_set_token(const std::string& value) {
+  
+  _impl_.token_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AppGuardHttpResponse::_internal_mutable_token() {
+  
+  return _impl_.token_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AppGuardHttpResponse::release_token() {
+  // @@protoc_insertion_point(field_release:appguard.AppGuardHttpResponse.token)
+  return _impl_.token_.Release();
+}
+inline void AppGuardHttpResponse::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.token_.SetAllocated(token, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardHttpResponse.token)
+}
+
+// uint32 code = 2;
 inline void AppGuardHttpResponse::clear_code() {
   _impl_.code_ = 0u;
 }
@@ -3541,7 +4318,7 @@ inline void AppGuardHttpResponse::set_code(uint32_t value) {
   // @@protoc_insertion_point(field_set:appguard.AppGuardHttpResponse.code)
 }
 
-// map<string, string> headers = 2;
+// map<string, string> headers = 3;
 inline int AppGuardHttpResponse::_internal_headers_size() const {
   return _impl_.headers_.size();
 }
@@ -3666,7 +4443,57 @@ inline void AppGuardHttpResponse::set_allocated_tcp_info(::appguard::AppGuardTcp
 
 // AppGuardSmtpRequest
 
-// map<string, string> headers = 1;
+// string token = 1;
+inline void AppGuardSmtpRequest::clear_token() {
+  _impl_.token_.ClearToEmpty();
+}
+inline const std::string& AppGuardSmtpRequest::token() const {
+  // @@protoc_insertion_point(field_get:appguard.AppGuardSmtpRequest.token)
+  return _internal_token();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AppGuardSmtpRequest::set_token(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.token_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.AppGuardSmtpRequest.token)
+}
+inline std::string* AppGuardSmtpRequest::mutable_token() {
+  std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:appguard.AppGuardSmtpRequest.token)
+  return _s;
+}
+inline const std::string& AppGuardSmtpRequest::_internal_token() const {
+  return _impl_.token_.Get();
+}
+inline void AppGuardSmtpRequest::_internal_set_token(const std::string& value) {
+  
+  _impl_.token_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AppGuardSmtpRequest::_internal_mutable_token() {
+  
+  return _impl_.token_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AppGuardSmtpRequest::release_token() {
+  // @@protoc_insertion_point(field_release:appguard.AppGuardSmtpRequest.token)
+  return _impl_.token_.Release();
+}
+inline void AppGuardSmtpRequest::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.token_.SetAllocated(token, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardSmtpRequest.token)
+}
+
+// map<string, string> headers = 2;
 inline int AppGuardSmtpRequest::_internal_headers_size() const {
   return _impl_.headers_.size();
 }
@@ -3695,7 +4522,7 @@ AppGuardSmtpRequest::mutable_headers() {
   return _internal_mutable_headers();
 }
 
-// optional string body = 2;
+// optional string body = 3;
 inline bool AppGuardSmtpRequest::_internal_has_body() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -3857,7 +4684,57 @@ inline void AppGuardSmtpRequest::set_allocated_tcp_info(::appguard::AppGuardTcpI
 
 // AppGuardSmtpResponse
 
-// optional uint32 code = 1;
+// string token = 1;
+inline void AppGuardSmtpResponse::clear_token() {
+  _impl_.token_.ClearToEmpty();
+}
+inline const std::string& AppGuardSmtpResponse::token() const {
+  // @@protoc_insertion_point(field_get:appguard.AppGuardSmtpResponse.token)
+  return _internal_token();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void AppGuardSmtpResponse::set_token(ArgT0&& arg0, ArgT... args) {
+ 
+ _impl_.token_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:appguard.AppGuardSmtpResponse.token)
+}
+inline std::string* AppGuardSmtpResponse::mutable_token() {
+  std::string* _s = _internal_mutable_token();
+  // @@protoc_insertion_point(field_mutable:appguard.AppGuardSmtpResponse.token)
+  return _s;
+}
+inline const std::string& AppGuardSmtpResponse::_internal_token() const {
+  return _impl_.token_.Get();
+}
+inline void AppGuardSmtpResponse::_internal_set_token(const std::string& value) {
+  
+  _impl_.token_.Set(value, GetArenaForAllocation());
+}
+inline std::string* AppGuardSmtpResponse::_internal_mutable_token() {
+  
+  return _impl_.token_.Mutable(GetArenaForAllocation());
+}
+inline std::string* AppGuardSmtpResponse::release_token() {
+  // @@protoc_insertion_point(field_release:appguard.AppGuardSmtpResponse.token)
+  return _impl_.token_.Release();
+}
+inline void AppGuardSmtpResponse::set_allocated_token(std::string* token) {
+  if (token != nullptr) {
+    
+  } else {
+    
+  }
+  _impl_.token_.SetAllocated(token, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (_impl_.token_.IsDefault()) {
+    _impl_.token_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:appguard.AppGuardSmtpResponse.token)
+}
+
+// optional uint32 code = 2;
 inline bool AppGuardSmtpResponse::_internal_has_code() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -4120,6 +4997,10 @@ inline void AppGuardTcpResponse::set_allocated_tcp_info(::appguard::AppGuardTcpI
 
 // -------------------------------------------------------------------
 
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -4127,6 +5008,11 @@ inline void AppGuardTcpResponse::set_allocated_tcp_info(::appguard::AppGuardTcpI
 
 PROTOBUF_NAMESPACE_OPEN
 
+template <> struct is_proto_enum< ::appguard::DeviceStatus> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::appguard::DeviceStatus>() {
+  return ::appguard::DeviceStatus_descriptor();
+}
 template <> struct is_proto_enum< ::appguard::FirewallPolicy> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::appguard::FirewallPolicy>() {

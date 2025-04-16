@@ -22,6 +22,7 @@
 namespace appguard {
 
 static const char* AppGuard_method_names[] = {
+  "/appguard.AppGuard/Heartbeat",
   "/appguard.AppGuard/HandleTcpConnection",
   "/appguard.AppGuard/HandleHttpRequest",
   "/appguard.AppGuard/HandleHttpResponse",
@@ -36,12 +37,29 @@ std::unique_ptr< AppGuard::Stub> AppGuard::NewStub(const std::shared_ptr< ::grpc
 }
 
 AppGuard::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_HandleTcpConnection_(AppGuard_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_HandleHttpRequest_(AppGuard_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_HandleHttpResponse_(AppGuard_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_HandleSmtpRequest_(AppGuard_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
-  , rpcmethod_HandleSmtpResponse_(AppGuard_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_Heartbeat_(AppGuard_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_HandleTcpConnection_(AppGuard_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_HandleHttpRequest_(AppGuard_method_names[2], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_HandleHttpResponse_(AppGuard_method_names[3], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_HandleSmtpRequest_(AppGuard_method_names[4], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_HandleSmtpResponse_(AppGuard_method_names[5], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
   {}
+
+::grpc::ClientReader< ::appguard::HeartbeatResponse>* AppGuard::Stub::HeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::appguard::HeartbeatResponse>::Create(channel_.get(), rpcmethod_Heartbeat_, context, request);
+}
+
+void AppGuard::Stub::async::Heartbeat(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest* request, ::grpc::ClientReadReactor< ::appguard::HeartbeatResponse>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::appguard::HeartbeatResponse>::Create(stub_->channel_.get(), stub_->rpcmethod_Heartbeat_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>* AppGuard::Stub::AsyncHeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::appguard::HeartbeatResponse>::Create(channel_.get(), cq, rpcmethod_Heartbeat_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::appguard::HeartbeatResponse>* AppGuard::Stub::PrepareAsyncHeartbeatRaw(::grpc::ClientContext* context, const ::appguard::HeartbeatRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::appguard::HeartbeatResponse>::Create(channel_.get(), cq, rpcmethod_Heartbeat_, context, request, false, nullptr);
+}
 
 ::grpc::Status AppGuard::Stub::HandleTcpConnection(::grpc::ClientContext* context, const ::appguard::AppGuardTcpConnection& request, ::appguard::AppGuardTcpResponse* response) {
   return ::grpc::internal::BlockingUnaryCall< ::appguard::AppGuardTcpConnection, ::appguard::AppGuardTcpResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_HandleTcpConnection_, context, request, response);
@@ -161,6 +179,16 @@ void AppGuard::Stub::async::HandleSmtpResponse(::grpc::ClientContext* context, c
 AppGuard::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
       AppGuard_method_names[0],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< AppGuard::Service, ::appguard::HeartbeatRequest, ::appguard::HeartbeatResponse>(
+          [](AppGuard::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::appguard::HeartbeatRequest* req,
+             ::grpc::ServerWriter<::appguard::HeartbeatResponse>* writer) {
+               return service->Heartbeat(ctx, req, writer);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      AppGuard_method_names[1],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< AppGuard::Service, ::appguard::AppGuardTcpConnection, ::appguard::AppGuardTcpResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](AppGuard::Service* service,
@@ -170,7 +198,7 @@ AppGuard::Service::Service() {
                return service->HandleTcpConnection(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      AppGuard_method_names[1],
+      AppGuard_method_names[2],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< AppGuard::Service, ::appguard::AppGuardHttpRequest, ::appguard::AppGuardResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](AppGuard::Service* service,
@@ -180,7 +208,7 @@ AppGuard::Service::Service() {
                return service->HandleHttpRequest(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      AppGuard_method_names[2],
+      AppGuard_method_names[3],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< AppGuard::Service, ::appguard::AppGuardHttpResponse, ::appguard::AppGuardResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](AppGuard::Service* service,
@@ -190,7 +218,7 @@ AppGuard::Service::Service() {
                return service->HandleHttpResponse(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      AppGuard_method_names[3],
+      AppGuard_method_names[4],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< AppGuard::Service, ::appguard::AppGuardSmtpRequest, ::appguard::AppGuardResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](AppGuard::Service* service,
@@ -200,7 +228,7 @@ AppGuard::Service::Service() {
                return service->HandleSmtpRequest(ctx, req, resp);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      AppGuard_method_names[4],
+      AppGuard_method_names[5],
       ::grpc::internal::RpcMethod::NORMAL_RPC,
       new ::grpc::internal::RpcMethodHandler< AppGuard::Service, ::appguard::AppGuardSmtpResponse, ::appguard::AppGuardResponse, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(
           [](AppGuard::Service* service,
@@ -212,6 +240,13 @@ AppGuard::Service::Service() {
 }
 
 AppGuard::Service::~Service() {
+}
+
+::grpc::Status AppGuard::Service::Heartbeat(::grpc::ServerContext* context, const ::appguard::HeartbeatRequest* request, ::grpc::ServerWriter< ::appguard::HeartbeatResponse>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
 ::grpc::Status AppGuard::Service::HandleTcpConnection(::grpc::ServerContext* context, const ::appguard::AppGuardTcpConnection* request, ::appguard::AppGuardTcpResponse* response) {
