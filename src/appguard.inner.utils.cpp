@@ -7,7 +7,7 @@
 
 namespace appguard::inner_utils
 {
-    static bool parse_sockaddr(const sockaddr *addr, std::string &ip, uint16_t &port)
+    static bool ParseSocketAddr(const sockaddr *addr, std::string &ip, uint16_t &port)
     {
         if (!addr)
             return false;
@@ -38,7 +38,7 @@ namespace appguard::inner_utils
         return false;
     }
 
-    static std::unordered_map<std::string, std::string> parse_ngx_request_headers(ngx_http_request_t *request)
+    static std::unordered_map<std::string, std::string> NgxParseRequestHeaders(ngx_http_request_t *request)
     {
         std::unordered_map<std::string, std::string> retval = {};
 
@@ -66,7 +66,7 @@ namespace appguard::inner_utils
         return retval;
     }
 
-    static std::unordered_map<std::string, std::string> parse_query_parameters(const std::string &uri)
+    static std::unordered_map<std::string, std::string> ParseQueryParameters(const std::string &uri)
     {
         std::unordered_map<std::string, std::string> retval;
 
@@ -96,6 +96,16 @@ namespace appguard::inner_utils
         return retval;
     }
 
+    std::string NgxStringToStdString(ngx_str_t *str)
+    {
+        if (!str || !str->data || str->data == 0)
+            return std::string();
+
+        return std::string(
+            reinterpret_cast<char *>(str->data),
+            str->len);
+    }
+
     appguard::AppGuardTcpConnection ExtractTcpConnectionInfo(ngx_http_request_t *request)
     {
         appguard::AppGuardTcpConnection tcp_connection;
@@ -103,21 +113,20 @@ namespace appguard::inner_utils
         std::string ip_address{};
         uint16_t port{};
 
-        if (appguard::inner_utils::parse_sockaddr(request->connection->sockaddr, ip_address, port))
+        if (ParseSocketAddr(request->connection->sockaddr, ip_address, port))
         {
             tcp_connection.set_source_ip(ip_address);
             tcp_connection.set_source_port(port);
         }
 
-        if (appguard::inner_utils::parse_sockaddr(request->connection->local_sockaddr, ip_address, port))
+        if (ParseSocketAddr(request->connection->local_sockaddr, ip_address, port))
         {
             tcp_connection.set_destination_ip(ip_address);
             tcp_connection.set_destination_port(port);
         }
 
-        std::string protocol(reinterpret_cast<char *>(request->http_protocol.data), request->http_protocol.len);
-        if (!protocol.empty())
-            tcp_connection.set_protocol(protocol);
+        auto protocol = NgxStringToStdString(&request->http_protocol);
+        tcp_connection.set_protocol(protocol);
 
         return tcp_connection;
     }
@@ -128,7 +137,7 @@ namespace appguard::inner_utils
 
         std::string uri(reinterpret_cast<char *>(request->uri.data), request->uri.len);
 
-        auto query_params = appguard::inner_utils::parse_query_parameters(uri);
+        auto query_params = ParseQueryParameters(uri);
         for (const auto &[key, value] : query_params)
         {
             http_request.mutable_query()->try_emplace(key, value);
@@ -136,7 +145,7 @@ namespace appguard::inner_utils
 
         http_request.set_original_url(uri);
 
-        auto headers = appguard::inner_utils::parse_ngx_request_headers(request);
+        auto headers = NgxParseRequestHeaders(request);
         for (const auto &[key, value] : headers)
         {
             http_request.mutable_headers()->try_emplace(key, value);
@@ -146,5 +155,17 @@ namespace appguard::inner_utils
         http_request.set_method(method);
 
         return http_request;
+    }
+
+    appguard::FirewallPolicy StringToFirewallPolicy(const std::string &str)
+    {
+        auto lowercase = str;
+        std::transform(lowercase.begin(), lowercase.end(), lowercase.begin(), [](unsigned char c)
+                       { return static_cast<unsigned char>(std::tolower(c)); });
+
+        if (lowercase == "allow")
+            return appguard::FirewallPolicy::ALLOW;
+        else
+            return appguard::FirewallPolicy::DENY;
     }
 }

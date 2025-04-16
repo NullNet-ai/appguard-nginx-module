@@ -25,7 +25,14 @@ public:
     struct Config
     {
         ngx_flag_t enabled = NGX_CONF_UNSET;
+        ngx_flag_t tls = NGX_CONF_UNSET;
+        
         ngx_str_t server_addr = ngx_null_string;
+
+        ngx_str_t app_id = ngx_null_string;
+        ngx_str_t app_secret = ngx_null_string;
+
+        ngx_str_t default_policy = ngx_null_string;
     };
 
     /**

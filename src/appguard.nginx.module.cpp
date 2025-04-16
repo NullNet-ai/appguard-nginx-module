@@ -2,6 +2,7 @@
 #include "appguard.inner.utils.hpp"
 #include "appguard.nginx.module.hpp"
 #include "appguard.client.exception.hpp"
+#include "appguard.client.info.hpp"
 
 extern "C"
 {
@@ -34,11 +35,39 @@ extern "C"
          offsetof(AppGuardNginxModule::Config, enabled),
          nullptr},
 
+        {ngx_string("appguard_tls"),
+         NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_FLAG,
+         ngx_conf_set_flag_slot,
+         NGX_HTTP_SRV_CONF_OFFSET,
+         offsetof(AppGuardNginxModule::Config, tls),
+         nullptr},
+
         {ngx_string("appguard_server_addr"),
          NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_TAKE1,
          ngx_conf_set_str_slot,
          NGX_HTTP_SRV_CONF_OFFSET,
          offsetof(AppGuardNginxModule::Config, server_addr),
+         nullptr},
+
+        {ngx_string("appguard_app_id"),
+         NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_TAKE1,
+         ngx_conf_set_str_slot,
+         NGX_HTTP_SRV_CONF_OFFSET,
+         offsetof(AppGuardNginxModule::Config, app_id),
+         nullptr},
+
+        {ngx_string("appguard_app_secret"),
+         NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_TAKE1,
+         ngx_conf_set_str_slot,
+         NGX_HTTP_SRV_CONF_OFFSET,
+         offsetof(AppGuardNginxModule::Config, app_secret),
+         nullptr},
+
+        {ngx_string("appguard_default_policy"),
+         NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_TAKE1,
+         ngx_conf_set_str_slot,
+         NGX_HTTP_SRV_CONF_OFFSET,
+         offsetof(AppGuardNginxModule::Config, default_policy),
          nullptr},
 
         ngx_null_command};
@@ -71,6 +100,19 @@ extern "C"
         NGX_MODULE_V1_PADDING};
 }
 
+static ngx_int_t ActOnPolicy(appguard::FirewallPolicy policy, appguard::FirewallPolicy default_policy)
+{
+    switch (policy)
+    {
+    case appguard::FirewallPolicy::ALLOW:
+        return NGX_DECLINED;
+    case appguard::FirewallPolicy::DENY:
+        return NGX_ABORT;
+    default:
+        return (default_policy == appguard::FirewallPolicy::ALLOW) ? NGX_DECLINED : NGX_ABORT;
+    }
+}
+
 ngx_int_t AppGuardNginxModule::Initialize(ngx_conf_t *cf)
 {
     auto *cmcf = static_cast<ngx_http_core_main_conf_t *>(
@@ -88,13 +130,11 @@ ngx_int_t AppGuardNginxModule::Initialize(ngx_conf_t *cf)
 
 void *AppGuardNginxModule::CreateSrvConfig(ngx_conf_t *cf)
 {
-    auto *conf = static_cast<Config *>(ngx_pcalloc(cf->pool, sizeof(Config)));
-    if (!conf)
+    void *memory = ngx_pcalloc(cf->pool, sizeof(Config));
+    if (!memory)
         return nullptr;
 
-    conf->enabled = NGX_CONF_UNSET;
-
-    return conf;
+    return new (memory) Config();
 }
 
 char *AppGuardNginxModule::MergeSrvConfig(ngx_conf_t *cf, void *parent, void *child)
@@ -103,7 +143,13 @@ char *AppGuardNginxModule::MergeSrvConfig(ngx_conf_t *cf, void *parent, void *ch
     auto *conf = static_cast<AppGuardNginxModule::Config *>(child);
 
     ngx_conf_merge_value(conf->enabled, prev->enabled, 0);
+    ngx_conf_merge_value(conf->tls, prev->tls, 0);
+
     ngx_conf_merge_str_value(conf->server_addr, prev->server_addr, "");
+    ngx_conf_merge_str_value(conf->app_id, prev->app_id, "");
+
+    ngx_conf_merge_str_value(conf->app_secret, prev->app_secret, "");
+    ngx_conf_merge_str_value(conf->default_policy, prev->default_policy, "");
 
     return NGX_CONF_OK;
 }
@@ -114,13 +160,33 @@ ngx_int_t AppGuardNginxModule::Handler(ngx_http_request_t *request)
     if (!conf || !conf->enabled)
         return NGX_DECLINED;
 
+    auto default_policy_str = appguard::inner_utils::NgxStringToStdString(&conf->default_policy);
+    auto default_policy = appguard::inner_utils::StringToFirewallPolicy(default_policy_str);
+    auto app_id = appguard::inner_utils::NgxStringToStdString(&conf->app_id);
+    auto app_secret = appguard::inner_utils::NgxStringToStdString(&conf->app_secret);
+    auto server_addr = appguard::inner_utils::NgxStringToStdString(&conf->server_addr);
+
+    if (app_id.empty() || app_secret.empty())
+    {
+        ngx_log_error(
+            NGX_LOG_ERR,
+            request->connection->log,
+            0,
+            "AppGuard: App Id and/or App Secret haven't been set; falling back to default policy '%s'",
+            default_policy_str.data());
+
+        return ActOnPolicy(appguard::FirewallPolicy::UNKNOWN, default_policy);
+    }
+
     try
     {
-        std::string server_address(
-            reinterpret_cast<char *>(conf->server_addr.data),
-            conf->server_addr.len);
+        AppGaurdClientInfo client_info{
+            .app_id = app_id,
+            .app_secret = app_secret,
+            .server_addr = server_addr,
+            .tls = !!conf->tls};
 
-        auto client = AppGuardWrapper::create(server_address);
+        auto client = AppGuardWrapper::CreateClient(client_info);
 
         auto connection = appguard::inner_utils::ExtractTcpConnectionInfo(request);
         auto tcp_response = client.HandleTcpConnection(connection);
@@ -129,37 +195,19 @@ ngx_int_t AppGuardNginxModule::Handler(ngx_http_request_t *request)
         http_request.set_allocated_tcp_info(new appguard::AppGuardTcpInfo(tcp_response.tcp_info()));
         auto http_response = client.HandleHttpRequest(http_request);
 
-        switch (http_response.policy())
-        {
-        case appguard::FirewallPolicy::ALLOW:
-            return NGX_DECLINED;
-        case appguard::FirewallPolicy::DENY:
-            return NGX_ABORT;
-        case appguard::FirewallPolicy::UNKNOWN:
-            return NGX_DECLINED;
-        default:
-            auto log = request->connection->log;
-
-            ngx_log_error(
-                NGX_LOG_ERR,
-                log, 0, "AppGuard: Unkown firewall policy: %d",
-                static_cast<uint32_t>(http_response.policy()));
-
-            return NGX_DECLINED;
-        }
+        return ActOnPolicy(http_response.policy(), default_policy);
     }
     catch (AppGuardClientException &ex)
     {
-        auto log = request->connection->log;
-
         ngx_log_error(
             NGX_LOG_ERR,
-            log,
+            request->connection->log,
             0,
-            "AppGuard Error: %s, Status Code: %d",
+            "AppGuard Error: %s, Status Code: %d; falling back to default policy '%s'",
             ex.what(),
-            static_cast<uint32_t>(ex.code()));
+            static_cast<uint32_t>(ex.code()),
+            default_policy_str.data());
 
-        return NGX_DECLINED;
+        return ActOnPolicy(appguard::FirewallPolicy::UNKNOWN, default_policy);
     }
 }

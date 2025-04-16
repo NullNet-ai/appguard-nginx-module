@@ -3,73 +3,99 @@
 
 #include "appguard.pb.h"
 #include "appguard.grpc.pb.h"
+#include "appguard.client.info.hpp"
+#include "appguard.stream.hpp"
 
 /**
- * @brief Client wrapper for communicating with the AppGuard gRPC server.
+ * @brief Wrapper class for interacting with the AppGuard service.
  *
- * This class provides high-level methods for handling TCP and HTTP interactions
- * with the AppGuard service, abstracting the underlying gRPC implementation.
+ * This class provides methods to create a client instance and handle various types of connections
+ * and requests with the AppGuard service.
  */
 class AppGuardWrapper
 {
 public:
-    using Stub = appguard::AppGuard::Stub;
+    /**
+     * @brief Creates and initializes an AppGuard client instance.
+     *
+     * @param client_info Configuration information required to establish the client.
+     * @param deadline Optional timeout duration for establishing the connection.
+     * @return An initialized AppGuardWrapper instance.
+     */
+    static AppGuardWrapper CreateClient(
+        AppGaurdClientInfo client_info,
+        const std::chrono::milliseconds &deadline = std::chrono::milliseconds(5'000));
 
+    /**
+     * @brief Destructor.
+     */
     ~AppGuardWrapper() = default;
 
     /**
-     * @brief Factory method to create a new AppGuardWrapper instance.
-     *
-     * This method creates a gRPC channel and initializes the client stub
-     * to communicate with the specified AppGuard server address.
-     *
-     * @param server_addr The address of the AppGuard gRPC server (e.g., "localhost:50051").
-     * @return An initialized `AppGuardWrapper` instance.
-     * @throws `AppGuardClientException` if the gRPC request fails.
+     * @brief Copy constructor.
      */
-    static AppGuardWrapper create(const std::string &server_addr);
+    AppGuardWrapper(AppGuardWrapper &) = default;
 
     /**
-     * @brief Handles a TCP connection event by querying the AppGuard server.
+     * @brief Move constructor.
+     */
+    AppGuardWrapper(AppGuardWrapper &&) = default;
+
+    /**
+     * @brief Handles a TCP connection request.
      *
-     * Sends information about an incoming TCP connection and receives a structured response.
-     *
-     * @param connection The TCP connection request data.
-     * @return The response from the AppGuard server.
-     * @throws `AppGuardClientException` if the gRPC request fails.
+     * @param connection The TCP connection details to be handled.
+     * @return The response from the AppGuard service.
      */
     [[nodiscard]] appguard::AppGuardTcpResponse
     HandleTcpConnection(appguard::AppGuardTcpConnection connection);
 
     /**
-     * @brief Handles an HTTP request by querying the AppGuard server.
+     * @brief Handles an HTTP request.
      *
-     * Sends relevant HTTP request metadata and receives a response that may indicate
-     * whether to allow or deny the request.
-     *
-     * @param request The HTTP request data.
-     * @return The response from the AppGuard server.
-     * @throws `AppGuardClientException` if the gRPC request fails.
+     * @param request The HTTP request details to be handled.
+     * @return The response from the AppGuard service.
      */
     [[nodiscard]] appguard::AppGuardResponse
     HandleHttpRequest(appguard::AppGuardHttpRequest request);
 
     /**
-     * @brief Handles an HTTP response event by sending metadata to AppGuard.
+     * @brief Handles an HTTP response.
      *
-     * This may be used for logging, auditing, or post-response validation by AppGuard.
-     *
-     * @param request The HTTP response data.
-     * @return The response from the AppGuard server.
-     * @throws `AppGuardClientException` if the gRPC request fails.
+     * @param request The HTTP response details to be handled.
+     * @return The response from the AppGuard service.
      */
     [[nodiscard]] appguard::AppGuardResponse
     HandleHttpResponse(appguard::AppGuardHttpResponse request);
 
 private:
-    AppGuardWrapper(std::unique_ptr<Stub> stub);
+    /**
+     * @brief Private constructor used by CreateClient to initialize the wrapper.
+     *
+     * @param channel The gRPC channel to communicate with the AppGuard service.
+     * @param app_id The application ID for authentication.
+     * @param app_secret The application secret for authentication.
+     */
+    AppGuardWrapper(std::shared_ptr<grpc::Channel> channel, const std::string &app_id, const std::string &app_secret);
 
-    std::unique_ptr<Stub> stub;
+    /**
+     * @brief Validates the current status of the assosiated device.
+     *
+     * Throws an exception if the stream is not in a valid state.
+     */
+    void ValidateStatus() const;
+
+    /**
+     * @brief Retrieves the current authentication token.
+     *
+     * @return The current token as a string.
+     */
+    std::string AcquireToken() const;
+
+    // gRPC channel for communication.
+    std::shared_ptr<grpc::Channel> channel;
+    // Stream handling continuous communication with AppGuard.
+    std::shared_ptr<AppGuardStream> stream;
 };
 
 #endif

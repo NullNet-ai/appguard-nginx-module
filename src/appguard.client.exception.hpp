@@ -38,4 +38,9 @@ private:
     grpc::StatusCode status_code;
 };
 
+/**
+ * @TODO:
+ * Replace with custom status code or remote entirely
+ */
+
 #endif
