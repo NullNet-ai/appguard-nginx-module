@@ -78,8 +78,12 @@ void AppGuardStream::Stop()
 
 void AppGuardStream::SetToken(const std::string &token)
 {
-    std::lock_guard lock(this->token_mutex);
-    this->token = token;
+    {
+        std::lock_guard lock(this->token_mutex);
+        this->token = token;
+    }
+
+    this->token_cv.notify_all();
 }
 
 std::string AppGuardStream::WaitForToken(std::chrono::milliseconds timeout)
