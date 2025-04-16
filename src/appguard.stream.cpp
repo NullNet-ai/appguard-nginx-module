@@ -1,8 +1,15 @@
 #include "appguard.stream.hpp"
 
-AppGuardStream::AppGuardStream(std::shared_ptr<grpc::Channel> channel, const std::string &app_id, const std::string &app_secret)
-    : channel(channel), app_id(app_id), app_secret(app_secret),
-      running(false), device_status(appguard::DeviceStatus::DS_UNKNOWN), token({})
+AppGuardStream::AppGuardStream(
+    std::shared_ptr<grpc::Channel> channel,
+    const std::string &app_id,
+    const std::string &app_secret)
+    : app_id(app_id),
+      app_secret(app_secret),
+      token({}),
+      device_status(appguard::DeviceStatus::DS_UNKNOWN),
+      running(false),
+      channel(channel)
 {
     this->Start();
 }
