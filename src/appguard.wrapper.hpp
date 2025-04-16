@@ -3,7 +3,7 @@
 
 #include "appguard.pb.h"
 #include "appguard.grpc.pb.h"
-#include "appguard.client.info.hpp"
+#include "appguard.uclient.info.hpp"
 #include "appguard.stream.hpp"
 
 /**

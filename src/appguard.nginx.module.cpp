@@ -2,7 +2,7 @@
 #include "appguard.inner.utils.hpp"
 #include "appguard.nginx.module.hpp"
 #include "appguard.client.exception.hpp"
-#include "appguard.client.info.hpp"
+#include "appguard.uclient.info.hpp"
 
 extern "C"
 {
