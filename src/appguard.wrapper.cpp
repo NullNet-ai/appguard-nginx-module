@@ -128,6 +128,9 @@ void AppGuardWrapper::ValidateStatus() const
 
 std::string AppGuardWrapper::AcquireToken() const
 {
+    if (!this->stream->Running())
+        throw AppGuardClientException(grpc::StatusCode::UNKNOWN, "Can't acquire token; auth stream is not running");
+
     auto token = this->stream->WaitForToken();
 
     if (token.empty())
