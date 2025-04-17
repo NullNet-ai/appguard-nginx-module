@@ -1,5 +1,5 @@
 #include "appguard.wrapper.hpp"
-#include "appguard.client.exception.hpp"
+#include "appguard.uclient.exception.hpp"
 
 #include <grpcpp/grpcpp.h>
 
@@ -37,16 +37,13 @@ AppGuardWrapper AppGuardWrapper::CreateClient(AppGaurdClientInfo client_info, co
 
     auto channel = OpenChannel(client_info.server_addr, client_info.tls);
     std::chrono::system_clock::time_point deadline_time = std::chrono::system_clock::now() + deadline;
-    if (!channel->WaitForConnected(deadline_time))
-    {
-        throw AppGuardClientException(grpc::StatusCode::UNAVAILABLE, "Connection timed out");
-    }
+
+    THROW_IF_CUSTOM(!channel->WaitForConnected(deadline_time), AppGuardStatusCode::APPGUARD_CONNECTION_TIMEOUT);
 
     auto client = AppGuardWrapper(channel, client_info.app_id, client_info.app_secret);
     const auto [_, success] = clients.emplace(client_info, client);
 
-    if (!success)
-        throw AppGuardClientException(grpc::StatusCode::UNKNOWN, "Failed to save the connection");
+    THROW_IF_CUSTOM(!success, AppGuardStatusCode::APPGUARD_FAILED_TO_SAVE_CLIENT);
 
     return client;
 }
@@ -64,10 +61,8 @@ AppGuardWrapper::HandleTcpConnection(appguard::AppGuardTcpConnection connection)
     grpc::ClientContext context;
     appguard::AppGuardTcpResponse response;
 
-    if (auto status = stub->HandleTcpConnection(&context, connection, &response); !status.ok())
-    {
-        throw AppGuardClientException(status.error_code(), status.error_message());
-    }
+    auto status = stub->HandleTcpConnection(&context, connection, &response);
+    THROW_IF_GRPC(status);
 
     return response;
 }
@@ -85,10 +80,8 @@ AppGuardWrapper::HandleHttpRequest(appguard::AppGuardHttpRequest request)
     grpc::ClientContext context;
     appguard::AppGuardResponse response;
 
-    if (auto status = stub->HandleHttpRequest(&context, request, &response); !status.ok())
-    {
-        throw AppGuardClientException(status.error_code(), status.error_message());
-    }
+    auto status = stub->HandleHttpRequest(&context, request, &response);
+    THROW_IF_GRPC(status);
 
     return response;
 }
@@ -106,10 +99,8 @@ AppGuardWrapper::HandleHttpResponse(appguard::AppGuardHttpResponse request)
     grpc::ClientContext context;
     appguard::AppGuardResponse response;
 
-    if (auto status = stub->HandleHttpResponse(&context, request, &response); !status.ok())
-    {
-        throw AppGuardClientException(status.error_code(), status.error_message());
-    }
+    auto status = stub->HandleHttpResponse(&context, request, &response);
+    THROW_IF_GRPC(status);
 
     return response;
 }
@@ -128,15 +119,11 @@ void AppGuardWrapper::ValidateStatus() const
 
 std::string AppGuardWrapper::AcquireToken() const
 {
-    if (!this->stream->Running())
-        throw AppGuardClientException(grpc::StatusCode::UNKNOWN, "Can't acquire token; auth stream is not running");
+    THROW_IF_CUSTOM(this->stream->Running(), AppGuardStatusCode::APPGUARD_AUTH_STREAM_NOT_RUNNING);
 
     auto token = this->stream->WaitForToken();
 
-    if (token.empty())
-    {
-        throw AppGuardClientException(grpc::StatusCode::UNAUTHENTICATED, "Failed to acquire authentication token");
-    }
+    THROW_IF_CUSTOM(token.empty(), AppGuardStatusCode::APPGUARD_FAILED_TO_ACQUIRE_TOKEN);
 
     return token;
 }

@@ -1,5 +1,5 @@
-#ifndef __APPGUARD_CLIENT_INFO_HPP__
-#define __APPGUARD_CLIENT_INFO_HPP__
+#ifndef __APPGUARD_UCLIENT_INFO_HPP__
+#define __APPGUARD_UCLIENT_INFO_HPP__
 
 #include <string>
 

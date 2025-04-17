@@ -1,7 +1,7 @@
 #include "appguard.wrapper.hpp"
 #include "appguard.inner.utils.hpp"
 #include "appguard.nginx.module.hpp"
-#include "appguard.client.exception.hpp"
+#include "appguard.uclient.exception.hpp"
 #include "appguard.uclient.info.hpp"
 
 extern "C"
@@ -203,9 +203,8 @@ ngx_int_t AppGuardNginxModule::Handler(ngx_http_request_t *request)
             NGX_LOG_ERR,
             request->connection->log,
             0,
-            "AppGuard Error: %s, Status Code: %d; falling back to default policy '%s'",
+            "AppGuardClientException: %s; falling back to default policy '%s'",
             ex.what(),
-            static_cast<uint32_t>(ex.code()),
             default_policy_str.data());
 
         return ActOnPolicy(appguard::FirewallPolicy::UNKNOWN, default_policy);
