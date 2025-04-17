@@ -1,0 +1,40 @@
+stages:
+  - build
+
+build-nginx-with-module:
+  stage: build
+  image: ubuntu:22.04
+  variables:
+    DEBIAN_FRONTEND: noninteractive
+
+  before_script:
+    - apt-get update
+    - apt-get install -y \
+        build-essential \
+        autoconf \
+        libtool \
+        pkg-config \
+        cmake \
+        git \
+        curl \
+        unzip \
+        libssl-dev \
+        libpcre3-dev \
+        zlib1g-dev \
+        wget \
+        protobuf-compiler \
+        libprotobuf-dev \
+        libgrpc++-dev \
+        libgrpc-dev \
+        libabsl-dev \
+        libre2-dev
+
+  script:
+    - mkdir nginx_src
+    - cd nginx_src
+    - wget https://nginx.org/download/nginx-1.27.0.tar.gz
+    - tar -xzf nginx-1.27.0.tar.gz
+    - mv nginx-1.27.0/* .
+    - rm -rf nginx-1.27.0 nginx-1.27.0.tar.gz
+    - ./configure --with-compat --add-dynamic-module=../
+    - make modules
