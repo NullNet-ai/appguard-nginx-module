@@ -107,9 +107,9 @@ static ngx_int_t ActOnPolicy(appguard::FirewallPolicy policy, appguard::Firewall
     case appguard::FirewallPolicy::ALLOW:
         return NGX_DECLINED;
     case appguard::FirewallPolicy::DENY:
-        return NGX_ABORT;
+        return NGX_HTTP_FORBIDDEN;
     default:
-        return (default_policy == appguard::FirewallPolicy::ALLOW) ? NGX_DECLINED : NGX_ABORT;
+        return (default_policy == appguard::FirewallPolicy::ALLOW) ? NGX_DECLINED : NGX_HTTP_FORBIDDEN;
     }
 }
 
