@@ -119,7 +119,7 @@ void AppGuardWrapper::ValidateStatus() const
 
 std::string AppGuardWrapper::AcquireToken() const
 {
-    THROW_IF_CUSTOM(this->stream->Running(), AppGuardStatusCode::APPGUARD_AUTH_STREAM_NOT_RUNNING);
+    THROW_IF_CUSTOM(!this->stream->Running(), AppGuardStatusCode::APPGUARD_AUTH_STREAM_NOT_RUNNING);
 
     auto token = this->stream->WaitForToken();
 
