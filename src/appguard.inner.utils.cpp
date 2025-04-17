@@ -38,32 +38,40 @@ namespace appguard::inner_utils
         return false;
     }
 
-    static std::unordered_map<std::string, std::string> NgxParseRequestHeaders(ngx_http_request_t *request)
+    static std::unordered_map<std::string, std::string> NgxParseHeadersList(ngx_list_t *headers)
     {
-        std::unordered_map<std::string, std::string> retval = {};
+        std::unordered_map<std::string, std::string> retval;
 
-        ngx_list_part_t *part = &request->headers_in.headers.part;
-        ngx_table_elt_t *h = reinterpret_cast<ngx_table_elt_t *>(part->elts);
+        ngx_list_part_t *part = &headers->part;
+        ngx_table_elt_t *header = static_cast<ngx_table_elt_t *>(part->elts);
 
-        for (ngx_uint_t i = 0;; i++)
+        for (ngx_uint_t i = 0; /* infinite */; i++)
         {
             if (i >= part->nelts)
             {
-                if (!part->next)
+                if (part->next == nullptr)
                     break;
-
                 part = part->next;
-                h = reinterpret_cast<ngx_table_elt_t *>(part->elts);
+                header = static_cast<ngx_table_elt_t *>(part->elts);
                 i = 0;
             }
 
-            std::string header_key(reinterpret_cast<char *>(h[i].key.data), h[i].key.len);
-            std::string header_value(reinterpret_cast<char *>(h[i].value.data), h[i].value.len);
-
-            retval.try_emplace(header_key, header_value);
+            retval.try_emplace(
+                NgxStringToStdString(&header[i].key),
+                NgxStringToStdString(&header[i].value));
         }
 
         return retval;
+    }
+
+    static std::unordered_map<std::string, std::string> NgxParseResponseHeaders(ngx_http_request_t *request)
+    {
+        return NgxParseHeadersList(&request->headers_out.headers);
+    }
+
+    static std::unordered_map<std::string, std::string> NgxParseRequestHeaders(ngx_http_request_t *request)
+    {
+        return NgxParseHeadersList(&request->headers_in.headers);
     }
 
     static std::unordered_map<std::string, std::string> ParseQueryParameters(const std::string &uri)
@@ -151,10 +159,27 @@ namespace appguard::inner_utils
             http_request.mutable_headers()->try_emplace(key, value);
         }
 
-        std::string method(reinterpret_cast<char *>(request->method_name.data), request->method_name.len);
+        std::string method = NgxStringToStdString(&request->method_name);
+
         http_request.set_method(method);
 
         return http_request;
+    }
+
+    appguard::AppGuardHttpResponse ExtractHttpResponseInfo(ngx_http_request_t *request) 
+    {
+        appguard::AppGuardHttpResponse http_response;
+
+        auto headers = NgxParseResponseHeaders(request);
+
+        for (const auto &[key, value] : headers)
+        {
+            http_response.mutable_headers()->try_emplace(key, value);
+        }
+
+        http_response.set_code(request->headers_out.status);
+
+        return http_response;
     }
 
     appguard::FirewallPolicy StringToFirewallPolicy(const std::string &str)

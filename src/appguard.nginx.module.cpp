@@ -3,13 +3,20 @@
 #include "appguard.nginx.module.hpp"
 #include "appguard.uclient.exception.hpp"
 #include "appguard.uclient.info.hpp"
+#include "appguard.tcp.ucache.hpp"
+
+static ngx_http_output_header_filter_pt next_header_filter;
 
 extern "C"
 {
-
-    static ngx_int_t ngx_http_appguard_handler(ngx_http_request_t *r)
+    static ngx_int_t ngx_http_appguard_request_handler(ngx_http_request_t *r)
     {
-        return AppGuardNginxModule::Handler(r);
+        return AppGuardNginxModule::RequestHandler(r);
+    }
+
+    static ngx_int_t ngx_http_appguard_response_handler(ngx_http_request_t *r)
+    {
+        return AppGuardNginxModule::ResponseHandler(r);
     }
 
     static ngx_int_t ngx_http_appguard_init(ngx_conf_t *cf)
@@ -124,7 +131,11 @@ ngx_int_t AppGuardNginxModule::Initialize(ngx_conf_t *cf)
     if (h == nullptr)
         return NGX_ERROR;
 
-    *h = ngx_http_appguard_handler;
+    *h = ngx_http_appguard_request_handler;
+
+    next_header_filter = ngx_http_top_header_filter;
+    ngx_http_top_header_filter = ngx_http_appguard_response_handler;
+
     return NGX_OK;
 }
 
@@ -154,7 +165,7 @@ char *AppGuardNginxModule::MergeSrvConfig(ngx_conf_t *cf, void *parent, void *ch
     return NGX_CONF_OK;
 }
 
-ngx_int_t AppGuardNginxModule::Handler(ngx_http_request_t *request)
+ngx_int_t AppGuardNginxModule::RequestHandler(ngx_http_request_t *request)
 {
     auto *conf = static_cast<AppGuardNginxModule::Config *>(ngx_http_get_module_srv_conf(request, appguard_nginx_module));
     if (!conf || !conf->enabled)
@@ -192,10 +203,11 @@ ngx_int_t AppGuardNginxModule::Handler(ngx_http_request_t *request)
         auto tcp_response = client.HandleTcpConnection(connection);
 
         auto http_request = appguard::inner_utils::ExtractHttpRequestInfo(request);
+        AppguardTcpInfoCache::Instance().Put(request->connection, tcp_response.tcp_info());
         http_request.set_allocated_tcp_info(new appguard::AppGuardTcpInfo(tcp_response.tcp_info()));
-        auto http_response = client.HandleHttpRequest(http_request);
 
-        return ActOnPolicy(http_response.policy(), default_policy);
+        auto ag_response = client.HandleHttpRequest(http_request);
+        return ActOnPolicy(ag_response.policy(), default_policy);
     }
     catch (AppGuardClientException &ex)
     {
@@ -208,5 +220,66 @@ ngx_int_t AppGuardNginxModule::Handler(ngx_http_request_t *request)
             default_policy_str.data());
 
         return ActOnPolicy(appguard::FirewallPolicy::UNKNOWN, default_policy);
+    }
+}
+
+ngx_int_t AppGuardNginxModule::ResponseHandler(ngx_http_request_t *request)
+{
+    auto *conf = static_cast<AppGuardNginxModule::Config *>(ngx_http_get_module_srv_conf(request, appguard_nginx_module));
+    if (!conf || !conf->enabled)
+        return next_header_filter(request);
+
+    auto default_policy_str = appguard::inner_utils::NgxStringToStdString(&conf->default_policy);
+    auto default_policy = appguard::inner_utils::StringToFirewallPolicy(default_policy_str);
+    auto app_id = appguard::inner_utils::NgxStringToStdString(&conf->app_id);
+    auto app_secret = appguard::inner_utils::NgxStringToStdString(&conf->app_secret);
+    auto server_addr = appguard::inner_utils::NgxStringToStdString(&conf->server_addr);
+
+    if (app_id.empty() || app_secret.empty())
+    {
+        ngx_log_error(
+            NGX_LOG_ERR,
+            request->connection->log,
+            0,
+            "AppGuard: App Id and/or App Secret haven't been set; falling back to default policy '%s'",
+            default_policy_str.data());
+
+        ngx_int_t code = ActOnPolicy(appguard::FirewallPolicy::UNKNOWN, default_policy);
+        return code == NGX_DECLINED ? next_header_filter(request) : code;
+    }
+
+    try
+    {
+        AppGaurdClientInfo client_info{
+            .app_id = app_id,
+            .app_secret = app_secret,
+            .server_addr = server_addr,
+            .tls = !!conf->tls};
+
+        auto client = AppGuardWrapper::CreateClient(client_info);
+
+        auto http_response = appguard::inner_utils::ExtractHttpResponseInfo(request);
+
+        if (auto tcp_info = AppguardTcpInfoCache::Instance().Get(request->connection); tcp_info.has_value())
+        {
+            http_response.set_allocated_tcp_info(new appguard::AppGuardTcpInfo(tcp_info.value()));
+        }
+
+        auto ag_response = client.HandleHttpResponse(http_response);
+        ngx_int_t code = ActOnPolicy(ag_response.policy(), default_policy);
+        return code == NGX_DECLINED ? next_header_filter(request) : code;
+    }
+    catch (AppGuardClientException &ex)
+    {
+        ngx_log_error(
+            NGX_LOG_ERR,
+            request->connection->log,
+            0,
+            "AppGuardClientException: %s; falling back to default policy '%s'",
+            ex.what(),
+            default_policy_str.data());
+
+        ngx_int_t code = ActOnPolicy(appguard::FirewallPolicy::UNKNOWN, default_policy);
+        return code == NGX_DECLINED ? next_header_filter(request) : code;
     }
 }

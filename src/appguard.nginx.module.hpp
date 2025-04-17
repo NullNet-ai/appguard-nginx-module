@@ -24,14 +24,17 @@ public:
      */
     struct Config
     {
+        // Enables or disables the AppGuard module.
         ngx_flag_t enabled = NGX_CONF_UNSET;
+        // Indicates whether TLS should be used for gRPC.
         ngx_flag_t tls = NGX_CONF_UNSET;
-        
+        // Address of the AppGuard server.
         ngx_str_t server_addr = ngx_null_string;
-
+        // App ID used for authentication with AppGuard.
         ngx_str_t app_id = ngx_null_string;
+        // App Secret used for authentication with AppGuard.
         ngx_str_t app_secret = ngx_null_string;
-
+        // Default policy to apply when AppGuard is unreachable or misconfigured.
         ngx_str_t default_policy = ngx_null_string;
     };
 
@@ -76,7 +79,18 @@ public:
      * @param request The current NGINX HTTP request.
      * @return An appropriate NGINX status code.
      */
-    static ngx_int_t Handler(ngx_http_request_t *request);
+    static ngx_int_t RequestHandler(ngx_http_request_t *request);
+
+    /**
+     * @brief HTTP response handler for the AppGuard module.
+     *
+     * Invoked after the response is generated, allowing the module to inspect or block responses
+     * based on status code or headers.
+     *
+     * @param request The current NGINX HTTP request.
+     * @return An appropriate NGINX status code, e.g., `NGX_OK` to continue, `NGX_ABORT` to drop response.
+     */
+    static ngx_int_t ResponseHandler(ngx_http_request_t *request);
 };
 
 #endif

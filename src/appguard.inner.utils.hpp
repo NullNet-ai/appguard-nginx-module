@@ -48,6 +48,8 @@ namespace appguard::inner_utils
      */
     appguard::AppGuardHttpRequest ExtractHttpRequestInfo(ngx_http_request_t *request);
 
+    appguard::AppGuardHttpResponse ExtractHttpResponseInfo(ngx_http_request_t *request);
+
     /**
      * @brief Converts a string to the corresponding FirewallPolicy enum value.
      *
