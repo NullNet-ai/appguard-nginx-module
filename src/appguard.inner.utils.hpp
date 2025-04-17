@@ -48,6 +48,14 @@ namespace appguard::inner_utils
      */
     appguard::AppGuardHttpRequest ExtractHttpRequestInfo(ngx_http_request_t *request);
 
+    /**
+     * @brief Extracts HTTP response information from an NGINX request.
+     *
+     * Converts headers and status into an `AppGuardHttpResponse`.
+     *
+     * @param request Pointer to the NGINX HTTP request.
+     * @return A populated `AppGuardHttpResponse` object.
+     */
     appguard::AppGuardHttpResponse ExtractHttpResponseInfo(ngx_http_request_t *request);
 
     /**
