@@ -64,7 +64,7 @@ public:
      * @brief Checks if the device status is ARCHIVED.
      * @return True if device status is ARCHIVED; otherwise, false.
      */
-    inline auto IsDeviceStatusAchived() const noexcept
+    inline auto IsDeviceStatusArchived() const noexcept
     {
         return this->device_status.load() == appguard::DeviceStatus::ARCHIVED;
     }
