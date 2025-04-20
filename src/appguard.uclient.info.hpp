@@ -14,6 +14,8 @@ struct AppGaurdClientInfo
     std::string app_secret;
     // Address of the AppGuard server (e.g., "localhost:50051").
     std::string server_addr;
+    // Path to server's certificate file.
+    std::string server_cert_path;
     // Indicates whether to use TLS for the connection.
     bool tls;
 

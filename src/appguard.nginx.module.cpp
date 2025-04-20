@@ -77,6 +77,13 @@ extern "C"
          offsetof(AppGuardNginxModule::Config, default_policy),
          nullptr},
 
+        {ngx_string("appguard_server_cert_path"),
+         NGX_HTTP_MAIN_CONF | NGX_HTTP_SRV_CONF | NGX_CONF_TAKE1,
+         ngx_conf_set_str_slot,
+         NGX_HTTP_SRV_CONF_OFFSET,
+         offsetof(AppGuardNginxModule::Config, server_cert_path),
+         nullptr},
+
         ngx_null_command};
 
     static ngx_http_module_t appguard_nginx_module_ctx = {
@@ -142,6 +149,7 @@ ngx_int_t AppGuardNginxModule::Initialize(ngx_conf_t *cf)
 void *AppGuardNginxModule::CreateSrvConfig(ngx_conf_t *cf)
 {
     void *memory = ngx_pcalloc(cf->pool, sizeof(Config));
+
     if (!memory)
         return nullptr;
 
@@ -162,6 +170,8 @@ char *AppGuardNginxModule::MergeSrvConfig(ngx_conf_t *cf, void *parent, void *ch
     ngx_conf_merge_str_value(conf->app_secret, prev->app_secret, "");
     ngx_conf_merge_str_value(conf->default_policy, prev->default_policy, "");
 
+    ngx_conf_merge_str_value(conf->server_cert_path, prev->server_cert_path, "");
+
     return NGX_CONF_OK;
 }
 
@@ -176,6 +186,7 @@ ngx_int_t AppGuardNginxModule::RequestHandler(ngx_http_request_t *request)
     auto app_id = appguard::inner_utils::NgxStringToStdString(&conf->app_id);
     auto app_secret = appguard::inner_utils::NgxStringToStdString(&conf->app_secret);
     auto server_addr = appguard::inner_utils::NgxStringToStdString(&conf->server_addr);
+    auto server_cert_path = appguard::inner_utils::NgxStringToStdString(&conf->server_cert_path);
 
     if (app_id.empty() || app_secret.empty())
     {
@@ -195,6 +206,7 @@ ngx_int_t AppGuardNginxModule::RequestHandler(ngx_http_request_t *request)
             .app_id = app_id,
             .app_secret = app_secret,
             .server_addr = server_addr,
+            .server_cert_path = server_cert_path,
             .tls = !!conf->tls};
 
         auto client = AppGuardWrapper::CreateClient(client_info);
@@ -234,6 +246,7 @@ ngx_int_t AppGuardNginxModule::ResponseHandler(ngx_http_request_t *request)
     auto app_id = appguard::inner_utils::NgxStringToStdString(&conf->app_id);
     auto app_secret = appguard::inner_utils::NgxStringToStdString(&conf->app_secret);
     auto server_addr = appguard::inner_utils::NgxStringToStdString(&conf->server_addr);
+    auto server_cert_path = appguard::inner_utils::NgxStringToStdString(&conf->server_cert_path);
 
     if (app_id.empty() || app_secret.empty())
     {
@@ -254,6 +267,7 @@ ngx_int_t AppGuardNginxModule::ResponseHandler(ngx_http_request_t *request)
             .app_id = app_id,
             .app_secret = app_secret,
             .server_addr = server_addr,
+            .server_cert_path = server_cert_path,
             .tls = !!conf->tls};
 
         auto client = AppGuardWrapper::CreateClient(client_info);

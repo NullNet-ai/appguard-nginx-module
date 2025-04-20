@@ -18,6 +18,8 @@ enum class AppGuardStatusCode
     APPGUARD_FAILED_TO_SAVE_CLIENT,
     // Connection attempt timed out.
     APPGUARD_CONNECTION_TIMEOUT,
+    // Failed to load the server's certificate
+    APPGUARD_CERTIFICATE_NOT_FOUND,
 };
 
 /**

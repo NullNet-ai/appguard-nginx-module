@@ -2,12 +2,29 @@
 #include "appguard.uclient.exception.hpp"
 
 #include <grpcpp/grpcpp.h>
+#include <fstream>
+#include <sstream>
 
-static inline std::shared_ptr<grpc::Channel> OpenChannel(const std::string &addr, bool tls)
+static std::string readServerCertificate(const std::string &path)
+{
+    std::ifstream file(path, std::ios::binary);
+
+    THROW_IF_CUSTOM(!file.is_open(), AppGuardStatusCode::APPGUARD_CERTIFICATE_NOT_FOUND);
+
+    std::ostringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
+}
+
+static inline std::shared_ptr<grpc::Channel> OpenChannel(const std::string &addr, bool tls, const std::string &server_cert_path)
 {
     if (tls)
     {
         grpc::SslCredentialsOptions options;
+
+        options.pem_root_certs =
+            server_cert_path.empty() ? "" : readServerCertificate(server_cert_path);
+
         auto credentials = grpc::SslCredentials(options);
         return grpc::CreateChannel(addr, credentials);
     }
@@ -35,7 +52,7 @@ AppGuardWrapper AppGuardWrapper::CreateClient(AppGaurdClientInfo client_info, co
         return iter->second;
     }
 
-    auto channel = OpenChannel(client_info.server_addr, client_info.tls);
+    auto channel = OpenChannel(client_info.server_addr, client_info.tls, client_info.server_cert_path);
     std::chrono::system_clock::time_point deadline_time = std::chrono::system_clock::now() + deadline;
 
     THROW_IF_CUSTOM(!channel->WaitForConnected(deadline_time), AppGuardStatusCode::APPGUARD_CONNECTION_TIMEOUT);

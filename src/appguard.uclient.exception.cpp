@@ -50,6 +50,8 @@ static inline std::string AppGuardStatusCodeToStr(AppGuardStatusCode code)
         return "APPGUARD_FAILED_TO_ACQUIRE_TOKEN";
     case AppGuardStatusCode::APPGUARD_FAILED_TO_SAVE_CLIENT:
         return "APPGUARD_FAILED_TO_SAVE_CLIENT";
+    case AppGuardStatusCode::APPGUARD_CERTIFICATE_NOT_FOUND:
+        return "APPGUARD_CERTIFICATE_NOT_FOUND";
     default:
         return "UNKNOWN";
     }

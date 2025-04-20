@@ -36,6 +36,8 @@ public:
         ngx_str_t app_secret = ngx_null_string;
         // Default policy to apply when AppGuard is unreachable or misconfigured.
         ngx_str_t default_policy = ngx_null_string;
+        // Path to server's certificate file.
+        ngx_str_t server_cert_path = ngx_null_string;
     };
 
     /**
