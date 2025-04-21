@@ -1,0 +1,49 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          build-essential \
+          gcc \
+          g++ \
+          make \
+          cmake \
+          libpcre3 \
+          libpcre3-dev \
+          zlib1g \
+          zlib1g-dev \
+          libssl-dev \
+          libgrpc++-dev \
+          libprotobuf-dev \
+          protobuf-compiler-grpc
+
+    - name: Download NGINX source
+      run: |
+        wget https://nginx.org/download/nginx-1.25.3.tar.gz
+        tar -xzf nginx-1.25.3.tar.gz
+        cd nginx-1.25.3
+
+    - name: Build NGINX with appguard-nginx-module as dynamic module
+      run: |
+        cd nginx-1.25.3
+        ./configure \
+          --add-dynamic-module=../ \
+          --with-compat
+        make modules
