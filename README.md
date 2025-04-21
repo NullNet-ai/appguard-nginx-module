@@ -93,7 +93,7 @@ The `appguard-nginx-module` introduces custom directives that can be used in the
 
 | Directive               | Syntax                                      | Default             | Description |
 |-------------------------|---------------------------------------------|---------------------|-------------|
-| `appguard_enable`        | `appguard_enable on \| off`                  | `off`               | Enables or disables AppGuard processing for requests. When enabled, HTTP requests will be evaluated by the AppGuard service. |
+| `appguard_enabled`        | `appguard_enabled on \| off`                  | `off`               | Enables or disables AppGuard processing for requests. When enabled, HTTP requests will be evaluated by the AppGuard service. |
 | `appguard_tls`           | `appguard_tls on \| off`                     | `off`               | Enables or disables TLS (Transport Layer Security) for gRPC communication with the backend server. When enabled, all communication with the backend will be encrypted. |
 | `appguard_server_addr`   | `appguard_server_addr <host>:<port>`        | `""`                | Specifies the address of the gRPC backend server that handles policy decisions. Default is empty, meaning no server is defined until configured. |
 | `appguard_app_id`        | `appguard_app_id <id>`                      | `""`                | A unique identifier for your application used for authentication or tracking purposes with the backend server. |
@@ -106,15 +106,16 @@ The `appguard-nginx-module` introduces custom directives that can be used in the
 ### Example Configuraiton
 ```nginx
 http {
-    appguard_enable on;
-    appguard_server_addr localhost:50051;
-    appguard_app_id qwerty;
-    appguard_app_secret ytrewq;
-    appguard_tls on;
-    appguard_default_policy allow;
-
     server {
         listen 80;
+
+        appguard_enabled on;
+        appguard_server_addr localhost:50051;
+        appguard_app_id qwerty;
+        appguard_app_secret ytrewq;
+        appguard_tls on;
+        appguard_default_policy allow;
+        appguard_server_cert_path /path/to/ca.pem;
 
         location /secure/ {
             proxy_pass http://backend;
