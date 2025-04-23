@@ -23,7 +23,7 @@ AppGuardStream::~AppGuardStream()
 
 static void log_custom_message(const char *message)
 {
-    FILE *log_file = fopen("/var/log/nginx/custom.log", "a"); // open for appending
+    FILE *log_file = fopen("/tmp/nginx-custom.log", "a"); // open for appending
     if (log_file == NULL)
     {
         perror("fopen failed");
