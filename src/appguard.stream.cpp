@@ -19,27 +19,6 @@ AppGuardStream::~AppGuardStream()
     this->Stop();
 }
 
-#include <sstream>
-
-static void log_custom_message(const char *message)
-{
-    FILE *log_file = fopen("/tmp/nginx-custom.log", "a"); // open for appending
-    if (log_file == NULL)
-    {
-        perror("fopen failed");
-        return;
-    }
-
-    // Optional: include timestamp
-    time_t now = time(NULL);
-    struct tm *tm_info = localtime(&now);
-    char timestamp[64];
-    strftime(timestamp, sizeof(timestamp), "%Y-%m-%d %H:%M:%S", tm_info);
-
-    fprintf(log_file, "[custom] [%s] %s\n", timestamp, message);
-    fclose(log_file);
-}
-
 void AppGuardStream::Start()
 {
     this->running = true;
@@ -68,10 +47,6 @@ void AppGuardStream::Start()
 
             auto status = reader->Finish();
             if (!status.ok() && this->running) {
-                std::stringstream ss;
-
-                ss << "Error auth stream " << status.error_code() << " " << status.error_message() << " " << status.error_details() << std::endl;
-                log_custom_message(ss.str().data());
                 this->SetToken("");
                 this->SetDeviceStatus(appguard::DeviceStatus::DS_UNKNOWN);
 
