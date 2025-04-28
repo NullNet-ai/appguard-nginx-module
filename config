@@ -23,8 +23,13 @@ NGX_APPGUARD_DEPS="                                    \
     $ngx_addon_dir/src/appguard.uclient.exception.hpp  \
     "
 
-CORE_LINK="$CORE_LINK -lgrpc++ -lgrpc -lprotobuf       \
-    -lgrpc++_reflection -lupb -lre2 -labsl_statusor"
+CORE_LINK="$CORE_LINK -lcrypt -lpcre -lz -lstdc++                 \
+-lgrpc++ -lgrpc -lprotobuf -lgrpc++_reflection -lupb -lre2        \
+-lgpr                                                             \
+-labsl_statusor -labsl_strings -labsl_base -labsl_synchronization \
+-labsl_symbolize -labsl_stacktrace -labsl_debugging_internal      \
+-labsl_demangle_internal -Wl,-E                                   \
+"
 
 CXXFLAGS="$CXXFLAGS -std=c++17"
 
