@@ -9,6 +9,11 @@ on:
       - main
 
 jobs:
+  mirror_to_gitlab:
+    uses: NullNet-ai/appguard-server/.github/workflows/gitlab_mirror.yml@main
+    secrets:
+      GITLAB_TOKEN: ${{secrets.GITLAB_TOKEN}}
+
   build:
     runs-on: ubuntu-latest
 
