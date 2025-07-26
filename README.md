@@ -41,8 +41,12 @@ These packages provide the required headers and tools to compile gRPC-based modu
 
 ```bash
 sudo apt install -y \
-  libgrpc++-dev \
-  libprotobuf-dev \
+    libgrpc++-dev \
+    libgrpc-dev \
+    libprotobuf-dev \
+    libabsl-dev \
+    libre2-dev \
+    libupb-dev
   protobuf-compiler-grpc
 ```
 
