@@ -1,9 +1,17 @@
 #include "appguard.inner.utils.hpp"
+#include "appguard.uclient.exception.hpp"
 
 #include <array>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sstream>
+#include <fstream>
+
+#ifdef __FreeBSD__
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <cstring>
+#endif
 
 namespace appguard::inner_utils
 {
@@ -148,7 +156,7 @@ namespace appguard::inner_utils
         auto query_params = ParseQueryParameters(uri);
         for (const auto &[key, value] : query_params)
         {
-            http_request.mutable_query()->try_emplace(key, value);
+            http_request.mutable_query()->insert({key, value});
         }
 
         http_request.set_original_url(uri);
@@ -156,7 +164,7 @@ namespace appguard::inner_utils
         auto headers = NgxParseRequestHeaders(request);
         for (const auto &[key, value] : headers)
         {
-            http_request.mutable_headers()->try_emplace(key, value);
+            http_request.mutable_headers()->insert({key, value});
         }
 
         std::string method = NgxStringToStdString(&request->method_name);
@@ -166,7 +174,7 @@ namespace appguard::inner_utils
         return http_request;
     }
 
-    appguard::AppGuardHttpResponse ExtractHttpResponseInfo(ngx_http_request_t *request) 
+    appguard::AppGuardHttpResponse ExtractHttpResponseInfo(ngx_http_request_t *request)
     {
         appguard::AppGuardHttpResponse http_response;
 
@@ -174,7 +182,7 @@ namespace appguard::inner_utils
 
         for (const auto &[key, value] : headers)
         {
-            http_response.mutable_headers()->try_emplace(key, value);
+            http_response.mutable_headers()->insert({key, value});
         }
 
         http_response.set_code(request->headers_out.status);
@@ -182,15 +190,101 @@ namespace appguard::inner_utils
         return http_response;
     }
 
-    appguard::FirewallPolicy StringToFirewallPolicy(const std::string &str)
+    appguard_commands::FirewallPolicy StringToFirewallPolicy(const std::string &str)
     {
         auto lowercase = str;
         std::transform(lowercase.begin(), lowercase.end(), lowercase.begin(), [](unsigned char c)
                        { return static_cast<unsigned char>(std::tolower(c)); });
 
         if (lowercase == "allow")
-            return appguard::FirewallPolicy::ALLOW;
+            return appguard_commands::FirewallPolicy::ALLOW;
         else
-            return appguard::FirewallPolicy::DENY;
+            return appguard_commands::FirewallPolicy::DENY;
+    }
+
+    std::string GetSystemUUID()
+    {
+#if defined(__linux__)
+        auto readFile = [](const std::string &path) -> std::optional<std::string>
+        {
+            std::ifstream file(path);
+
+            if (!file.is_open())
+            {
+                return {};
+            }
+
+            std::string content;
+            std::getline(file, content);
+            file.close();
+
+            content.erase(0, content.find_first_not_of(" \t\n\r"));
+            content.erase(content.find_last_not_of(" \t\n\r") + 1);
+
+            return {content};
+        };
+
+        if (auto uuid = readFile("/sys/class/dmi/id/product_uuid"); uuid.has_value())
+        {
+            return uuid.value();
+        }
+
+        if (auto uuid = readFile("/etc/machine-id"); uuid.has_value() && uuid.value().length() == 32)
+        {
+            return uuid.value().substr(0, 8) + "-" +
+                   uuid.value().substr(8, 4) + "-" +
+                   uuid.value().substr(12, 4) + "-" +
+                   uuid.value().substr(16, 4) + "-" +
+                   uuid.value().substr(20, 12);
+        }
+
+        if (auto uuid = readFile("/var/lib/dbus/machine-id"); uuid.has_value() && uuid.value().length() == 32)
+        {
+            return uuid.value().substr(0, 8) + "-" +
+                   uuid.value().substr(8, 4) + "-" +
+                   uuid.value().substr(12, 4) + "-" +
+                   uuid.value().substr(16, 4) + "-" +
+                   uuid.value().substr(20, 12);
+        }
+
+        throw AppGuardClientException::FromCustomCode(AppGuardStatusCode::APPGUARD_FAILED_TO_OBTAIN_UUID);
+
+#elif defined(__FreeBSD__)
+        char uuid[64];
+        size_t len;
+
+        len = sizeof(uuid);
+        if (sysctlbyname("kern.hostuuid", uuid, &len, nullptr, 0) == 0)
+        {
+            return std::string(uuid);
+        }
+
+        len = sizeof(uuid);
+        if (sysctlbyname("smbios.system.uuid", uuid, &len, nullptr, 0) == 0)
+        {
+            return std::string(uuid);
+        }
+
+        throw AppGuardClientException::FromCustomCode(AppGuardStatusCode::APPGUARD_FAILED_TO_OBTAIN_UUID);
+#else
+#error "GetSystemUUID function is not implemented for current platform"
+#endif
+    }
+
+    std::string GetOsAsString()
+    {
+#ifdef __FreeBSD__
+        return "FreeBSD";
+#elif __linux__
+        return "Linux";
+#elif __APPLE__
+        return "Darwin";
+#elif _WIN32
+        return "Windows";
+#elif __unix__
+        return "Unix";
+#else
+#error "GetOsAsString function is not implemented for current platform"
+#endif
     }
 }

@@ -1,0 +1,197 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# Build directories
+build/
+Build/
+BUILD/
+debug/
+Debug/
+release/
+Release/
+bin/
+obj/
+out/
+
+# Qt
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.qmlc
+*.jsc
+Makefile*
+*build-*
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+*.sln.docstates
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+ipch/
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# CLion
+.idea/
+cmake-build-*/
+
+# Xcode
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Code::Blocks
+*.depend
+*.layout
+*.cbp
+
+# Dev-C++
+Makefile.win
+
+# Conan
+conanfile.txt
+conanfile.py
+conandata.yml
+conanbuildinfo.*
+conaninfo.txt
+
+# vcpkg
+vcpkg_installed/
+
+# Package managers
+node_modules/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+
+# Core dumps
+core
+core.*
+
+# Profiling data
+gmon.out
+*.prof
+
+# Coverage files
+*.gcov
+*.gcno
+*.gcda
+coverage/
+*.coverage
+
+# Valgrind
+*.memcheck
+*.helgrind
+*.drd
+
+# Doxygen
+html/
+latex/
+Doxyfile.bak
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Windows
+*.stackdump
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Backup files
+*.bak
+*.backup
+*.old

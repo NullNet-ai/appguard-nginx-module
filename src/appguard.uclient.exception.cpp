@@ -52,6 +52,10 @@ static inline std::string AppGuardStatusCodeToStr(AppGuardStatusCode code)
         return "APPGUARD_FAILED_TO_SAVE_CLIENT";
     case AppGuardStatusCode::APPGUARD_CERTIFICATE_NOT_FOUND:
         return "APPGUARD_CERTIFICATE_NOT_FOUND";
+    case AppGuardStatusCode::APPGUARD_FAILED_TO_OBTAIN_UUID:
+        return "APPGUARD_FAILED_TO_OBTAIN_UUID";
+    case AppGuardStatusCode::APPGUARD_STORAGE_OPERATION_FAILURE:
+        return "APPGUARD_STORAGE_OPERATION_FAILURE";
     default:
         return "UNKNOWN";
     }

@@ -1,5 +1,4 @@
-#ifndef __APPGUARD_UCLIENT_EXCEPTION_HPP__
-#define __APPGUARD_UCLIENT_EXCEPTION_HPP__
+#pragma once
 
 #include <stdexcept>
 #include <string>
@@ -20,6 +19,10 @@ enum class AppGuardStatusCode
     APPGUARD_CONNECTION_TIMEOUT,
     // Failed to load the server's certificate
     APPGUARD_CERTIFICATE_NOT_FOUND,
+    // Failed to obtain device UUID
+    APPGUARD_FAILED_TO_OBTAIN_UUID,
+    // Storage operation error
+    APPGUARD_STORAGE_OPERATION_FAILURE
 };
 
 /**
@@ -80,4 +83,18 @@ public:
         }                                                          \
     } while (0)
 
-#endif
+/**
+ * @brief Executes a statement while silently ignoring any thrown exceptions
+ * @param statement The statement or expression to execute
+ */
+#define IGNORE_ALL_EXCEPTIONS(statement) \
+    do                                   \
+    {                                    \
+        try                              \
+        {                                \
+            (statement);                 \
+        }                                \
+        catch (...)                      \
+        {                                \
+        }                                \
+    } while (0)

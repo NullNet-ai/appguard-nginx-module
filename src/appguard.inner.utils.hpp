@@ -1,9 +1,9 @@
-#ifndef __APPGUARD_INNER_UTILS_H__
-#define __APPGUARD_INNER_UTILS_H__
+#pragma once
 
 #include <sys/socket.h>
 #include <string>
 #include <unordered_map>
+#include <optional>
 
 extern "C"
 {
@@ -12,7 +12,7 @@ extern "C"
 #include <ngx_http.h>
 }
 
-#include "appguard.pb.h"
+#include "generated/appguard.pb.h"
 
 namespace appguard::inner_utils
 {
@@ -69,7 +69,26 @@ namespace appguard::inner_utils
      * @param str The input string representing the firewall policy.
      * @return The corresponding FirewallPolicy enum value.
      */
-    appguard::FirewallPolicy StringToFirewallPolicy(const std::string &str);
-}
+    appguard_commands::FirewallPolicy StringToFirewallPolicy(const std::string &str);
 
-#endif
+    /**
+     * @brief Retrieves the system's hardware UUID.
+     *
+     * This function queries the system's unique hardware identifier (UUID)
+     *
+     * @return A string containing the system UUID.
+     * @throws A AppGuardClientException if the retrieval fails.
+     */
+    std::string GetSystemUUID();
+
+    /**
+     * @brief Retrieves the operating system name as a string.
+     *
+     * This function queries the system to determine the operating system type
+     * and returns just the OS name identifier.
+     *
+     * @return A string containing the OS name.
+     *         Examples: "Linux", "FreeBSD", "Darwin", "Windows"
+     */
+    std::string GetOsAsString();
+}

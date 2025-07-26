@@ -1,5 +1,4 @@
-#ifndef __APPGUARD_UCLIENT_INFO_HPP__
-#define __APPGUARD_UCLIENT_INFO_HPP__
+#pragma once
 
 #include <string>
 
@@ -8,10 +7,8 @@
  */
 struct AppGaurdClientInfo
 {
-    // Unique identifier for the application.
-    std::string app_id;
-    // Secret key used for authenticating the application.
-    std::string app_secret;
+    // NullNet Installation Code
+    std::string installation_code;
     // Address of the AppGuard server (e.g., "localhost:50051").
     std::string server_addr;
     // Path to server's certificate file.
@@ -59,5 +56,3 @@ struct AppGaurdClientInfo
      */
     bool operator<(const AppGaurdClientInfo &other) const;
 };
-
-#endif

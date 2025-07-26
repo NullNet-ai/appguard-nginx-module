@@ -1,5 +1,4 @@
-#ifndef __APPGUARD_TCP_UCACHE_HPP__
-#define __APPGUARD_TCP_UCACHE_HPP__
+#pragma once
 
 extern "C"
 {
@@ -12,7 +11,7 @@ extern "C"
 #include <unordered_map>
 #include <optional>
 
-#include "appguard.pb.h"
+#include "generated/appguard.pb.h"
 
 /**
  * @brief A fixed-size LRU (Least Recently Used) cache for storing AppGuard IP info.
@@ -68,5 +67,3 @@ private:
     /// Hash map to quickly access list nodes by key.
     std::unordered_map<Key, decltype(usage.begin())> map;
 };
-
-#endif
