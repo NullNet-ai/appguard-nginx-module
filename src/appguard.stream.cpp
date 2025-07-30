@@ -48,13 +48,13 @@ namespace internal
                 if (data.has_app_id())
                 {
                     const auto key = MAKE_APP_ID_STORAGE_KEY(installation_code);
-                    PersistentStorage::GetInstance().Set(key, data.app_id());
+                    Storage::GetInstance().Set(key, data.app_id());
                 }
 
                 if (data.has_app_secret())
                 {
                     const auto key = MAKE_APP_SECRET_STORAGE_KEY(installation_code);
-                    PersistentStorage::GetInstance().Set(key, data.app_secret());
+                    Storage::GetInstance().Set(key, data.app_secret());
                 }
 
                 return true;
@@ -85,8 +85,8 @@ namespace internal
         grpc::ClientReaderWriter<CM, SM> *rw_stream,
         const std::string &installation_code)
     {
-        auto app_id = PersistentStorage::GetInstance().Get(MAKE_APP_ID_STORAGE_KEY(installation_code));
-        auto app_secret = PersistentStorage::GetInstance().Get(MAKE_APP_SECRET_STORAGE_KEY(installation_code));
+        auto app_id = Storage::GetInstance().Get(MAKE_APP_ID_STORAGE_KEY(installation_code));
+        auto app_secret = Storage::GetInstance().Get(MAKE_APP_SECRET_STORAGE_KEY(installation_code));
 
         if (!app_id.has_value() || !app_secret.has_value())
         {
@@ -182,7 +182,7 @@ void AppGuardStream::Start()
 
                 if (message.has_device_deauthorized()) {
                     IGNORE_ALL_EXCEPTIONS({
-                        PersistentStorage::GetInstance().Clear();
+                        Storage::GetInstance().Clear();
                     });
 
                     ngx_log_error(

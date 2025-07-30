@@ -125,7 +125,7 @@ ngx_int_t AppGuardNginxModule::Initialize(ngx_conf_t *cf)
 {
     try
     {
-        PersistentStorage::Initialize();
+        Storage::Initialize();
     }
     catch (...)
     {
