@@ -1,7 +1,7 @@
 #include "appguard.storage.hpp"
 #include "appguard.uclient.exception.hpp"
 
-#define STORAGE_FILE_PATH "/var/run/nullnet/nginx.conf"
+#define STORAGE_FILE_PATH "/tmp/nullnet/nginx.conf"
 
 static std::string EscapeString(const std::string &str)
 {
