@@ -1,8 +1,9 @@
-#ifndef __APPGUARD_STREAM_HPP__
-#define __APPGUARD_STREAM_HPP__
+#pragma once
 
-#include "appguard.pb.h"
-#include "appguard.grpc.pb.h"
+#include "generated/appguard.pb.h"
+#include "generated/appguard.grpc.pb.h"
+#include "generated/commands.pb.h"
+#include "generated/commands.grpc.pb.h"
 
 #include <thread>
 #include <atomic>
@@ -23,13 +24,11 @@ public:
     /**
      * @brief Constructs an AppGuardStream and starts the heartbeat stream.
      * @param channel Shared pointer to the gRPC channel.
-     * @param app_id Application identifier.
-     * @param app_secret Application secret key.
+     * @param installation_code NullNet installation code.
      */
     AppGuardStream(
         std::shared_ptr<grpc::Channel> channel,
-        const std::string &app_id,
-        const std::string &app_secret);
+        const std::string &installation_code);
 
     /**
      * @brief Destructor that stops the heartbeat stream.
@@ -41,42 +40,6 @@ public:
      * @return True if running; otherwise, false.
      */
     inline auto Running() const noexcept { return this->running.load(); }
-
-    /**
-     * @brief Checks if the device status is ACTIVE.
-     * @return True if device status is ACTIVE; otherwise, false.
-     */
-    inline auto IsDeviceStatusActive() const noexcept
-    {
-        return this->device_status.load() == appguard::DeviceStatus::ACTIVE;
-    }
-
-    /**
-     * @brief Checks if the device status is DRAFT.
-     * @return True if device status is DRAFT; otherwise, false.
-     */
-    inline auto IsDeviceStatusDraft() const noexcept
-    {
-        return this->device_status.load() == appguard::DeviceStatus::DRAFT;
-    }
-
-    /**
-     * @brief Checks if the device status is ARCHIVED.
-     * @return True if device status is ARCHIVED; otherwise, false.
-     */
-    inline auto IsDeviceStatusAchived() const noexcept
-    {
-        return this->device_status.load() == appguard::DeviceStatus::ARCHIVED;
-    }
-
-    /**
-     * @brief Checks if the device status is UNKNOWN.
-     * @return True if device status is UNKNOWN; otherwise, false.
-     */
-    inline auto IsDeviceStatusUnknown() const noexcept
-    {
-        return this->device_status.load() == appguard::DeviceStatus::DS_UNKNOWN;
-    }
 
     /**
      * @brief Waits for the token to become available until the specified timeout duration.
@@ -102,38 +65,23 @@ private:
      */
     void SetToken(const std::string &token);
 
-    /**
-     * @brief Sets the device status atomically.
-     * @param status The new device status to set.
-     */
-    inline void SetDeviceStatus(appguard::DeviceStatus status) noexcept
-    {
-        this->device_status.store(status);
-    }
-
 private:
-    // Application identifier.
-    std::string app_id;
-    // Application secret key.
-    std::string app_secret;
+    // Installation code.
+    std::string installation_code;
     // Authentication token received from the server.
     std::string token;
     // Mutex to protect access to the token.
     mutable std::mutex token_mutex;
     // Condition variable to wait for token availability.
     std::condition_variable token_cv;
-    // Current device status.
-    std::atomic<appguard::DeviceStatus> device_status;
-    // Thread handling the heartbeat stream.
+    // Thread handling the control channel.
     std::thread thread;
-    // Flag indicating if the stream is running.
+    // Flag indicating if the control channel is running.
     std::atomic_bool running;
     // gRPC channel to the server.
     std::shared_ptr<grpc::Channel> channel;
     // Mutex to protect access to the gRPC context.
     std::mutex context_mutex;
-    // gRPC client context for the stream.
+    // gRPC client context for the control channel.
     std::unique_ptr<grpc::ClientContext> context;
 };
-
-#endif

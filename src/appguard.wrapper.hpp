@@ -1,8 +1,7 @@
-#ifndef __APPGUARD_CLIENT_HPP__
-#define __APPGUARD_CLIENT_HPP__
+#pragma once
 
-#include "appguard.pb.h"
-#include "appguard.grpc.pb.h"
+#include "generated/appguard.pb.h"
+#include "generated/appguard.grpc.pb.h"
 #include "appguard.uclient.info.hpp"
 #include "appguard.stream.hpp"
 
@@ -73,17 +72,9 @@ private:
      * @brief Private constructor used by CreateClient to initialize the wrapper.
      *
      * @param channel The gRPC channel to communicate with the AppGuard service.
-     * @param app_id The application ID for authentication.
-     * @param app_secret The application secret for authentication.
+     * @param installation_code Installation code.
      */
-    AppGuardWrapper(std::shared_ptr<grpc::Channel> channel, const std::string &app_id, const std::string &app_secret);
-
-    /**
-     * @brief Validates the current status of the assosiated device.
-     *
-     * Throws an exception if the stream is not in a valid state.
-     */
-    void ValidateStatus() const;
+    AppGuardWrapper(std::shared_ptr<grpc::Channel> channel, const std::string &installation_code);
 
     /**
      * @brief Retrieves the current authentication token.
@@ -97,5 +88,3 @@ private:
     // Stream handling continuous communication with AppGuard.
     std::shared_ptr<AppGuardStream> stream;
 };
-
-#endif

@@ -4,12 +4,12 @@
 
 bool AppGaurdClientInfo::operator==(const AppGaurdClientInfo &other) const
 {
-    return std::tie(this->app_id, this->app_secret, this->server_addr, this->tls) ==
-           std::tie(other.app_id, other.app_secret, other.server_addr, other.tls);
+    return std::tie(this->installation_code, this->server_addr, this->tls) ==
+           std::tie(other.installation_code, other.server_addr, other.tls);
 }
 
 bool AppGaurdClientInfo::operator<(const AppGaurdClientInfo &other) const
 {
-    return std::tie(this->app_id, this->app_secret, this->server_addr, this->tls) <
-           std::tie(other.app_id, other.app_secret, other.server_addr, other.tls);
+    return std::tie(this->installation_code, this->server_addr, this->tls) <
+           std::tie(other.installation_code, other.server_addr, other.tls);
 }

@@ -1,5 +1,4 @@
-#ifndef __APPGUARD_NGINX_MODULE_HPP__
-#define __APPGUARD_NGINX_MODULE_HPP__
+#pragma once
 
 extern "C"
 {
@@ -30,10 +29,8 @@ public:
         ngx_flag_t tls = NGX_CONF_UNSET;
         // Address of the AppGuard server.
         ngx_str_t server_addr = ngx_null_string;
-        // App ID used for authentication with AppGuard.
-        ngx_str_t app_id = ngx_null_string;
-        // App Secret used for authentication with AppGuard.
-        ngx_str_t app_secret = ngx_null_string;
+        // NullNet installation code
+        ngx_str_t installation_code = ngx_null_string;
         // Default policy to apply when AppGuard is unreachable or misconfigured.
         ngx_str_t default_policy = ngx_null_string;
         // Path to server's certificate file.
@@ -94,5 +91,3 @@ public:
      */
     static ngx_int_t ResponseHandler(ngx_http_request_t *request);
 };
-
-#endif
