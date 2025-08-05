@@ -1,11 +1,9 @@
 #pragma once
 
+#include "appguard.ipc.mutex.hpp"
+
 #include <string>
 #include <unordered_map>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
-#include <mutex>
 #include <optional>
 
 /**
@@ -42,11 +40,15 @@ public:
      */
     void Clear();
 
+    /**
+     * @brief Syncronize with the file contents.
+     */
+    void Update();
 private:
     /**
      * @brief Private constructor for singleton pattern.
      */
-    explicit Storage() = default;
+    explicit Storage();
     /// Deleted copy constructor for singleton pattern.
     Storage(const Storage &) = delete;
     /// Deleted copy assignment for singleton pattern.
@@ -58,7 +60,9 @@ private:
     /// Default destructor.
     ~Storage() = default;
 
+    void SaveToFile() const;
+    void LoadFromFile();
 private:
     std::unordered_map<std::string, std::string> data;
-    mutable std::mutex mutex;
+    mutable appguard::IPCMutex mutex;
 };

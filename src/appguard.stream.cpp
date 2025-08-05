@@ -85,6 +85,8 @@ namespace internal
         grpc::ClientReaderWriter<CM, SM> *rw_stream,
         const std::string &installation_code)
     {
+        Storage::GetInstance().Update();
+        
         auto app_id = Storage::GetInstance().Get(MAKE_APP_ID_STORAGE_KEY(installation_code));
         auto app_secret = Storage::GetInstance().Get(MAKE_APP_SECRET_STORAGE_KEY(installation_code));
 

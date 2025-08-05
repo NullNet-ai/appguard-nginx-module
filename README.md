@@ -92,6 +92,22 @@ sudo make install
 ```
 This will compile NGINX with the module built-in.
 
+### 4. Make sure NginX wokrers can read\write to configuration
+Ensure Nginx workers can read and write to the AppGuard configuration storage:
+```
+# Create the storage directory
+sudo mkdir -p /var/cache/nginx
+
+# Set ownership to nginx user (adjust user based on your system)
+sudo chown www-data:www-data /var/cache/nginx
+
+# Set appropriate permissions
+sudo chmod 755 /var/cache/nginx
+
+# Test file creation (optional verification step)
+sudo -u www-data touch /var/cache/nginx/appguard.conf
+```
+
 ## Directives
 The `appguard-nginx-module` introduces custom directives that can be used in the  `server` context.
 
@@ -108,6 +124,8 @@ The `appguard-nginx-module` introduces custom directives that can be used in the
 
 ### Example Configuraiton
 ```nginx
+user www-data;
+
 http {
     server {
         listen 80;
