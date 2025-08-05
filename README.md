@@ -145,4 +145,4 @@ http {
 ```
 
 ## Licence
-[MIT](https://github.com/NullNet-ai/appguard-nginx-module/tree/main?tab=MIT-1-ov-file#readme)
+[LICENSE](LICENSE)
