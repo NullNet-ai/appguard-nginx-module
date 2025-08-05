@@ -46,8 +46,7 @@ sudo apt install -y \
     libprotobuf-dev \
     libabsl-dev \
     libre2-dev \
-    libupb-dev
-  protobuf-compiler-grpc
+    protobuf-compiler-grpc
 ```
 
 ## Build

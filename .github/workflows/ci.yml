@@ -39,7 +39,6 @@ jobs:
           libprotobuf-dev \
           libabsl-dev \
           libre2-dev \
-          libupb-dev \
           protobuf-compiler-grpc
 
     - name: Download NGINX source
