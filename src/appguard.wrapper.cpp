@@ -1,5 +1,6 @@
 #include "appguard.wrapper.hpp"
 #include "appguard.uclient.exception.hpp"
+#include "appguard.http.ucache.hpp"
 
 #include <grpcpp/grpcpp.h>
 #include <fstream>
@@ -79,9 +80,17 @@ AppGuardWrapper::HandleTcpConnection(appguard::AppGuardTcpConnection connection)
     return response;
 }
 
-appguard::AppGuardResponse
+appguard_commands::FirewallPolicy
 AppGuardWrapper::HandleHttpRequest(appguard::AppGuardHttpRequest request)
 {
+    auto cacheKey = HttpRequestCacheKey::FromRequest(request);
+    auto& cache = AppguardHttpCache<HttpRequestCacheKey>::GetInstance();
+
+    if (auto cacheEntry = cache.Get(cacheKey); cacheEntry.has_value() && cache.IsEnabled())
+    {
+        return cacheEntry.value();
+    }
+
     auto token = this->AcquireToken();
     request.set_token(token);
 
@@ -93,12 +102,19 @@ AppGuardWrapper::HandleHttpRequest(appguard::AppGuardHttpRequest request)
     auto status = stub->HandleHttpRequest(&context, request, &response);
     THROW_IF_GRPC(status);
 
-    return response;
+    if (cache.IsEnabled())
+    {
+        cache.Put(std::move(cacheKey), response.policy());
+    }
+
+    return response.policy();
 }
 
-appguard::AppGuardResponse
+appguard_commands::FirewallPolicy
 AppGuardWrapper::HandleHttpResponse(appguard::AppGuardHttpResponse request)
 {
+    // @TODO: Figure out caching
+    
     auto token = this->AcquireToken();
     request.set_token(token);
 
@@ -110,7 +126,7 @@ AppGuardWrapper::HandleHttpResponse(appguard::AppGuardHttpResponse request)
     auto status = stub->HandleHttpResponse(&context, request, &response);
     THROW_IF_GRPC(status);
 
-    return response;
+    return response.policy();
 }
 
 std::string AppGuardWrapper::AcquireToken() const

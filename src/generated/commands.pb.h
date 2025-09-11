@@ -1325,6 +1325,7 @@ class FirewallDefaults PROTOBUF_FINAL :
   enum : int {
     kTimeoutFieldNumber = 1,
     kPolicyFieldNumber = 2,
+    kCacheFieldNumber = 3,
   };
   // uint32 timeout = 1;
   void clear_timeout();
@@ -1344,6 +1345,15 @@ class FirewallDefaults PROTOBUF_FINAL :
   void _internal_set_policy(::appguard_commands::FirewallPolicy value);
   public:
 
+  // bool cache = 3;
+  void clear_cache();
+  bool cache() const;
+  void set_cache(bool value);
+  private:
+  bool _internal_cache() const;
+  void _internal_set_cache(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:appguard_commands.FirewallDefaults)
  private:
   class _Internal;
@@ -1353,6 +1363,7 @@ class FirewallDefaults PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint32 timeout_;
   int policy_;
+  bool cache_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_commands_2eproto;
 };
@@ -2808,6 +2819,26 @@ inline void FirewallDefaults::_internal_set_policy(::appguard_commands::Firewall
 inline void FirewallDefaults::set_policy(::appguard_commands::FirewallPolicy value) {
   _internal_set_policy(value);
   // @@protoc_insertion_point(field_set:appguard_commands.FirewallDefaults.policy)
+}
+
+// bool cache = 3;
+inline void FirewallDefaults::clear_cache() {
+  cache_ = false;
+}
+inline bool FirewallDefaults::_internal_cache() const {
+  return cache_;
+}
+inline bool FirewallDefaults::cache() const {
+  // @@protoc_insertion_point(field_get:appguard_commands.FirewallDefaults.cache)
+  return _internal_cache();
+}
+inline void FirewallDefaults::_internal_set_cache(bool value) {
+  
+  cache_ = value;
+}
+inline void FirewallDefaults::set_cache(bool value) {
+  _internal_set_cache(value);
+  // @@protoc_insertion_point(field_set:appguard_commands.FirewallDefaults.cache)
 }
 
 #ifdef __GNUC__

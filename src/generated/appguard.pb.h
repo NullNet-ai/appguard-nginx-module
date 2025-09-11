@@ -906,7 +906,6 @@ class AppGuardIpInfo PROTOBUF_FINAL :
     kRegionFieldNumber = 7,
     kPostalFieldNumber = 8,
     kTimezoneFieldNumber = 9,
-    kBlacklistFieldNumber = 100,
   };
   // string ip = 1;
   void clear_ip();
@@ -1165,15 +1164,6 @@ class AppGuardIpInfo PROTOBUF_FINAL :
   std::string* _internal_mutable_timezone();
   public:
 
-  // bool blacklist = 100;
-  void clear_blacklist();
-  bool blacklist() const;
-  void set_blacklist(bool value);
-  private:
-  bool _internal_blacklist() const;
-  void _internal_set_blacklist(bool value);
-  public:
-
   // @@protoc_insertion_point(class_scope:appguard.AppGuardIpInfo)
  private:
   class _Internal;
@@ -1192,7 +1182,6 @@ class AppGuardIpInfo PROTOBUF_FINAL :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr region_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr postal_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr timezone_;
-  bool blacklist_;
   friend struct ::TableStruct_appguard_2eproto;
 };
 // -------------------------------------------------------------------
@@ -4493,26 +4482,6 @@ inline void AppGuardIpInfo::unsafe_arena_set_allocated_timezone(
   timezone_.UnsafeArenaSetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
       timezone, GetArena());
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:appguard.AppGuardIpInfo.timezone)
-}
-
-// bool blacklist = 100;
-inline void AppGuardIpInfo::clear_blacklist() {
-  blacklist_ = false;
-}
-inline bool AppGuardIpInfo::_internal_blacklist() const {
-  return blacklist_;
-}
-inline bool AppGuardIpInfo::blacklist() const {
-  // @@protoc_insertion_point(field_get:appguard.AppGuardIpInfo.blacklist)
-  return _internal_blacklist();
-}
-inline void AppGuardIpInfo::_internal_set_blacklist(bool value) {
-  
-  blacklist_ = value;
-}
-inline void AppGuardIpInfo::set_blacklist(bool value) {
-  _internal_set_blacklist(value);
-  // @@protoc_insertion_point(field_set:appguard.AppGuardIpInfo.blacklist)
 }
 
 // -------------------------------------------------------------------

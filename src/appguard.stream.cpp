@@ -2,6 +2,7 @@
 #include "appguard.inner.utils.hpp"
 #include "appguard.storage.hpp"
 #include "appguard.uclient.exception.hpp"
+#include "appguard.http.ucache.hpp"
 
 #define CLIENT_CATEGORY "AppGuard Client"
 #define CLIENT_TYPE "NGINX"
@@ -86,7 +87,7 @@ namespace internal
         const std::string &installation_code)
     {
         Storage::GetInstance().Update();
-        
+
         auto app_id = Storage::GetInstance().Get(MAKE_APP_ID_STORAGE_KEY(installation_code));
         auto app_secret = Storage::GetInstance().Get(MAKE_APP_SECRET_STORAGE_KEY(installation_code));
 
@@ -197,6 +198,16 @@ void AppGuardStream::Start()
                     std::lock_guard lock(this->context_mutex);
                     this->context.reset();
                     return;
+                }
+
+                if (message.has_set_firewall_defaults())
+                {
+                    const auto command = message.set_firewall_defaults();
+                    auto& instance = AppguardHttpCache<HttpRequestCacheKey>::GetInstance();
+                    
+                    instance.Clear();
+                    instance.Enable(command.cache());
+                    continue;
                 }
             }
 

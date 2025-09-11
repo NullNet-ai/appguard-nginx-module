@@ -200,6 +200,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_commands_2eproto::offsets[] PR
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::appguard_commands::FirewallDefaults, timeout_),
   PROTOBUF_FIELD_OFFSET(::appguard_commands::FirewallDefaults, policy_),
+  PROTOBUF_FIELD_OFFSET(::appguard_commands::FirewallDefaults, cache_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::appguard_commands::AuthorizationRequest)},
@@ -240,11 +241,11 @@ const char descriptor_table_protodef_commands_2eproto[] PROTOBUF_SECTION_VARIABL
   "rd_commands.AuthenticationDataH\000\0225\n\023devi"
   "ce_deauthorized\030\005 \001(\0132\026.google.protobuf."
   "EmptyH\000\0228\n\026authorization_rejected\030\006 \001(\0132"
-  "\026.google.protobuf.EmptyH\000B\t\n\007message\"V\n\020"
+  "\026.google.protobuf.EmptyH\000B\t\n\007message\"e\n\020"
   "FirewallDefaults\022\017\n\007timeout\030\001 \001(\r\0221\n\006pol"
   "icy\030\002 \001(\0162!.appguard_commands.FirewallPo"
-  "licy*2\n\016FirewallPolicy\022\013\n\007UNKNOWN\020\000\022\t\n\005A"
-  "LLOW\020\001\022\010\n\004DENY\020\002b\006proto3"
+  "licy\022\r\n\005cache\030\003 \001(\010*2\n\016FirewallPolicy\022\013\n"
+  "\007UNKNOWN\020\000\022\t\n\005ALLOW\020\001\022\010\n\004DENY\020\002b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_commands_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fempty_2eproto,
@@ -259,7 +260,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_com
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_commands_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_commands_2eproto = {
-  false, false, descriptor_table_protodef_commands_2eproto, "commands.proto", 984,
+  false, false, descriptor_table_protodef_commands_2eproto, "commands.proto", 999,
   &descriptor_table_commands_2eproto_once, descriptor_table_commands_2eproto_sccs, descriptor_table_commands_2eproto_deps, 6, 1,
   schemas, file_default_instances, TableStruct_commands_2eproto::offsets,
   file_level_metadata_commands_2eproto, 6, file_level_enum_descriptors_commands_2eproto, file_level_service_descriptors_commands_2eproto,
@@ -2062,15 +2063,15 @@ FirewallDefaults::FirewallDefaults(const FirewallDefaults& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&timeout_, &from.timeout_,
-    static_cast<size_t>(reinterpret_cast<char*>(&policy_) -
-    reinterpret_cast<char*>(&timeout_)) + sizeof(policy_));
+    static_cast<size_t>(reinterpret_cast<char*>(&cache_) -
+    reinterpret_cast<char*>(&timeout_)) + sizeof(cache_));
   // @@protoc_insertion_point(copy_constructor:appguard_commands.FirewallDefaults)
 }
 
 void FirewallDefaults::SharedCtor() {
   ::memset(&timeout_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&policy_) -
-      reinterpret_cast<char*>(&timeout_)) + sizeof(policy_));
+      reinterpret_cast<char*>(&cache_) -
+      reinterpret_cast<char*>(&timeout_)) + sizeof(cache_));
 }
 
 FirewallDefaults::~FirewallDefaults() {
@@ -2105,8 +2106,8 @@ void FirewallDefaults::Clear() {
   (void) cached_has_bits;
 
   ::memset(&timeout_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&policy_) -
-      reinterpret_cast<char*>(&timeout_)) + sizeof(policy_));
+      reinterpret_cast<char*>(&cache_) -
+      reinterpret_cast<char*>(&timeout_)) + sizeof(cache_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2131,6 +2132,13 @@ const char* FirewallDefaults::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPA
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_policy(static_cast<::appguard_commands::FirewallPolicy>(val));
+        } else goto handle_unusual;
+        continue;
+      // bool cache = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          cache_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -2174,6 +2182,12 @@ failure:
       2, this->_internal_policy(), target);
   }
 
+  // bool cache = 3;
+  if (this->cache() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(3, this->_internal_cache(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2201,6 +2215,11 @@ size_t FirewallDefaults::ByteSizeLong() const {
   if (this->policy() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_policy());
+  }
+
+  // bool cache = 3;
+  if (this->cache() != 0) {
+    total_size += 1 + 1;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2240,6 +2259,9 @@ void FirewallDefaults::MergeFrom(const FirewallDefaults& from) {
   if (from.policy() != 0) {
     _internal_set_policy(from._internal_policy());
   }
+  if (from.cache() != 0) {
+    _internal_set_cache(from._internal_cache());
+  }
 }
 
 void FirewallDefaults::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -2264,8 +2286,8 @@ void FirewallDefaults::InternalSwap(FirewallDefaults* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(FirewallDefaults, policy_)
-      + sizeof(FirewallDefaults::policy_)
+      PROTOBUF_FIELD_OFFSET(FirewallDefaults, cache_)
+      + sizeof(FirewallDefaults::cache_)
       - PROTOBUF_FIELD_OFFSET(FirewallDefaults, timeout_)>(
           reinterpret_cast<char*>(&timeout_),
           reinterpret_cast<char*>(&other->timeout_));

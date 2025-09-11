@@ -10,6 +10,7 @@ NGX_APPGUARD_SRCS="                                    \
     $ngx_addon_dir/src/appguard.wrapper.cpp            \
     $ngx_addon_dir/src/appguard.stream.cpp             \
     $ngx_addon_dir/src/appguard.tcp.ucache.cpp         \
+    $ngx_addon_dir/src/appguard.http.ucache.cpp        \
     $ngx_addon_dir/src/appguard.uclient.info.cpp       \
     $ngx_addon_dir/src/appguard.uclient.exception.cpp  \
     $ngx_addon_dir/src/appguard.storage.cpp            \
@@ -26,6 +27,7 @@ NGX_APPGUARD_DEPS="                                    \
     $ngx_addon_dir/src/appguard.ipc.mutex.hpp          \
     $ngx_addon_dir/src/appguard.stream.hpp             \
     $ngx_addon_dir/src/appguard.tcp.ucache.hpp         \
+    $ngx_addon_dir/src/appguard.http.ucache.hpp        \
     $ngx_addon_dir/src/appguard.uclient.info.hpp       \
     $ngx_addon_dir/src/appguard.storage.hpp            \
     $ngx_addon_dir/src/appguard.uclient.exception.hpp  \

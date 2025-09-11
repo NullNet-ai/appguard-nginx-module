@@ -371,7 +371,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_appguard_2eproto::offsets[] PR
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardIpInfo, region_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardIpInfo, postal_),
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardIpInfo, timezone_),
-  PROTOBUF_FIELD_OFFSET(::appguard::AppGuardIpInfo, blacklist_),
   ~0u,
   0,
   1,
@@ -381,7 +380,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_appguard_2eproto::offsets[] PR
   5,
   6,
   7,
-  ~0u,
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::appguard::AppGuardTcpInfo, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -501,19 +499,19 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 0, -1, sizeof(::appguard::Logs)},
   { 7, -1, sizeof(::appguard::Log)},
   { 15, 26, sizeof(::appguard::AppGuardTcpConnection)},
-  { 32, 47, sizeof(::appguard::AppGuardIpInfo)},
-  { 57, -1, sizeof(::appguard::AppGuardTcpInfo)},
-  { 65, 72, sizeof(::appguard::AppGuardHttpRequest_HeadersEntry_DoNotUse)},
-  { 74, 81, sizeof(::appguard::AppGuardHttpRequest_QueryEntry_DoNotUse)},
-  { 83, 95, sizeof(::appguard::AppGuardHttpRequest)},
-  { 102, 109, sizeof(::appguard::AppGuardHttpResponse_HeadersEntry_DoNotUse)},
-  { 111, -1, sizeof(::appguard::AppGuardHttpResponse)},
-  { 120, 127, sizeof(::appguard::AppGuardSmtpRequest_HeadersEntry_DoNotUse)},
-  { 129, 138, sizeof(::appguard::AppGuardSmtpRequest)},
-  { 142, 150, sizeof(::appguard::AppGuardSmtpResponse)},
-  { 153, -1, sizeof(::appguard::AppGuardResponse)},
-  { 159, -1, sizeof(::appguard::AppGuardTcpResponse)},
-  { 165, -1, sizeof(::appguard::Token)},
+  { 32, 46, sizeof(::appguard::AppGuardIpInfo)},
+  { 55, -1, sizeof(::appguard::AppGuardTcpInfo)},
+  { 63, 70, sizeof(::appguard::AppGuardHttpRequest_HeadersEntry_DoNotUse)},
+  { 72, 79, sizeof(::appguard::AppGuardHttpRequest_QueryEntry_DoNotUse)},
+  { 81, 93, sizeof(::appguard::AppGuardHttpRequest)},
+  { 100, 107, sizeof(::appguard::AppGuardHttpResponse_HeadersEntry_DoNotUse)},
+  { 109, -1, sizeof(::appguard::AppGuardHttpResponse)},
+  { 118, 125, sizeof(::appguard::AppGuardSmtpRequest_HeadersEntry_DoNotUse)},
+  { 127, 136, sizeof(::appguard::AppGuardSmtpRequest)},
+  { 140, 148, sizeof(::appguard::AppGuardSmtpResponse)},
+  { 151, -1, sizeof(::appguard::AppGuardResponse)},
+  { 157, -1, sizeof(::appguard::AppGuardTcpResponse)},
+  { 163, -1, sizeof(::appguard::Token)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -546,61 +544,61 @@ const char descriptor_table_protodef_appguard_2eproto[] PROTOBUF_SECTION_VARIABL
   "ination_ip\030\004 \001(\tH\002\210\001\001\022\035\n\020destination_por"
   "t\030\005 \001(\rH\003\210\001\001\022\020\n\010protocol\030\006 \001(\tB\014\n\n_sourc"
   "e_ipB\016\n\014_source_portB\021\n\017_destination_ipB"
-  "\023\n\021_destination_port\"\265\002\n\016AppGuardIpInfo\022"
+  "\023\n\021_destination_port\"\242\002\n\016AppGuardIpInfo\022"
   "\n\n\002ip\030\001 \001(\t\022\024\n\007country\030\002 \001(\tH\000\210\001\001\022\020\n\003asn"
   "\030\003 \001(\tH\001\210\001\001\022\020\n\003org\030\004 \001(\tH\002\210\001\001\022\033\n\016contine"
   "nt_code\030\005 \001(\tH\003\210\001\001\022\021\n\004city\030\006 \001(\tH\004\210\001\001\022\023\n"
   "\006region\030\007 \001(\tH\005\210\001\001\022\023\n\006postal\030\010 \001(\tH\006\210\001\001\022"
-  "\025\n\010timezone\030\t \001(\tH\007\210\001\001\022\021\n\tblacklist\030d \001("
-  "\010B\n\n\010_countryB\006\n\004_asnB\006\n\004_orgB\021\n\017_contin"
-  "ent_codeB\007\n\005_cityB\t\n\007_regionB\t\n\007_postalB"
-  "\013\n\t_timezone\"\201\001\n\017AppGuardTcpInfo\0223\n\nconn"
-  "ection\030\001 \001(\0132\037.appguard.AppGuardTcpConne"
-  "ction\022)\n\007ip_info\030\002 \001(\0132\030.appguard.AppGua"
-  "rdIpInfo\022\016\n\006tcp_id\030\003 \001(\004\"\347\002\n\023AppGuardHtt"
-  "pRequest\022\r\n\005token\030\001 \001(\t\022\024\n\014original_url\030"
-  "\002 \001(\t\022;\n\007headers\030\003 \003(\0132*.appguard.AppGua"
-  "rdHttpRequest.HeadersEntry\022\016\n\006method\030\004 \001"
-  "(\t\022\021\n\004body\030\005 \001(\tH\000\210\001\001\0227\n\005query\030\006 \003(\0132(.a"
-  "ppguard.AppGuardHttpRequest.QueryEntry\022+"
-  "\n\010tcp_info\030d \001(\0132\031.appguard.AppGuardTcpI"
-  "nfo\032.\n\014HeadersEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu"
-  "e\030\002 \001(\t:\0028\001\032,\n\nQueryEntry\022\013\n\003key\030\001 \001(\t\022\r"
-  "\n\005value\030\002 \001(\t:\0028\001B\007\n\005_body\"\316\001\n\024AppGuardH"
-  "ttpResponse\022\r\n\005token\030\001 \001(\t\022\014\n\004code\030\002 \001(\r"
-  "\022<\n\007headers\030\003 \003(\0132+.appguard.AppGuardHtt"
-  "pResponse.HeadersEntry\022+\n\010tcp_info\030d \001(\013"
-  "2\031.appguard.AppGuardTcpInfo\032.\n\014HeadersEn"
-  "try\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\"\332\001\n\023"
-  "AppGuardSmtpRequest\022\r\n\005token\030\001 \001(\t\022;\n\007he"
-  "aders\030\002 \003(\0132*.appguard.AppGuardSmtpReque"
-  "st.HeadersEntry\022\021\n\004body\030\003 \001(\tH\000\210\001\001\022+\n\010tc"
-  "p_info\030d \001(\0132\031.appguard.AppGuardTcpInfo\032"
-  ".\n\014HeadersEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 "
-  "\001(\t:\0028\001B\007\n\005_body\"n\n\024AppGuardSmtpResponse"
-  "\022\r\n\005token\030\001 \001(\t\022\021\n\004code\030\002 \001(\rH\000\210\001\001\022+\n\010tc"
-  "p_info\030d \001(\0132\031.appguard.AppGuardTcpInfoB"
-  "\007\n\005_code\"E\n\020AppGuardResponse\0221\n\006policy\030\002"
-  " \001(\0162!.appguard_commands.FirewallPolicy\""
-  "B\n\023AppGuardTcpResponse\022+\n\010tcp_info\030\001 \001(\013"
-  "2\031.appguard.AppGuardTcpInfo\"\026\n\005Token\022\r\n\005"
-  "token\030\001 \001(\t2\206\005\n\010AppGuard\022X\n\016ControlChann"
-  "el\022 .appguard_commands.ClientMessage\032 .a"
-  "ppguard_commands.ServerMessage(\0010\001\0224\n\nHa"
-  "ndleLogs\022\016.appguard.Logs\032\026.google.protob"
-  "uf.Empty\022U\n\023HandleTcpConnection\022\037.appgua"
-  "rd.AppGuardTcpConnection\032\035.appguard.AppG"
-  "uardTcpResponse\022N\n\021HandleHttpRequest\022\035.a"
-  "ppguard.AppGuardHttpRequest\032\032.appguard.A"
-  "ppGuardResponse\022P\n\022HandleHttpResponse\022\036."
-  "appguard.AppGuardHttpResponse\032\032.appguard"
-  ".AppGuardResponse\022N\n\021HandleSmtpRequest\022\035"
-  ".appguard.AppGuardSmtpRequest\032\032.appguard"
-  ".AppGuardResponse\022P\n\022HandleSmtpResponse\022"
-  "\036.appguard.AppGuardSmtpResponse\032\032.appgua"
-  "rd.AppGuardResponse\022O\n\027FirewallDefaultsR"
-  "equest\022\017.appguard.Token\032#.appguard_comma"
-  "nds.FirewallDefaultsb\006proto3"
+  "\025\n\010timezone\030\t \001(\tH\007\210\001\001B\n\n\010_countryB\006\n\004_a"
+  "snB\006\n\004_orgB\021\n\017_continent_codeB\007\n\005_cityB\t"
+  "\n\007_regionB\t\n\007_postalB\013\n\t_timezone\"\201\001\n\017Ap"
+  "pGuardTcpInfo\0223\n\nconnection\030\001 \001(\0132\037.appg"
+  "uard.AppGuardTcpConnection\022)\n\007ip_info\030\002 "
+  "\001(\0132\030.appguard.AppGuardIpInfo\022\016\n\006tcp_id\030"
+  "\003 \001(\004\"\347\002\n\023AppGuardHttpRequest\022\r\n\005token\030\001"
+  " \001(\t\022\024\n\014original_url\030\002 \001(\t\022;\n\007headers\030\003 "
+  "\003(\0132*.appguard.AppGuardHttpRequest.Heade"
+  "rsEntry\022\016\n\006method\030\004 \001(\t\022\021\n\004body\030\005 \001(\tH\000\210"
+  "\001\001\0227\n\005query\030\006 \003(\0132(.appguard.AppGuardHtt"
+  "pRequest.QueryEntry\022+\n\010tcp_info\030d \001(\0132\031."
+  "appguard.AppGuardTcpInfo\032.\n\014HeadersEntry"
+  "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001\032,\n\nQuer"
+  "yEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\007"
+  "\n\005_body\"\316\001\n\024AppGuardHttpResponse\022\r\n\005toke"
+  "n\030\001 \001(\t\022\014\n\004code\030\002 \001(\r\022<\n\007headers\030\003 \003(\0132+"
+  ".appguard.AppGuardHttpResponse.HeadersEn"
+  "try\022+\n\010tcp_info\030d \001(\0132\031.appguard.AppGuar"
+  "dTcpInfo\032.\n\014HeadersEntry\022\013\n\003key\030\001 \001(\t\022\r\n"
+  "\005value\030\002 \001(\t:\0028\001\"\332\001\n\023AppGuardSmtpRequest"
+  "\022\r\n\005token\030\001 \001(\t\022;\n\007headers\030\002 \003(\0132*.appgu"
+  "ard.AppGuardSmtpRequest.HeadersEntry\022\021\n\004"
+  "body\030\003 \001(\tH\000\210\001\001\022+\n\010tcp_info\030d \001(\0132\031.appg"
+  "uard.AppGuardTcpInfo\032.\n\014HeadersEntry\022\013\n\003"
+  "key\030\001 \001(\t\022\r\n\005value\030\002 \001(\t:\0028\001B\007\n\005_body\"n\n"
+  "\024AppGuardSmtpResponse\022\r\n\005token\030\001 \001(\t\022\021\n\004"
+  "code\030\002 \001(\rH\000\210\001\001\022+\n\010tcp_info\030d \001(\0132\031.appg"
+  "uard.AppGuardTcpInfoB\007\n\005_code\"E\n\020AppGuar"
+  "dResponse\0221\n\006policy\030\002 \001(\0162!.appguard_com"
+  "mands.FirewallPolicy\"B\n\023AppGuardTcpRespo"
+  "nse\022+\n\010tcp_info\030\001 \001(\0132\031.appguard.AppGuar"
+  "dTcpInfo\"\026\n\005Token\022\r\n\005token\030\001 \001(\t2\206\005\n\010App"
+  "Guard\022X\n\016ControlChannel\022 .appguard_comma"
+  "nds.ClientMessage\032 .appguard_commands.Se"
+  "rverMessage(\0010\001\0224\n\nHandleLogs\022\016.appguard"
+  ".Logs\032\026.google.protobuf.Empty\022U\n\023HandleT"
+  "cpConnection\022\037.appguard.AppGuardTcpConne"
+  "ction\032\035.appguard.AppGuardTcpResponse\022N\n\021"
+  "HandleHttpRequest\022\035.appguard.AppGuardHtt"
+  "pRequest\032\032.appguard.AppGuardResponse\022P\n\022"
+  "HandleHttpResponse\022\036.appguard.AppGuardHt"
+  "tpResponse\032\032.appguard.AppGuardResponse\022N"
+  "\n\021HandleSmtpRequest\022\035.appguard.AppGuardS"
+  "mtpRequest\032\032.appguard.AppGuardResponse\022P"
+  "\n\022HandleSmtpResponse\022\036.appguard.AppGuard"
+  "SmtpResponse\032\032.appguard.AppGuardResponse"
+  "\022O\n\027FirewallDefaultsRequest\022\017.appguard.T"
+  "oken\032#.appguard_commands.FirewallDefault"
+  "sb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_appguard_2eproto_deps[2] = {
   &::descriptor_table_commands_2eproto,
@@ -626,7 +624,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_app
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_appguard_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_appguard_2eproto = {
-  false, false, descriptor_table_protodef_appguard_2eproto, "appguard.proto", 2588,
+  false, false, descriptor_table_protodef_appguard_2eproto, "appguard.proto", 2569,
   &descriptor_table_appguard_2eproto_once, descriptor_table_appguard_2eproto_sccs, descriptor_table_appguard_2eproto_deps, 16, 2,
   schemas, file_default_instances, TableStruct_appguard_2eproto::offsets,
   file_level_metadata_appguard_2eproto, 16, file_level_enum_descriptors_appguard_2eproto, file_level_service_descriptors_appguard_2eproto,
@@ -1674,7 +1672,6 @@ AppGuardIpInfo::AppGuardIpInfo(const AppGuardIpInfo& from)
     timezone_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_timezone(),
       GetArena());
   }
-  blacklist_ = from.blacklist_;
   // @@protoc_insertion_point(copy_constructor:appguard.AppGuardIpInfo)
 }
 
@@ -1689,7 +1686,6 @@ void AppGuardIpInfo::SharedCtor() {
   region_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   postal_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   timezone_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  blacklist_ = false;
 }
 
 AppGuardIpInfo::~AppGuardIpInfo() {
@@ -1760,7 +1756,6 @@ void AppGuardIpInfo::Clear() {
       timezone_.ClearNonDefaultToEmpty();
     }
   }
-  blacklist_ = false;
   _has_bits_.Clear();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -1852,13 +1847,6 @@ const char* AppGuardIpInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
           auto str = _internal_mutable_timezone();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "appguard.AppGuardIpInfo.timezone"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // bool blacklist = 100;
-      case 100:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          blacklist_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1981,12 +1969,6 @@ failure:
         9, this->_internal_timezone(), target);
   }
 
-  // bool blacklist = 100;
-  if (this->blacklist() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(100, this->_internal_blacklist(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2069,11 +2051,6 @@ size_t AppGuardIpInfo::ByteSizeLong() const {
     }
 
   }
-  // bool blacklist = 100;
-  if (this->blacklist() != 0) {
-    total_size += 2 + 1;
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -2135,9 +2112,6 @@ void AppGuardIpInfo::MergeFrom(const AppGuardIpInfo& from) {
       _internal_set_timezone(from._internal_timezone());
     }
   }
-  if (from.blacklist() != 0) {
-    _internal_set_blacklist(from._internal_blacklist());
-  }
 }
 
 void AppGuardIpInfo::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -2171,7 +2145,6 @@ void AppGuardIpInfo::InternalSwap(AppGuardIpInfo* other) {
   region_.Swap(&other->region_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   postal_.Swap(&other->postal_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
   timezone_.Swap(&other->timezone_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-  swap(blacklist_, other->blacklist_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata AppGuardIpInfo::GetMetadata() const {

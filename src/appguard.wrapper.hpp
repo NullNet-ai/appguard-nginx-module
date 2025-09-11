@@ -55,7 +55,7 @@ public:
      * @param request The HTTP request details to be handled.
      * @return The response from the AppGuard service.
      */
-    [[nodiscard]] appguard::AppGuardResponse
+    [[nodiscard]] appguard_commands::FirewallPolicy
     HandleHttpRequest(appguard::AppGuardHttpRequest request);
 
     /**
@@ -64,7 +64,7 @@ public:
      * @param request The HTTP response details to be handled.
      * @return The response from the AppGuard service.
      */
-    [[nodiscard]] appguard::AppGuardResponse
+    [[nodiscard]] appguard_commands::FirewallPolicy
     HandleHttpResponse(appguard::AppGuardHttpResponse request);
 
 private:

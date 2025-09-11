@@ -222,8 +222,8 @@ ngx_int_t AppGuardNginxModule::RequestHandler(ngx_http_request_t *request)
         AppguardTcpInfoCache::Instance().Put(request->connection, tcp_response.tcp_info());
         http_request.set_allocated_tcp_info(new appguard::AppGuardTcpInfo(tcp_response.tcp_info()));
 
-        auto ag_response = client.HandleHttpRequest(http_request);
-        return ActOnPolicy(ag_response.policy(), default_policy);
+        auto policy = client.HandleHttpRequest(http_request);
+        return ActOnPolicy(policy, default_policy);
     }
     catch (AppGuardClientException &ex)
     {
@@ -281,8 +281,8 @@ ngx_int_t AppGuardNginxModule::ResponseHandler(ngx_http_request_t *request)
             http_response.set_allocated_tcp_info(new appguard::AppGuardTcpInfo(tcp_info.value()));
         }
 
-        auto ag_response = client.HandleHttpResponse(http_response);
-        ngx_int_t code = ActOnPolicy(ag_response.policy(), default_policy);
+        auto policy = client.HandleHttpResponse(http_response);
+        ngx_int_t code = ActOnPolicy(policy, default_policy);
         return code == NGX_DECLINED ? next_header_filter(request) : code;
     }
     catch (AppGuardClientException &ex)
