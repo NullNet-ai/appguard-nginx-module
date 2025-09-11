@@ -207,7 +207,7 @@ ngx_int_t AppGuardNginxModule::RequestHandler(ngx_http_request_t *request)
 
     try
     {
-        AppGaurdClientInfo client_info {
+        AppGaurdClientInfo client_info{
             .installation_code = installation_code,
             .server_addr = server_addr,
             .server_cert_path = server_cert_path,
@@ -274,6 +274,7 @@ ngx_int_t AppGuardNginxModule::ResponseHandler(ngx_http_request_t *request)
 
         auto client = AppGuardWrapper::CreateClient(client_info);
 
+        auto http_request = appguard::inner_utils::ExtractHttpRequestInfo(request);
         auto http_response = appguard::inner_utils::ExtractHttpResponseInfo(request);
 
         if (auto tcp_info = AppguardTcpInfoCache::Instance().Get(request->connection); tcp_info.has_value())
@@ -281,7 +282,7 @@ ngx_int_t AppGuardNginxModule::ResponseHandler(ngx_http_request_t *request)
             http_response.set_allocated_tcp_info(new appguard::AppGuardTcpInfo(tcp_info.value()));
         }
 
-        auto policy = client.HandleHttpResponse(http_response);
+        auto policy = client.HandleHttpResponse(http_request, http_response);
         ngx_int_t code = ActOnPolicy(policy, default_policy);
         return code == NGX_DECLINED ? next_header_filter(request) : code;
     }
